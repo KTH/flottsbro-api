@@ -1,0 +1,82 @@
+[
+    {
+        "services": [
+            {
+                "environment": [],
+                "service_name": "web",
+                "image": {
+                    "static_version": "1.2.6_45806c2",
+                    "image_name": "tamarack",
+                    "semver_version": null
+                },
+                "labels": [
+                    {
+                        "value": "active",
+                        "label": "cluster"
+                    },
+                    {
+                        "value": "#team-pipeline",
+                        "label": "se.kth.slackChannels"
+                    },
+                    {
+                        "value": "https://app.kth.se/_monitor",
+                        "label": "se.kth.monitorUrl"
+                    }
+                ],
+                "deploy_labels": [
+                    {
+                        "value": "true",
+                        "label": "com.df.notify"
+                    },
+                    {
+                        "value": "true",
+                        "label": "com.df.distribute"
+                    },
+                    {
+                        "value": "zzz_tamarack",
+                        "label": "com.df.aclName"
+                    },
+                    {
+                        "value": "path_reg",
+                        "label": "com.df.pathType"
+                    },
+                    {
+                        "value": "^/.*$$",
+                        "label": "com.df.servicePath"
+                    },
+                    {
+                        "value": "80",
+                        "label": "com.df.port"
+                    }
+                ]
+            }
+        ],
+        "cluster": {
+            "environment": [
+                {
+                    "key": "DOCKER_HOST",
+                    "value": "tcp://10.28.23.30:2376"
+                },
+                {
+                    "key": "DOCKER_TLS_VERIFY",
+                    "value": "1"
+                },
+                {
+                    "key": "DOCKER_CERT_PATH",
+                    "value": "/root/.docker"
+                },
+                {
+                    "key": "SERVICE_EXTENSIONS_FILE",
+                    "value": "../../active-service-extensions.yml"
+                },
+                {
+                    "key": "SECRETS_DIR",
+                    "value": "/root/secrets/cellus/active"
+                }
+            ],
+            "cluster_name": "active"
+        },
+        "service_file_md5": "406afd7d173543a69ad94f91703855df",
+        "application_name": "tamarack"
+    }
+]

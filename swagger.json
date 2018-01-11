@@ -1,0 +1,121 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Flottsbro-API",
+    "description": "Deployment information for apps running under app.kth.se and api.kth.se.",
+    "version": "1.0.0"
+  },
+  "basePath": "/api/pipeline",
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/_checkAPIkey": {
+      "get": {
+        "operationId": "checkAPIkey",
+        "summary": "GET a test endpoint that is protected by api key to validate that consumer has a proper api key",
+        "description": "",
+        "parameters": [],
+        "tags": [
+          "system"
+        ],
+        "responses": {
+          "200": {
+            "description": "An empty response",
+            "schema": {
+              "$ref": "#/definitions/UserList"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": {
+          "api_key": [
+            "read"
+          ]
+        }
+      }
+    },
+    "/v1/latest/{clusterName}": {
+      "get": {
+        "operationId": "getLatestByClusterName",
+        "summary": "Gets latest deployments for a cluster.",
+        "description": "Gets the latest deployment inforamtion about a applications in a specific cluster .",
+        "parameters": [
+          {
+            "name": "clusterName",
+            "in": "path",
+            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "v1"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested data",
+            "schema": {
+              "$ref": "#/definitions/Data"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": {
+          "api_key": [
+            "read"
+          ]
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header",
+      "scopes": {
+        "read": "Read access to data",
+        "write": "Write access to data"
+      }
+    }
+  },
+  "definitions": {
+    "Data": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier representing some specific data"
+        },
+        "name": {
+          "type": "string",
+          "description": "Description of the data"
+        }
+      }
+    },
+    "Error": {
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
