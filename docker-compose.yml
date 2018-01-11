@@ -1,0 +1,17 @@
+version: '3'
+services:
+
+  web:
+
+    env_file:
+      - .env
+
+    build: .
+
+    ports:
+      - 3000
+
+    labels:
+      - se.kth.cluster=${PORTILLO_CLUSTER}
+      - se.kth.slackChannels=#team-pipeline-build
+      - se.kth.importance=low

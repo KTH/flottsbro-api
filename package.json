@@ -1,8 +1,8 @@
 {
   "//": "The production flag is added in the jenkins build script.",
-  "name": "node-api",
-  "version": "2.0.0",
-  "description": "Node.js based API template application.",
+  "name": "Flottsbro-API",
+  "version": "0.1.0",
+  "description": "Restful API for getting information about applications deployed in Docker clusters. .",
   "main": "app.js",
   "private": true,
   "scripts": {
