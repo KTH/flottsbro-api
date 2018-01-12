@@ -22,9 +22,8 @@ function * getLatestByClusterName (req, res, next) {
     res.json( services )
 
   } catch (err) {
-    log.error( `Error while reading deployments for '${req.params.clusterName}'.
-                ${err}`
-    )
+    log.debug('Error reading from mongo', err) 
+    log.error( `Error while reading deployments for '${req.params.clusterName}'`, err )
   }
 }
 
