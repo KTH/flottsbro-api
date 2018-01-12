@@ -1,19 +1,13 @@
 'use strict'
-
 const mongoose = require('mongoose')
 
-const schema = mongoose.Schema({
-  _id: {
-    type: String
-  },
-  services: {
-    type: String,
-    trim: true,
-    default: ''
+const schema = mongoose.Schema(
+  {
+    _id: Number
   }
-})
+)
 
-const Deployments  = mongoose.model('Deployments', schema)
+const Deployments  = mongoose.model('deployment', schema)
 
 module.exports = {
   Deployments: Deployments,
