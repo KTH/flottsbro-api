@@ -40,6 +40,51 @@
         }
       }
     },
+    "/v1/latest/{clusterName}/{applicationName}/": {
+      "get": {
+        "operationId": "getLatestForApplication",
+        "summary": "Gets latest deployments for an application in a cluster.",
+        "description": "Gets the latest deployment inforamtion about a applications in a specific cluster .",
+        "parameters": [
+          {
+            "name": "clusterName",
+            "in": "path",
+            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "applicationName",
+            "in": "path",
+            "description": "Application name to get current deployments from (i.e: niskeko-web, search-api)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "v1"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested data",
+            "schema": {
+              "$ref": "#/definitions/Data"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": {
+          "api_key": [
+            "read"
+          ]
+        }
+      }
+    },
     "/v1/latest/{clusterName}": {
       "get": {
         "operationId": "getLatestByClusterName",
@@ -105,14 +150,7 @@
     },
     "Error": {
       "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
         "message": {
-          "type": "string"
-        },
-        "fields": {
           "type": "string"
         }
       }

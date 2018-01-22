@@ -125,6 +125,7 @@ const paths = getPaths()
 apiRoute.register(paths.api.checkAPIkey, System.checkAPIKey)
 
 apiRoute.register(paths.api.getLatestByClusterName, Deployments.getLatestByClusterName)
+apiRoute.register(paths.api.getLatestForApplication, Deployments.getLatestForApplication)
 server.use('/', apiRoute.getRouter())
 
 // Catch not found and errors
