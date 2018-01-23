@@ -56,15 +56,13 @@ function* getLatestByClusterName(request, response, next) {
     log.debug(`Collection name: '${Deployments.collection.collectionName}'`)
     log.debug(`Searching for applications in cluster '${request.params.clusterName}'.`)
 
-    let deployments = yield Deployments.find(
-      {
-        "cluster.cluster_name": request.params.clusterName
-      }
-    );
+    let deployments = yield Deployments.find().
+      where("cluster.cluster_name").equals(request.params.clusterName).
+      limit(100)
 
     let result = []
 
-    if (deployments && deployments.count) {
+    if (deployments) {
       for (let i = 0; i < deployments.length; i++) {
 
         const application = toApplication(deployments[i]);
@@ -74,11 +72,12 @@ function* getLatestByClusterName(request, response, next) {
         }
 
       }
+      response.json(result)
+
     } else {
       response.status(404).json({ "Message": `No deployed applications found in cluster '${request.params.clusterName}'.` });
     }
 
-    response.json(result)
 
   } catch (err) {
     log.error(`Error while reading deployments for '${request.params.clusterName}'`, err)
@@ -117,7 +116,11 @@ function toApplication(deployment) {
     }
 
     if (deploy_label.label === "com.df.servicePath") {
-      application.path = deploy_label.value
+      if (application.applicationName === "tamarack") {
+        application.path = "/"
+      } else {
+        application.path = deploy_label.value
+      }
     }
 
   }
