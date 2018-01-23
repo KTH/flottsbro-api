@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 
 const schema = mongoose.Schema(
   {
+    "created": Number,
     "service_file_md5": String,
     "application_name": String,
     "cluster": {
