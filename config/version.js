@@ -4,6 +4,7 @@
  */
 
 module.exports = {
+  dockerVersion: 'NOT SET BY HUDSON',
   gitBranch: 'NOT SET BY HUDSON',
   gitCommit: 'NOT SET BY HUDSON',
   jenkinsBuild: 'NOT SET BY HUDSON',

@@ -1,8 +1,10 @@
 'use strict'
 
 const packageFile = require('../../package.json')
+var version = require('../../config/version');
 const getPaths = require('kth-node-express-routing').getPaths
 const db = require('kth-node-mongo')
+const os = require('os')
 
 const Promise = require('bluebird')
 const registry = require('component-registry').globalRegistry
@@ -36,11 +38,13 @@ function getSwagger (req, res) {
 function getAbout (req, res) {
   const paths = getPaths()
   res.render('system/about', {
+    dockerVersion: version.dockerVersion,
+    hostname: os.hostname(),
     appName: packageFile.name,
-    appVersion: packageFile.version,
     appDescription: packageFile.description,
     monitorUri: paths.system.monitor.uri,
     robotsUri: paths.system.robots.uri
+
   })
 }
 
