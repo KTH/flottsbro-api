@@ -145,19 +145,19 @@ function toApplication(deployment) {
     }
 
     if (label.label === "se.kth.publicName.swedish") {
-      application.publicName.swedish = label.value
+      application.publicNameSwedish = label.value
     }
 
     if (label.label === "se.kth.publicName.english") {
-      application.publicName.english = label.value
+      application.publicNameEnglish = label.value
     }
     
     if (label.label === "se.kth.description.swedish") {
-      application.description.swedish = label.value
+      application.descriptionSwedish = label.value
     }
     
     if (label.label === "se.kth.description.english") {
-      application.description.english = label.value
+      application.descriptionEnglish = label.value
     }
     
   }
