@@ -9,6 +9,12 @@ module.exports = {
   getLatestByClusterName: co.wrap(getLatestByClusterName),
 }
 
+/**
+ * Gets the latest deployment for an application in a specified cluster
+ * @param {*} request 
+ * @param {*} response 
+ * @param {*} next 
+ */
 function* getLatestForApplication(request, response, next) {
 
   log.debug(`Getting latest deployments for cluster '${request.params.clusterName}' and application '${request.params.applicationName}'.`)
@@ -23,22 +29,26 @@ function* getLatestForApplication(request, response, next) {
         "cluster.cluster_name": request.params.clusterName,
         "application_name": request.params.applicationName
       }
-    );
+    ).sort({ created: -1 })
 
 
     if (deployments) {
       for (let i = 0; i < deployments.length; i++) {
-
+        log.debug(`Collection name: '${Deployments.collection.collectionName}'`)
         const application = toApplication(deployments[i]);
 
         if (application) {
+          log.info(`Found deployment for '${request.params.applicationName}' in '${request.params.clusterName}'`)
           response.json(application)
           return
         }
       }
 
+    } else {
+      log.info(`Got null back from : '${Deployments.collection.collectionName}' for '${request.params.clusterName}'`)
     }
 
+    log.info(`No application '${request.params.applicationName}' found in cluster '${request.params.clusterName}'.`)
     response.status(404).json({ "Message": `No application '${request.params.applicationName}' found in cluster '${request.params.clusterName}'.` });
 
   } catch (err) {
@@ -47,6 +57,13 @@ function* getLatestForApplication(request, response, next) {
   }
 
 }
+
+/**
+ * Gets the latest deployments as an array for a specified cluster name.
+ * @param {*} request 
+ * @param {*} response 
+ * @param {*} next 
+ */
 function* getLatestByClusterName(request, response, next) {
 
   log.debug(`Getting latest deployments for cluster '${request.params.clusterName}'.`)
@@ -58,7 +75,8 @@ function* getLatestByClusterName(request, response, next) {
 
     let deployments = yield Deployments.find().
       where("cluster.cluster_name").equals(request.params.clusterName).
-      limit(100)
+      sort({ created: -1 }).
+      limit(10)
 
     let result = []
 
@@ -70,11 +88,13 @@ function* getLatestByClusterName(request, response, next) {
         if (application) {
           result.push(application)
         }
-
       }
+    }
+    if (result.length > 0) {
+      log.info(`Found deployments for '${request.params.clusterName}'`)
       response.json(result)
-
     } else {
+      log.info(`Found no deployments for '${request.params.clusterName}'`)
       response.status(404).json({ "Message": `No deployed applications found in cluster '${request.params.clusterName}'.` });
     }
 
@@ -151,15 +171,15 @@ function toApplication(deployment) {
     if (label.label === "se.kth.publicName.english") {
       application.publicNameEnglish = label.value
     }
-    
+
     if (label.label === "se.kth.description.swedish") {
       application.descriptionSwedish = label.value
     }
-    
+
     if (label.label === "se.kth.description.english") {
       application.descriptionEnglish = label.value
     }
-    
+
   }
 
   return application
