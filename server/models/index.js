@@ -1,3 +1,3 @@
 module.exports = {
-  deployments: require('./deployments')
-}
+  deployments: require("./deployments")
+};

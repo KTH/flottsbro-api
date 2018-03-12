@@ -1,6 +1,6 @@
-'use strict'
+"use strict";
 
 module.exports = {
-  System: require('./systemCtrl'),
-  Deployments: require('./deploymentsCtrl')
-}
+  System: require("./systemCtrl"),
+  Deployments: require("./deploymentsCtrl")
+};
