@@ -75,28 +75,18 @@ function * getLatestByClusterName (request, response, next) {
       limit(10)
 
 
-    let applications = []
-    deployments.forEach(deployment => {
-      if (!_containsApplication(applications, deployment)) {
-        applications.push(deployment)
-      } else {
-        console.log(`Skipping ${deployment.application_name}.`)
-      }
-    })
-
-
     let result = []
-
-    if (applications) {
-      for (let i = 0; i < applications.length; i++) {
-
-        const application = toApplication(applications[i])
+    deployments.forEach(deployment => {
+      if (!_containsApplication(result, deployment)) {
+        const application = toApplication(deployment)
 
         if (application) {
           result.push(application)
         }
+
       }
-    }
+    })
+
     if (result.length > 0) {
       log.info(`Found deployments for '${request.params.clusterName}'`)
       response.json(result)
