@@ -74,16 +74,13 @@ function * getLatestByClusterName (request, response, next) {
       sort({ created: -1 }).
       limit(10)
 
-
     let result = []
     deployments.forEach(deployment => {
       if (!_containsApplication(result, deployment)) {
         const application = toApplication(deployment)
-
         if (application) {
           result.push(application)
         }
-
       }
     })
 
@@ -100,15 +97,13 @@ function * getLatestByClusterName (request, response, next) {
   }
 }
 
-function _containsApplication (applications, deployment) {
+function _containsApplication (results, deployment) {
   let found = false
-  applications.forEach(app => {
-    if (app.application_name === deployment.application_name) {
+  results.forEach(app => {
+    if (app.applicationName === deployment.application_name) {
       found = true
     }
   })
-
-  console.log(`${deployment.application_name} - ${found}.`)
   return found
 
 }
