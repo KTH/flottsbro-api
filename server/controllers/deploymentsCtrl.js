@@ -66,7 +66,6 @@ function * getLatestByClusterName (request, response, next) {
   log.debug(`Getting latest deployments for cluster '${request.params.clusterName}'.`)
 
   try {
-
     log.debug(`Collection name: '${Deployments.collection.collectionName}'`)
     log.debug(`Searching for applications in cluster '${request.params.clusterName}'.`)
 
@@ -75,12 +74,23 @@ function * getLatestByClusterName (request, response, next) {
       sort({ created: -1 }).
       limit(10)
 
+
+    let applications = []
+    deployments.forEach(deployment => {
+      if (!_containsApplication(applications, deployment)) {
+        applications.push(deployment)
+      } else {
+        console.log(`Skipping ${deployment.application_name}.`)
+      }
+    })
+
+
     let result = []
 
-    if (deployments) {
-      for (let i = 0; i < deployments.length; i++) {
+    if (applications) {
+      for (let i = 0; i < applications.length; i++) {
 
-        const application = toApplication(deployments[i])
+        const application = toApplication(applications[i])
 
         if (application) {
           result.push(application)
@@ -94,12 +104,23 @@ function * getLatestByClusterName (request, response, next) {
       log.info(`Found no deployments for '${request.params.clusterName}'`)
       response.status(404).json({ 'Message': `No deployed applications found in cluster '${request.params.clusterName}'.` })
     }
-
-
   } catch (err) {
     log.error(`Error while reading deployments for '${request.params.clusterName}'`, err)
     response.status(503).json({ 'Message': `Unexpected error when trying to read deployment data for cluster '${request.params.clusterName}'.` })
   }
+}
+
+function _containsApplication (applications, deployment) {
+  let found = false
+  applications.forEach(app => {
+    if (app.application_name === deployment.application_name) {
+      found = true
+    }
+  })
+
+  console.log(`${deployment.application_name} - ${found}.`)
+  return found
+
 }
 
 function toApplication (deployment) {
@@ -182,5 +203,3 @@ function toApplication (deployment) {
   return application
 
 }
-
-
