@@ -1,0 +1,18 @@
+version: '3'
+services:
+
+  web:
+    image: $LOCAL_IMAGE_ID
+    environment:
+      MONGODB_CONNECTION_STRING: mongodb://mongodb-teste:abc123@example.com:10255/mongodb?ssl=true
+      API_KEYS: ?name=refClient&apiKey=1234&scope=read&scope=write
+
+    volumes: 
+      - ./test:/application/test
+
+    ports:
+      - 3000
+
+    command: /bin/sh -c "npm install --development && npm test"
+    #tty: true
+    
