@@ -13,6 +13,8 @@ services:
     ports:
       - 3000
 
+    tty: true
+
     command: /bin/sh -c "npm install --development && npm test"
     #tty: true
     
