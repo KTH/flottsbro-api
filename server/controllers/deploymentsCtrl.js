@@ -108,7 +108,7 @@ function* getLatestByClusterName(request, response, next) {
       .sort({
         created: -1
       })
-      .limit(150);
+      .limit(100);
 
     let result = [];
     deployments.forEach(deployment => {
