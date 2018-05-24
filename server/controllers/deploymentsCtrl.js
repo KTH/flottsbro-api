@@ -145,13 +145,13 @@ function* getLatestByClusterName(request, response, next) {
 }
 
 function containsApplication(results, deployment) {
+  let found = false;
   results.forEach(app => {
-    console.log(`${(app.applicationName === deployment.application_name)} ${app.applicationName} - ${deployment.application_name}`)
     if (app.applicationName === deployment.application_name) {
-      return true;
+      found = true;
     }
   });
-  return false;
+  return found;
 }
 
 function toApplication(deployment) {
