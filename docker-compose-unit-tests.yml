@@ -16,5 +16,4 @@ services:
     tty: true
 
     command: /bin/sh -c "npm install --development && npm test"
-    #tty: true
     

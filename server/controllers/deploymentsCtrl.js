@@ -108,7 +108,7 @@ function* getLatestByClusterName(request, response, next) {
       .sort({
         created: -1
       })
-      .limit(1000);
+      .limit(200);
 
     console.log(deployments);
     let result = [];
