@@ -117,6 +117,7 @@ function* getLatestByClusterName(request, response, next) {
       { $group:  {
                   _id:              "$application_name",
                   created:          {$first: "$created"},
+                  application_name: {$first: "$application_name"},
                   service_file_md5: {$first: "$service_file_md5"},
                   cluster:          {$first: "$cluster"},
                   services:         {$first: "$services"}
@@ -127,7 +128,7 @@ function* getLatestByClusterName(request, response, next) {
 
     let result = [];
     deployments.forEach(deployment => {
-      log.info(`Deployment: '${deployment}'`);
+      log.debug(`Deployment: '${JSON.stringify(deployment)}'`);
       if (!containsApplication(result, deployment)) {
         const application = toApplication(deployment);
         if (application) {
