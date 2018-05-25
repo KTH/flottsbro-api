@@ -112,18 +112,18 @@ function* getLatestByClusterName(request, response, next) {
       .limit(150);*/
     
     let deployments = yield Deployments.aggregate([
-      {$match:  {"cluster.cluster_name": request.params.clusterName}},
-      {$sort:   {"created": -1}},
-      {$group:  {
+      { $match:  {"cluster.cluster_name": request.params.clusterName} },
+      { $sort:   {"created": -1} },
+      { $group:  {
+                  application_name: "$application_name",
                   created:          {$first: "$created"},
                   _id:              {$push: "$_id"},
                   service_file_md5: {$push: "$service_file_md5"},
-                  application_name: {$push: "$application_name"},
                   cluster:          {$push: "$cluster"},
                   services:         {$push: "$services"}
                 }
       },
-      {$limit:  150}
+      { $limit:  150 }
     ]);
 
     let result = [];
