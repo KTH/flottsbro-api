@@ -35,7 +35,7 @@ function* getLatestForApplication(request, response, next) {
       application_name: request.params.applicationName
     }).sort({
       created: -1
-    }).distinct('application_name');
+    })
 
     if (deployments) {
       for (let i = 0; i < deployments.length; i++) {
@@ -49,7 +49,7 @@ function* getLatestForApplication(request, response, next) {
             `Found deployment for '${request.params.applicationName}' in '${
               request.params.clusterName
             }'`
-          );
+          );k
           response.json(application);
           return;
         }
@@ -108,6 +108,7 @@ function* getLatestByClusterName(request, response, next) {
       .sort({
         created: -1
       })
+      .distinct('application_name')
       .limit(150);
 
     let result = [];
