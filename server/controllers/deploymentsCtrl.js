@@ -35,7 +35,7 @@ function* getLatestForApplication(request, response, next) {
       application_name: request.params.applicationName
     }).sort({
       created: -1
-    });
+    }).distinct('application_name');
 
     if (deployments) {
       for (let i = 0; i < deployments.length; i++) {
