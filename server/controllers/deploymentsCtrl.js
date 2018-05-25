@@ -127,7 +127,7 @@ function* getLatestByClusterName(request, response, next) {
 
     let result = [];
     deployments.forEach(deployment => {
-      log.debug(`Deployment: '${deployments}'`);
+      log.debug(`Deployment: '${deployment}'`);
       if (!containsApplication(result, deployment)) {
         const application = toApplication(deployment);
         if (application) {
