@@ -127,7 +127,7 @@ function* getLatestByClusterName(request, response, next) {
 
     let result = [];
     deployments.forEach(deployment => {
-      log.debug(`Deployment: '${deployment}'`);
+      log.info(`Deployment: '${deployment}'`);
       if (!containsApplication(result, deployment)) {
         const application = toApplication(deployment);
         if (application) {
@@ -137,7 +137,7 @@ function* getLatestByClusterName(request, response, next) {
     });
 
     if (result.length > 0) {
-      log.info(`Found deployments for '${request.params.clusterName}'`);
+      log.info(`Found ${result.length} deployments for '${request.params.clusterName}'`);
       response.json(result);
     } else {
       log.info(`Found no deployments for '${request.params.clusterName}'`);
