@@ -115,13 +115,14 @@ function* getLatestByClusterName(request, response, next) {
       {$match:  {"cluster.cluster_name": request.params.clusterName}},
       {$sort:   {"created": -1}},
       {$group:  {
-                  "created": {$first: "$created"},
-                  "_id": {$push: "$_id"},
-                  "service_file_md5": {$push: "$service_file_md5"},
-                  "application_name": {$push: "$application_name"},
-                  "cluster": {$push: "$cluster"},
-                  "services": {$push: "$services"}
-                }},
+                  created:          {$first: "$created"},
+                  _id:              {$push: "$_id"},
+                  service_file_md5: {$push: "$service_file_md5"},
+                  application_name: {$push: "$application_name"},
+                  cluster:          {$push: "$cluster"},
+                  services:         {$push: "$services"}
+                }
+      },
       {$limit:  150}
     ]);
 
