@@ -115,14 +115,19 @@ function* getLatestByClusterName(request, response, next) {
       {$match:  {"cluster.cluster_name": request.params.clusterName}},
       {$sort:   {"created": -1}},
       {$group:  {
-                  "_id":"$application_name",
-                  "lastDeployment": {$first: "$created"}
+                  "created": {$first: "$created"},
+                  "_id": {$push: "$_id"},
+                  "service_file_md5": {$push: "$service_file_md5"},
+                  "application_name": {$push: "$application_name"},
+                  "cluster": {$push: "$cluster"},
+                  "services": {$push: "$services"}
                 }},
       {$limit:  150}
-    ])
+    ]);
 
     let result = [];
     deployments.forEach(deployment => {
+      log.debug(`Deployment: '${deployments}'`);
       if (!containsApplication(result, deployment)) {
         const application = toApplication(deployment);
         if (application) {
