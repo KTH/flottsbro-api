@@ -35,7 +35,7 @@ function* getLatestForApplication(request, response, next) {
       application_name: request.params.applicationName
     }).sort({
       created: -1
-    })
+    });
 
     if (deployments) {
       for (let i = 0; i < deployments.length; i++) {
@@ -49,7 +49,8 @@ function* getLatestForApplication(request, response, next) {
             `Found deployment for '${request.params.applicationName}' in '${
               request.params.clusterName
             }'`
-          );k
+          );
+          k;
           response.json(application);
           return;
         }
@@ -110,20 +111,21 @@ function* getLatestByClusterName(request, response, next) {
       })
       .distinct('application_name')
       .limit(150);*/
-    
+
     let deployments = yield Deployments.aggregate([
-      { $match:  {"cluster.cluster_name": request.params.clusterName} },
-      { $sort:   {"created": -1} },
-      { $group:  {
-                  _id:              "$application_name",
-                  created:          {$first: "$created"},
-                  application_name: {$first: "$application_name"},
-                  service_file_md5: {$first: "$service_file_md5"},
-                  cluster:          {$first: "$cluster"},
-                  services:         {$first: "$services"}
-                }
+      { $match: { "cluster.cluster_name": request.params.clusterName } },
+      { $sort: { created: -1 } },
+      {
+        $group: {
+          _id: "$application_name",
+          created: { $first: "$created" },
+          application_name: { $first: "$application_name" },
+          service_file_md5: { $first: "$service_file_md5" },
+          cluster: { $first: "$cluster" },
+          services: { $first: "$services" }
+        }
       },
-      { $limit:  150 }
+      { $limit: 150 }
     ]);
 
     let result = [];
@@ -138,7 +140,9 @@ function* getLatestByClusterName(request, response, next) {
     });
 
     if (result.length > 0) {
-      log.info(`Found ${result.length} deployments for '${request.params.clusterName}'`);
+      log.info(
+        `Found ${result.length} deployments for '${request.params.clusterName}'`
+      );
       response.json(result);
     } else {
       log.info(`Found no deployments for '${request.params.clusterName}'`);
@@ -173,6 +177,10 @@ function containsApplication(results, deployment) {
 
 function toApplication(deployment) {
   let application = {};
+
+  if (!deployment.created) {
+    return null;
+  }
 
   // Set application
   application.applicationName = deployment.application_name;
