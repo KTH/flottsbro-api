@@ -102,14 +102,24 @@ function* getLatestByClusterName(request, response, next) {
       `Searching for applications in cluster '${request.params.clusterName}'.`
     );
 
-    let deployments = yield Deployments.find()
+    /*let deployments = yield Deployments.find()
       .where("cluster.cluster_name")
       .equals(request.params.clusterName)
       .sort({
         created: -1
       })
       .distinct('application_name')
-      .limit(150);
+      .limit(150);*/
+    
+    let deployments = yield Deployments.aggregate([
+      {$match:  {"cluster.cluster_name": request.params.clusterName}},
+      {$sort:   {"created": -1}},
+      {$group:  {
+                  "_id":"$application_name",
+                  "lastDeployment": {$first: "$created"}
+                }},
+      {$limit:  150}
+    ])
 
     let result = [];
     deployments.forEach(deployment => {
