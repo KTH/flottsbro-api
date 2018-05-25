@@ -117,10 +117,10 @@ function* getLatestByClusterName(request, response, next) {
       { $group:  {
                   application_name: "$application_name",
                   created:          {$first: "$created"},
-                  _id:              {$push: "$_id"},
-                  service_file_md5: {$push: "$service_file_md5"},
-                  cluster:          {$push: "$cluster"},
-                  services:         {$push: "$services"}
+                  _id:              "$_id",
+                  service_file_md5: "$service_file_md5",
+                  cluster:          "$cluster",
+                  services:         "$services"
                 }
       },
       { $limit:  150 }
