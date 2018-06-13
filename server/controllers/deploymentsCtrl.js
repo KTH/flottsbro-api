@@ -254,6 +254,7 @@ function toApplication(deployment) {
       let channels = label.value;
       channels = channels.replace("-build", "");
       channels = channels.replace("#pipeline-logs", "");
+      channels = channels.replace(",", " ");
 
       application.slackChannels = channels;
     }
