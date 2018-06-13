@@ -112,20 +112,39 @@ function* getLatestByClusterName(request, response, next) {
       .distinct('application_name')
       .limit(150);*/
 
-    let deployments = yield Deployments.aggregate([
-      { $match: { "cluster.cluster_name": request.params.clusterName } },
-      { $sort: { created: -1 } },
+    let deployments = yield Deployments.aggregate([{
+        $match: {
+          "cluster.cluster_name": request.params.clusterName
+        }
+      },
+      {
+        $sort: {
+          created: -1
+        }
+      },
       {
         $group: {
           _id: "$application_name",
-          created: { $first: "$created" },
-          application_name: { $first: "$application_name" },
-          service_file_md5: { $first: "$service_file_md5" },
-          cluster: { $first: "$cluster" },
-          services: { $first: "$services" }
+          created: {
+            $first: "$created"
+          },
+          application_name: {
+            $first: "$application_name"
+          },
+          service_file_md5: {
+            $first: "$service_file_md5"
+          },
+          cluster: {
+            $first: "$cluster"
+          },
+          services: {
+            $first: "$services"
+          }
         }
       },
-      { $limit: 100 }
+      {
+        $limit: 50
+      }
     ]);
 
     let result = [];
@@ -182,6 +201,11 @@ function toApplication(deployment) {
     return null;
   }
 
+  // old application not used
+  if (deployment.application_name == "lms-sync") {
+    return null;
+  }
+
   // Set application
   application.applicationName = deployment.application_name;
 
@@ -227,7 +251,11 @@ function toApplication(deployment) {
     }
 
     if (label.label === "se.kth.slackChannels") {
-      application.slackChannels = label.value;
+      let channels = label.value;
+      channels = channels.replace("-build", "");
+      channels = channels.replace("#pipeline-logs", "");
+
+      application.slackChannels = channels;
     }
 
     if (label.label === "se.kth.monitorUrl") {
