@@ -125,7 +125,7 @@ function* getLatestByClusterName(request, response, next) {
           services: { $first: "$services" }
         }
       },
-      { $limit: 150 }
+      { $limit: 100 }
     ]);
 
     let result = [];
