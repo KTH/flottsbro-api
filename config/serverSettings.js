@@ -1,4 +1,6 @@
-const { safeGet } = require('safe-utils')
+const {
+  safeGet
+} = require('safe-utils')
 const {
   getEnv,
   unpackMongodbConfig,
@@ -22,4 +24,3 @@ module.exports = {
     }
   }
 }
-

@@ -50,7 +50,6 @@ function* getLatestForApplication(request, response, next) {
               request.params.clusterName
             }'`
           );
-          k;
           response.json(application);
           return;
         }
@@ -112,7 +111,8 @@ function* getLatestByClusterName(request, response, next) {
       .distinct('application_name')
       .limit(150);*/
 
-    let deployments = yield Deployments.aggregate([{
+    let deployments = yield Deployments.aggregate([
+      {
         $match: {
           "cluster.cluster_name": request.params.clusterName
         }
@@ -196,6 +196,8 @@ function containsApplication(results, deployment) {
 
 function toApplication(deployment) {
   let application = {};
+
+  console.log(JSON.stringify(deployment));
 
   if (!deployment.created) {
     return null;
