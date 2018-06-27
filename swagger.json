@@ -122,6 +122,51 @@
           ]
         }
       }
+    },
+    "/v1/search/{clusterName}/{monitorUrl}": {
+      "get": {
+        "operationId": "getLatestByMonitorUrl",
+        "summary": "Gets the latest deployment matching a URL encoded monitor url.",
+        "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
+        "parameters": [
+          {
+            "name": "clusterName",
+            "in": "path",
+            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "monitorUrl",
+            "in": "path",
+            "description": "Full url to health check apge (_monitor)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "v1"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested data",
+            "schema": {
+              "$ref": "#/definitions/Data"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": {
+          "api_key": [
+            "read"
+          ]
+        }
+      }
     }
   },
   "securityDefinitions": {

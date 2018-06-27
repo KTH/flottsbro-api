@@ -6,8 +6,124 @@ const log = require("kth-node-log");
 
 module.exports = {
   getLatestForApplication: co.wrap(getLatestForApplication),
-  getLatestByClusterName: co.wrap(getLatestByClusterName)
+  getLatestByClusterName: co.wrap(getLatestByClusterName),
+  getLatestByMonitorUrl: co.wrap(getLatestByMonitorUrl)
 };
+
+
+
+/**
+ * Gets the latest deployment for an application in a specified cluster
+ * @param {*} request
+ * @param {*} response
+ * @param {*} next
+ */
+function* getLatestByMonitorUrl(request, response, next) {
+  log.debug(
+    `Getting latest deployment for cluster by monitor url '${
+      request.params.clusterName
+    }' and monitor  url '${request.params.monitorUrl}'.`
+  );
+}
+
+
+/**
+ * Gets the latest deployments as an array for a specified cluster name.
+ * @param {*} request
+ * @param {*} response
+ * @param {*} next
+ */
+function* getLatestByClusterName(request, response, next) {
+  log.debug(
+    `Getting latest deployments for cluster '${request.params.clusterName}'.`
+  );
+
+  try {
+    log.debug(`Collection name: '${Deployments.collection.collectionName}'`);
+    log.debug(
+      `Searching for applications in cluster '${request.params.clusterName}'.`
+    );
+
+    /*let deployments = yield Deployments.find()
+      .where("cluster.cluster_name")
+      .equals(request.params.clusterName)
+      .sort({
+        created: -1
+      })
+      .distinct('application_name')
+      .limit(150);*/
+
+    let deployments = yield Deployments.aggregate([{
+        $match: {
+          "cluster.cluster_name": request.params.clusterName
+        }
+      },
+      {
+        $sort: {
+          created: -1
+        }
+      },
+      {
+        $group: {
+          _id: "$application_name",
+          created: {
+            $first: "$created"
+          },
+          application_name: {
+            $first: "$application_name"
+          },
+          service_file_md5: {
+            $first: "$service_file_md5"
+          },
+          cluster: {
+            $first: "$cluster"
+          },
+          services: {
+            $first: "$services"
+          }
+        }
+      },
+      {
+        $limit: 50
+      }
+    ]);
+
+    let result = [];
+    deployments.forEach(deployment => {
+      log.debug(`Deployment: '${JSON.stringify(deployment)}'`);
+      if (!containsApplication(result, deployment)) {
+        const application = toApplication(deployment);
+        if (application) {
+          result.push(application);
+        }
+      }
+    });
+
+    if (result.length > 0) {
+      log.info(
+        `Found ${result.length} deployments for '${request.params.clusterName}'`
+      );
+      response.json(result);
+    } else {
+      log.info(`Found no deployments for '${request.params.clusterName}'`);
+      response.status(404).json({
+        Message: `No deployed applications found in cluster '${
+          request.params.clusterName
+        }'.`
+      });
+    }
+  } catch (err) {
+    log.error(
+      `Error while reading deployments for '${request.params.clusterName}'`,
+      err
+    );
+    response.status(503).json({
+      Message: `Unexpected error when trying to read deployment data for cluster '${
+        request.params.clusterName
+      }'.`
+    });
+  }
+}
 
 /**
  * Gets the latest deployment for an application in a specified cluster
@@ -111,8 +227,7 @@ function* getLatestByClusterName(request, response, next) {
       .distinct('application_name')
       .limit(150);*/
 
-    let deployments = yield Deployments.aggregate([
-      {
+    let deployments = yield Deployments.aggregate([{
         $match: {
           "cluster.cluster_name": request.params.clusterName
         }

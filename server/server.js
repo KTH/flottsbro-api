@@ -62,7 +62,9 @@ server.set('case sensitive routing', true)
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 server.use(bodyParser.json())
-server.use(bodyParser.urlencoded({ extended: true }))
+server.use(bodyParser.urlencoded({
+  extended: true
+}))
 server.use(cookieParser())
 
 /** *****************************
@@ -93,7 +95,9 @@ const {
   errorHandler
 } = require('kth-node-api-common')
 const swaggerData = require('../swagger.json')
-const { System } = require('./controllers')
+const {
+  System
+} = require('./controllers')
 
 // System pages routes
 const systemRoute = AppRouter()
@@ -143,10 +147,14 @@ addPaths(
 )
 
 // Middleware to protect enpoints with apiKey
-const authByApiKey = passport.authenticate('apikey', { session: false })
+const authByApiKey = passport.authenticate('apikey', {
+  session: false
+})
 
 // Application specific API enpoints
-const { Deployments } = require('./controllers')
+const {
+  Deployments
+} = require('./controllers')
 const ApiRouter = require('kth-node-express-routing').ApiRouter
 const apiRoute = ApiRouter(authByApiKey)
 const paths = getPaths()
@@ -161,6 +169,10 @@ apiRoute.register(
 apiRoute.register(
   paths.api.getLatestForApplication,
   Deployments.getLatestForApplication
+)
+apiRoute.register(
+  paths.api.getLatestByMonitorUrl,
+  Deployments.getLatestByMonitorUrl
 )
 server.use('/', apiRoute.getRouter())
 
