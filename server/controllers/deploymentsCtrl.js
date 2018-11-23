@@ -378,6 +378,14 @@ function toApplication(deployment) {
 
     if (label.label === "se.kth.monitorUrl") {
       application.monitorUrl = label.value;
+
+      // ignore old applications 
+      if ("application.monitorUrl".includes("test")) {
+        return null;
+      }
+      if ("application.monitorUrl".includes("/kopps2/")) {
+        return null;
+      }
     }
 
     if (label.label === "se.kth.publicName.swedish") {
