@@ -312,8 +312,6 @@ function containsApplication(results, deployment) {
 function toApplication(deployment) {
   let application = {};
 
-  console.log(JSON.stringify(deployment));
-
   if (!deployment.created) {
     return null;
   }
