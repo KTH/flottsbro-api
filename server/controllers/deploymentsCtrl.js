@@ -316,15 +316,17 @@ function toApplication(deployment) {
     return null;
   }
 
-  // old application not used
-  if (deployment.application_name == "lms-sync") {
-    return null;
-  }
 
   // Set application
   application.applicationName = deployment.application_name;
 
   application.created = deployment.created;
+
+  // Ignore old KOPPS
+  if (application.created.toString() == "1539870667.778536") {
+    return null;
+  }
+
   application.clusterName = deployment.cluster.cluster_name;
 
   // Set version
@@ -376,14 +378,6 @@ function toApplication(deployment) {
 
     if (label.label === "se.kth.monitorUrl") {
       application.monitorUrl = label.value;
-
-      // ignore old applications 
-      if ("application.monitorUrl".includes("test")) {
-        return null;
-      }
-      if ("application.monitorUrl".includes("/kopps2/")) {
-        return null;
-      }
     }
 
     if (label.label === "se.kth.publicName.swedish") {
@@ -403,5 +397,22 @@ function toApplication(deployment) {
     }
   }
 
+  // ignore old application deployments by pattern
+  if (application.applicationName == "lms-sync") {
+    return null;
+  }
+  if (application.created.toString() == "1539870667.778536") {
+    return null;
+  }
+
+  if (application.monitorUrl != undefined) {
+    if (application.monitorUrl.includes("test")) {
+      return null;
+    }
+    if (application.monitorUrl.includes("/kopps2/")) {
+      return null;
+    }
+
+  }
   return application;
 }
