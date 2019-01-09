@@ -123,7 +123,8 @@
         }
       }
     },
-    "/v1/search/{clusterName}/{monitorUrl}": {
+    
+    "/v1/search/{clusterName}/{path}": {
       "get": {
         "operationId": "getLatestByMonitorUrl",
         "summary": "Gets the latest deployment matching a URL encoded monitor url.",
@@ -137,9 +138,9 @@
             "type": "string"
           },
           {
-            "name": "monitorUrl",
+            "name": "path",
             "in": "path",
-            "description": "Full url to health check apge (_monitor)",
+            "description": "Prefix string in query. Like '/news', or '/search'.",
             "required": true,
             "type": "string"
           }

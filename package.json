@@ -9,7 +9,7 @@
     "codecheck": "standard",
     "test": "mocha test/**/*.js",
     "start": "NODE_ENV=production node app.js",
-    "start-dev": "NODE_ENV=development nodemon app.js"
+    "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js"
   },
   "dependencies": {
     "bluebird": "^3.5.3",
