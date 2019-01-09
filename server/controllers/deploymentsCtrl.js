@@ -19,14 +19,16 @@ module.exports = {
 function* getLatestByMonitorUrl(request, response, next) {
 
   let result = undefined;
+  let searchPath = decodeURIComponent(request.params.path)
 
-  log.debug(`Getting latest deployment for cluster by monitor url '${request.params.clusterName}' and monitor  url '${request.params.monitorUrl}'.`);
+  log.debug(`Getting application in '${request.params.clusterName}' matching path '${request.params.path}'.`);
 
   let applications = yield getLatestByClusterNameFromDatabase(request.params.clusterName)
 
   applications.forEach(application => {
     if (application.path && application.path != "/") {
-      if (application.path.startsWith(decodeURIComponent(request.params.path))) {
+      if (searchPath.startsWith(application.path)) {
+        log.info(`${decodeURIComponent(request.params.path)}' starts with ${application.path}, used by ${application.applicationName}.`);
         result = application;
         return;
       }
@@ -124,17 +126,19 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
     result = [];
 
     deployments.forEach(deployment => {
-      log.debug(`Deployment: '${JSON.stringify(deployment)}'`);
       if (!containsApplication(result, deployment)) {
         const application = toApplication(deployment);
         if (application) {
+          log.debug(`Added application '${application.applicationName}' to list.`);
           result.push(application);
         }
       }
     });
 
+    log.info(`Found ${result.length} applications deployed in '${clusterName}'.`);
+
   } catch (err) {
-    log.error(`Error while reading deployments for '${clusterName}'`, err);
+    log.error(`Error while reading deployments for '${clusterName}'.`, err);
   }
 
   return result;
@@ -329,5 +333,6 @@ function toApplication(deployment) {
     }
 
   }
+
   return application;
 }
