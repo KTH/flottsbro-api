@@ -28,7 +28,7 @@ function* getLatestByMonitorUrl(request, response, next) {
   applications.forEach(application => {
     if (application.path && application.path != "/") {
       if (searchPath.startsWith(application.path)) {
-        log.info(`${decodeURIComponent(request.params.path)}' starts with ${application.path}, used by ${application.applicationName}.`);
+        log.info(`'${searchPath}' starts with '${application.path}', used by '${application.applicationName}'.`);
         result = application;
         return;
       }
@@ -39,7 +39,7 @@ function* getLatestByMonitorUrl(request, response, next) {
     response.json(result);
   } else {
     response.status(404).json({
-      Message: `No deployed applications found in cluster '${request.params.clusterName}' starting with path '${request.params.path}'.`
+      Message: `No deployed applications found in cluster '${request.params.clusterName}' starting with path '${searchPath}'.`
     });
   }
 }
@@ -203,7 +203,7 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
         const application = toApplication(deployments[i]);
 
         if (application) {
-          log.info(`Found deployment for '${applicationName}' in '${clusterName}'`);
+          log.info(`Found deployment for '${applicationName}:${application.version}' in '${clusterName}'`);
           result = application;
           break;
         }
