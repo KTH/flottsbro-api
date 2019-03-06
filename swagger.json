@@ -42,8 +42,8 @@
     },
     "/v1/latest/{clusterName}/{applicationName}/": {
       "get": {
-        "operationId": "getLatestForApplication",
-        "summary": "Gets latest deployments for an application in a cluster.",
+        "operationId": "getLatestForApplicationName",
+        "summary": "Gets latest deployments for an application name in a cluster.",
         "description": "Gets the latest deployment inforamtion about a applications in a specific cluster .",
         "parameters": [
           {

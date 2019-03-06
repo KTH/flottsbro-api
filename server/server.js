@@ -167,8 +167,8 @@ apiRoute.register(
   Deployments.getLatestByClusterName
 )
 apiRoute.register(
-  paths.api.getLatestForApplication,
-  Deployments.getLatestForApplication
+  paths.api.getLatestForApplicationName,
+  Deployments.getLatestForApplicationName
 )
 apiRoute.register(
   paths.api.getLatestByMonitorUrl,

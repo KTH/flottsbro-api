@@ -5,7 +5,7 @@ const co = require("co");
 const log = require("kth-node-log");
 
 module.exports = {
-  getLatestForApplication: co.wrap(getLatestForApplication),
+  getLatestForApplicationName: co.wrap(getLatestForApplicationName),
   getLatestByClusterName: co.wrap(getLatestByClusterName),
   getLatestByMonitorUrl: co.wrap(getLatestByMonitorUrl)
 };
@@ -23,13 +23,13 @@ function* getLatestByMonitorUrl(request, response, next) {
 
   log.debug(`Getting application in '${request.params.clusterName}' matching path '${request.params.path}'.`);
 
-  let applications = yield getLatestByClusterNameFromDatabase(request.params.clusterName)
+  let deployments = yield getLatestByClusterNameFromDatabase(request.params.clusterName)
 
-  applications.forEach(application => {
-    if (application.path && application.path != "/") {
-      if (searchPath.startsWith(application.path)) {
-        log.info(`'${searchPath}' starts with '${application.path}', used by '${application.applicationName}'.`);
-        result = application;
+  deployments.forEach(deployment => {
+    if (deployment.path && deployment.path != "/") {
+      if (searchPath.startsWith(deployment.path)) {
+        log.info(`'${searchPath}' starts with '${deployment.path}', used by '${deployment.applicationName}'.`);
+        result = deployment;
         return;
       }
     }
@@ -56,18 +56,18 @@ function* getLatestByClusterName(request, response, next) {
   log.debug(`Collection name: '${Deployments.collection.collectionName}'`);
   log.debug(`Searching for applications in cluster '${request.params.clusterName}'.`);
 
-  let applications = yield getLatestByClusterNameFromDatabase(request.params.clusterName)
+  let deployments = yield getLatestByClusterNameFromDatabase(request.params.clusterName)
 
-  if (applications == undefined) {
+  if (deployments == undefined) {
     response.status(503).json({
-      Message: `Unexpected error when trying to read deployment data for cluster '${request.params.clusterName}'.`
+      Message: `503 - Unexpected error when trying to read deployment data for cluster '${request.params.clusterName}'.`
     });
     return;
 
   }
 
-  if (applications.length > 0) {
-    response.json(applications);
+  if (deployments.length > 0) {
+    response.json(deployments);
     return;
   }
 
@@ -90,7 +90,7 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   try {
     let deployments = yield Deployments.aggregate([{
         $match: {
-          "cluster.cluster_name": clusterName
+          "cluster": clusterName
         }
       },
       {
@@ -100,21 +100,57 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
       },
       {
         $group: {
-          _id: "$application_name",
+          _id: "$applicationName",
           created: {
             $first: "$created"
           },
-          application_name: {
-            $first: "$application_name"
-          },
-          service_file_md5: {
-            $first: "$service_file_md5"
+          applicationName: {
+            $first: "$applicationName"
           },
           cluster: {
             $first: "$cluster"
           },
-          services: {
-            $first: "$services"
+          version: {
+            $first: "$version"
+          },
+          imageName: {
+            $first: "$imageName"
+          },
+          applicationUrl: {
+            $first: "$applicationUrl"
+          },
+          monitorUrl: {
+            $first: "$monitorUrl"
+          },
+          monitorPattern: {
+            $first: "$monitorPattern"
+          },
+          importance: {
+            $first: "$importance"
+          },
+          monitorPattern: {
+            $first: "$monitorPattern"
+          },
+          publicNameSwedish: {
+            $first: "$publicNameSwedish"
+          },
+          publicNameEnglish: {
+            $first: "$publicNameEnglish"
+          },
+          descriptionSwedish: {
+            $first: "$descriptionSwedish"
+          },
+          descriptionEnglish: {
+            $first: "$descriptionEnglish"
+          },
+          team: {
+            $first: "$team"
+          },
+          applicationUrl: {
+            $first: "$applicationUrl"
+          },
+          friendlyName: {
+            $first: "$friendlyName"
           }
         }
       },
@@ -126,13 +162,7 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
     result = [];
 
     deployments.forEach(deployment => {
-      if (!containsApplication(result, deployment)) {
-        const application = toApplication(deployment);
-        if (application) {
-          log.debug(`Added application '${application.applicationName}' to list.`);
-          result.push(application);
-        }
-      }
+      result.push(deployment);
     });
 
     log.info(`Found ${result.length} applications deployed in '${clusterName}'.`);
@@ -151,29 +181,29 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
  * @param {*} response
  * @param {*} next
  */
-function* getLatestForApplication(request, response, next) {
+function* getLatestForApplicationName(request, response, next) {
 
   log.debug(`Getting latest deployments for cluster '${request.params.clusterName}' and application '${request.params.applicationName}'.`);
   log.debug(`Collection name: '${Deployments.collection.collectionName}'`);
   log.debug(`Searching for '${request.params.applicationName}' in cluster '${request.params.clusterName}'.`);
 
-  let application = yield getLatestForApplicationFromDatabase(request.params.clusterName, request.params.applicationName);
+  let deployment = yield getLatestForApplicationFromDatabase(request.params.clusterName, request.params.applicationName);
 
-  if (application == undefined) {
+  if (deployment == undefined) {
     response.status(503).json({
-      Message: `Unexpected error when trying to read deployment data for cluster '${request.params.clusterName}' and application '${request.params.clusterName}'.`
+      Message: `503 - Unexpected error when trying to read deployment data for cluster '${request.params.clusterName}' and application '${request.params.clusterName}'.`
     });
     return;
   }
 
-  if (application == "") {
+  if (deployment == "") {
     response.status(404).json({
       Message: `No application '${request.params.applicationName}' found in cluster '${request.params.clusterName}'.`
     });
     return;
   }
 
-  response.json(application)
+  response.json(deployment)
 
 }
 
@@ -189,25 +219,32 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
 
   try {
 
-    let deployments = yield Deployments.find({
-      "cluster.cluster_name": clusterName,
-      application_name: applicationName
-    }).sort({
-      created: -1
-    });
+    let deployment = yield Deployments.aggregate([{
+        $match: {
+          "applicationName": applicationName
+        }
+      },
+      {
+        $sort: {
+          created: -1
+        }
+      },
+      {
+        $group: {
+          _id: "$applicationName"
+        }
+      },
+      {
+        $limit: 1
+      }
+    ]);
 
+
+    log.info(`Found deployment for '${applicationName}:${deployment.version}' in '${clusterName}'`);
     result = "";
 
-    if (deployments) {
-      for (let i = 0; i < deployments.length; i++) {
-        const application = toApplication(deployments[i]);
-
-        if (application) {
-          log.info(`Found deployment for '${applicationName}:${application.version}' in '${clusterName}'`);
-          result = application;
-          break;
-        }
-      }
+    if (deployment) {
+      result = deployment
     }
 
   } catch (err) {
@@ -226,113 +263,4 @@ function containsApplication(results, deployment) {
     }
   });
   return found;
-}
-
-function toApplication(deployment) {
-  let application = {};
-
-  if (!deployment.created) {
-    return null;
-  }
-
-
-  // Set application
-  application.applicationName = deployment.application_name;
-
-  application.created = deployment.created;
-
-  // Ignore old KOPPS
-  if (application.created.toString() == "1539870667.778536") {
-    return null;
-  }
-
-  application.clusterName = deployment.cluster.cluster_name;
-
-  // Set version
-  const image = deployment.services[0].image;
-
-  if (image.semver_version) {
-    application.version = image.semver_version;
-  } else {
-    application.version = image.static_version;
-  }
-
-  // Set deployment labels
-  const deploy_labels = deployment.services[0].deploy_labels;
-
-  for (let i = 0; i < deploy_labels.length; i++) {
-    const deploy_label = deploy_labels[i];
-
-    if (deploy_label.label === "com.df.servicePath") {
-      application.path = deploy_label.value;
-    }
-
-    if (deploy_label.label === "com.df.servicePath") {
-      if (application.applicationName === "tamarack") {
-        application.path = "/";
-      } else {
-        application.path = deploy_label.value;
-      }
-    }
-  }
-
-  // Set labels
-  const labels = deployment.services[0].labels;
-
-  for (let i = 0; i < labels.length; i++) {
-    const label = labels[i];
-
-    if (label.label === "se.kth.importance") {
-      application.importance = label.value;
-    }
-
-    if (label.label === "se.kth.slackChannels") {
-      let channels = label.value;
-      channels = channels.replace("-build", "");
-      channels = channels.replace("#pipeline-logs", "");
-      channels = channels.replace(",", " ");
-
-      application.slackChannels = channels;
-    }
-
-    if (label.label === "se.kth.monitorUrl") {
-      application.monitorUrl = label.value;
-    }
-
-    if (label.label === "se.kth.publicName.swedish") {
-      application.publicNameSwedish = label.value;
-    }
-
-    if (label.label === "se.kth.publicName.english") {
-      application.publicNameEnglish = label.value;
-    }
-
-    if (label.label === "se.kth.description.swedish") {
-      application.descriptionSwedish = label.value;
-    }
-
-    if (label.label === "se.kth.description.english") {
-      application.descriptionEnglish = label.value;
-    }
-  }
-
-  // ignore old application deployments by pattern
-  if (application.applicationName == "lms-sync") {
-    return null;
-  }
-  if (application.created.toString() == "1539870667.778536") {
-    return null;
-  }
-
-  if (application.monitorUrl != undefined) {
-    if (application.monitorUrl.includes("test")) {
-      return null;
-    }
-    if (application.monitorUrl.includes("/kopps2/")) {
-      return null;
-    }
-
-  }
-
-  return application;
 }
