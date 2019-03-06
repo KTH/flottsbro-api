@@ -18,7 +18,8 @@ const schema = mongoose.Schema({
     "descriptionEnglish": String,
     "team": String,
     "applicationUrl": String,
-    "friendlyName": String
+    "friendlyName": String,
+    "applicationPath": String
   }
 
 )

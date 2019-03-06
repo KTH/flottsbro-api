@@ -126,7 +126,7 @@
     
     "/v1/search/{clusterName}/{path}": {
       "get": {
-        "operationId": "getLatestByMonitorUrl",
+        "operationId": "getLatestBySearch",
         "summary": "Gets the latest deployment matching a URL encoded monitor url.",
         "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
         "parameters": [

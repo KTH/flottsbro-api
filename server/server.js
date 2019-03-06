@@ -171,8 +171,8 @@ apiRoute.register(
   Deployments.getLatestForApplicationName
 )
 apiRoute.register(
-  paths.api.getLatestByMonitorUrl,
-  Deployments.getLatestByMonitorUrl
+  paths.api.getLatestBySearch,
+  Deployments.getLatestBySearch
 )
 server.use('/', apiRoute.getRouter())
 

@@ -7,7 +7,7 @@ const log = require("kth-node-log");
 module.exports = {
   getLatestForApplicationName: co.wrap(getLatestForApplicationName),
   getLatestByClusterName: co.wrap(getLatestByClusterName),
-  getLatestByMonitorUrl: co.wrap(getLatestByMonitorUrl)
+  getLatestBySearch: co.wrap(getLatestBySearch)
 };
 
 /**
@@ -16,7 +16,7 @@ module.exports = {
  * @param {*} response
  * @param {*} next
  */
-function* getLatestByMonitorUrl(request, response, next) {
+function* getLatestBySearch(request, response, next) {
 
   let result = undefined;
   let searchPath = decodeURIComponent(request.params.path)
@@ -26,9 +26,9 @@ function* getLatestByMonitorUrl(request, response, next) {
   let deployments = yield getLatestByClusterNameFromDatabase(request.params.clusterName)
 
   deployments.forEach(deployment => {
-    if (deployment.path && deployment.path != "/") {
-      if (searchPath.startsWith(deployment.path)) {
-        log.info(`'${searchPath}' starts with '${deployment.path}', used by '${deployment.applicationName}'.`);
+    if (deployment.applicationPath && deployment.applicationPath != "/") {
+      if (searchPath.startsWith(deployment.applicationPath)) {
+        log.info(`'${searchPath}' starts with '${deployment.applicationPath}', used by '${deployment.applicationName}'.`);
         result = deployment;
         return;
       }
@@ -118,6 +118,9 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
           },
           applicationUrl: {
             $first: "$applicationUrl"
+          },
+          applicationPath: {
+            $first: "$applicationPath"
           },
           monitorUrl: {
             $first: "$monitorUrl"
@@ -231,8 +234,63 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
       },
       {
         $group: {
-          _id: "$applicationName"
+          _id: "$applicationName",
+          created: {
+            $first: "$created"
+          },
+          applicationName: {
+            $first: "$applicationName"
+          },
+          cluster: {
+            $first: "$cluster"
+          },
+          version: {
+            $first: "$version"
+          },
+          imageName: {
+            $first: "$imageName"
+          },
+          applicationUrl: {
+            $first: "$applicationUrl"
+          },
+          applicationPath: {
+            $first: "$applicationPath"
+          },
+          monitorUrl: {
+            $first: "$monitorUrl"
+          },
+          monitorPattern: {
+            $first: "$monitorPattern"
+          },
+          importance: {
+            $first: "$importance"
+          },
+          monitorPattern: {
+            $first: "$monitorPattern"
+          },
+          publicNameSwedish: {
+            $first: "$publicNameSwedish"
+          },
+          publicNameEnglish: {
+            $first: "$publicNameEnglish"
+          },
+          descriptionSwedish: {
+            $first: "$descriptionSwedish"
+          },
+          descriptionEnglish: {
+            $first: "$descriptionEnglish"
+          },
+          team: {
+            $first: "$team"
+          },
+          applicationUrl: {
+            $first: "$applicationUrl"
+          },
+          friendlyName: {
+            $first: "$friendlyName"
+          }
         }
+
       },
       {
         $limit: 1
