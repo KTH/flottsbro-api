@@ -224,7 +224,8 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
 
     let deployment = yield Deployments.aggregate([{
         $match: {
-          "applicationName": applicationName
+          "applicationName": applicationName,
+          "cluster": clusterName
         }
       },
       {
