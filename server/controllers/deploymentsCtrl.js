@@ -122,6 +122,9 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
           applicationPath: {
             $first: "$applicationPath"
           },
+          aboutUrl: {
+            $first: "$aboutUrl"
+          },
           monitorUrl: {
             $first: "$monitorUrl"
           },
@@ -256,6 +259,9 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
           },
           applicationPath: {
             $first: "$applicationPath"
+          },
+          aboutUrl: {
+            $first: "$aboutUrl"
           },
           monitorUrl: {
             $first: "$monitorUrl"
