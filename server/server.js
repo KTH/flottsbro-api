@@ -163,6 +163,11 @@ const paths = getPaths()
 apiRoute.register(paths.api.checkAPIkey, System.checkAPIKey)
 
 apiRoute.register(
+  paths.api.getLatestForApplicationByMonitorUrl,
+  Deployments.getLatestForApplicationByMonitorUrl
+)
+
+apiRoute.register(
   paths.api.getLatestByClusterName,
   Deployments.getLatestByClusterName
 )
@@ -174,6 +179,7 @@ apiRoute.register(
   paths.api.getLatestBySearch,
   Deployments.getLatestBySearch
 )
+
 server.use('/', apiRoute.getRouter())
 
 // Catch not found and errors
