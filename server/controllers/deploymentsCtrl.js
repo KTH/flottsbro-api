@@ -480,7 +480,7 @@ function* getLatestForApplicationByMonitorUrlFromDatabase(
     result = "";
 
     if (deployment) {
-      result = deployment;
+      result = deployment[0];
     }
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'`, err);
