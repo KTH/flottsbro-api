@@ -174,6 +174,9 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
           },
           friendlyName: {
             $first: "$friendlyName"
+          },
+          publicUserDocumentationUrl: {
+            $first: "$publicUserDocumentationUrl"
           }
         }
       },
@@ -323,6 +326,9 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
           },
           friendlyName: {
             $first: "$friendlyName"
+          },
+          publicUserDocumentationUrl: {
+            $first: "$publicUserDocumentationUrl"
           }
         }
       },
@@ -466,6 +472,9 @@ function* getLatestForApplicationByMonitorUrlFromDatabase(
           },
           friendlyName: {
             $first: "$friendlyName"
+          },
+          publicUserDocumentationUrl: {
+            $first: "$publicUserDocumentationUrl"
           }
         }
       },

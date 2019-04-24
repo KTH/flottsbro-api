@@ -19,6 +19,7 @@ const schema = mongoose.Schema({
     "team": String,
     "applicationUrl": String,
     "friendlyName": String,
+    "publicUserDocumentationUrl": String,
     "applicationPath": String
   }
 
