@@ -16,6 +16,8 @@ module.exports = {
 
   db: unpackMongodbConfig('MONGODB_CONNECTION_STRING', getEnv('MONGODB_CONNECTION_STRING')),
 
+  collection: getEnv('MONGODB_COLLECTOIN', 'flottsbro-api'),
+
   api_keys: unpackApiKeysConfig('API_KEYS', getEnv('API_KEYS')),
 
   logging: {

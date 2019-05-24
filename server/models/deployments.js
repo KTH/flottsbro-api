@@ -1,6 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const config = require('../configuration').server
 
 const schema = mongoose.Schema({
     "applicationName": String,
@@ -25,7 +26,7 @@ const schema = mongoose.Schema({
 
 )
 
-const Deployments = mongoose.model('deploymentv2', schema)
+const Deployments = mongoose.model(config.collection, schema)
 
 module.exports = {
   Deployments: Deployments,

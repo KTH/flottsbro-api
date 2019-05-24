@@ -1,0 +1,3 @@
+applicationName;cluster;version;created;importance;publicNameSwedish;publicNameEnglish;descriptionSwedish;descriptionEnglish;applicationUrl;monitorUrl;monitorPattern;team
+cortina;on-prem;10.0.14; 1554386577.8160307; high;KTH:s webbplatser (CMS);KTH Websites (CMS);De flesta av KTH:s webbplatser;Most of the KTH websites; https://www.kth.se;https://www.kth.se/_monitor; APPLICATION_STATUS: OK;team-kth-webb
+social;on-prem;master-4.28.0-338; 1558022400.8160307;medium;Social;Social;Course and programme webs and more;Course and programme webs and more;https://www.kth.se/social;https://www.kth.se/social/_monitor; APPLICATION_STATUS: OK;team-e-larande

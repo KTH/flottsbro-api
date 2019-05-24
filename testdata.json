@@ -1,0 +1,19 @@
+{
+    "applicationName" : "logspout-gelf",
+    "cluster" : "stage",
+    "version" : "87",
+    "imageName" : "logspout-gelf-tls",
+    "applicationPath" : null,
+    "created" : "1554386577.8160307",
+    "slackChannels" : "#team-pipeline-build",
+    "importance" : "high",
+    "publicNameEnglish" : "Continuous Delivery Log Router",
+    "publicNameSwedish" : "Continuous Delivery Log Router",
+    "descriptionSwedish" : "Streamar Docker loggar till Graylog.",
+    "descriptionEnglish" : "Streams Docker container logs to Graylog.",
+    "applicationUrl" : "",
+    "monitorUrl" : "/_monitor",
+    "friendlyName" : "Continuous Delivery Log Router",
+    "monitorPattern" : "",
+    "team" : "team-pipeline"
+}

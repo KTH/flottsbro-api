@@ -5,10 +5,12 @@ const co = require("co");
 const log = require("kth-node-log");
 
 module.exports = {
+  addLatestForApplicationName: co.wrap(addLatestForApplicationName),
+  addLatestForApplicationNameToDatabase: co.wrap(addLatestForApplicationNameToDatabase),
   getLatestForApplicationName: co.wrap(getLatestForApplicationName),
   getLatestForApplicationByMonitorUrl: co.wrap(getLatestForApplicationByMonitorUrl),
   getLatestByClusterName: co.wrap(getLatestByClusterName),
-  getLatestBySearch: co.wrap(getLatestBySearch)
+  getLatestBySearch: co.wrap(getLatestBySearch),
 };
 
 /**
@@ -95,6 +97,7 @@ function* getLatestByClusterName(request, response, next) {
   });
 }
 
+
 /**
  * Gets the latest deployments as an array for a specified cluster name.
  * @param {*} clusterName
@@ -115,71 +118,7 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
           created: -1
         }
       },
-      {
-        $group: {
-          _id: "$applicationName",
-          created: {
-            $first: "$created"
-          },
-          applicationName: {
-            $first: "$applicationName"
-          },
-          cluster: {
-            $first: "$cluster"
-          },
-          version: {
-            $first: "$version"
-          },
-          imageName: {
-            $first: "$imageName"
-          },
-          applicationUrl: {
-            $first: "$applicationUrl"
-          },
-          applicationPath: {
-            $first: "$applicationPath"
-          },
-          aboutUrl: {
-            $first: "$aboutUrl"
-          },
-          monitorUrl: {
-            $first: "$monitorUrl"
-          },
-          monitorPattern: {
-            $first: "$monitorPattern"
-          },
-          importance: {
-            $first: "$importance"
-          },
-          monitorPattern: {
-            $first: "$monitorPattern"
-          },
-          publicNameSwedish: {
-            $first: "$publicNameSwedish"
-          },
-          publicNameEnglish: {
-            $first: "$publicNameEnglish"
-          },
-          descriptionSwedish: {
-            $first: "$descriptionSwedish"
-          },
-          descriptionEnglish: {
-            $first: "$descriptionEnglish"
-          },
-          team: {
-            $first: "$team"
-          },
-          applicationUrl: {
-            $first: "$applicationUrl"
-          },
-          friendlyName: {
-            $first: "$friendlyName"
-          },
-          publicUserDocumentationUrl: {
-            $first: "$publicUserDocumentationUrl"
-          }
-        }
-      },
+      getGroup(),
       {
         $limit: 50
       }
@@ -199,6 +138,98 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   }
 
   return result;
+}
+
+
+/**
+ * Gets the latest deployments as an array for a specified cluster name.
+ * @param {*} clusterName
+ * @param {*} response
+ * @param {*} next
+ */
+function* getLatestByClusterNameFromDatabase(clusterName) {
+  let result = undefined;
+
+  try {
+    let deployments = yield Deployments.aggregate([{
+        $match: {
+          cluster: clusterName
+        }
+      },
+      {
+        $sort: {
+          created: -1
+        }
+      },
+      getGroup(),
+      {
+        $limit: 50
+      }
+    ]);
+
+    result = [];
+
+    deployments.forEach(deployment => {
+      result.push(deployment);
+    });
+
+    log.info(
+      `Found ${result.length} applications deployed in '${clusterName}'.`
+    );
+  } catch (err) {
+    log.error(`Error while reading deployments for '${clusterName}'.`, err);
+  }
+
+  return result;
+}
+
+/**
+ * Add.
+ * @param {*} request
+ * @param {*} response
+ * @param {*} next
+ */
+function* addLatestForApplicationName(request, response, next) {
+
+  log.info(
+    `Adding latest deployments for cluster '${request.params.clusterName}'.`
+  );
+
+  try {
+    let deployment = JSON.parse(JSON.stringify(request.body))
+
+    let document = new Deployments(json);
+    addLatestForApplicationNameToDatabase()
+
+    response.status(200).json({
+      Message: `Application '${
+        json.applicationName
+      }' stored for cluster '${request.params.clusterName}'.`
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * Add.
+ * @param {*} request
+ * @param {*} response
+ * @param {*} next
+ */
+function* addLatestForApplicationNameToDatabase(deployment) {
+
+  try {
+    let document = new Deployments(deployment);
+
+    let res = yield document.save();
+
+    log.info(`Added '${deployment.applicationName}' to database.`);
+
+  } catch (err) {
+    throw err
+  }
+
 }
 
 /**
@@ -225,15 +256,6 @@ function* getLatestForApplicationName(request, response, next) {
     request.params.applicationName
   );
 
-  if (deployment == undefined) {
-    response.status(503).json({
-      Message: `503 - Unexpected error when trying to read deployment data for cluster '${
-        request.params.clusterName
-      }' and application '${request.params.clusterName}'.`
-    });
-    return;
-  }
-
   if (deployment == "") {
     response.status(404).json({
       Message: `No application '${
@@ -242,6 +264,16 @@ function* getLatestForApplicationName(request, response, next) {
     });
     return;
   }
+
+  if (deployment == undefined) {
+    response.status(404).json({
+      Message: `503 - Unexpected error when trying to read deployment data for cluster '${
+        request.params.clusterName
+      }' and application '${request.params.applicationName}'.`
+    });
+    return;
+  }
+
 
   response.json(deployment);
 }
@@ -267,86 +299,25 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
           created: -1
         }
       },
-      {
-        $group: {
-          _id: "$applicationName",
-          created: {
-            $first: "$created"
-          },
-          applicationName: {
-            $first: "$applicationName"
-          },
-          cluster: {
-            $first: "$cluster"
-          },
-          version: {
-            $first: "$version"
-          },
-          imageName: {
-            $first: "$imageName"
-          },
-          applicationUrl: {
-            $first: "$applicationUrl"
-          },
-          applicationPath: {
-            $first: "$applicationPath"
-          },
-          aboutUrl: {
-            $first: "$aboutUrl"
-          },
-          monitorUrl: {
-            $first: "$monitorUrl"
-          },
-          monitorPattern: {
-            $first: "$monitorPattern"
-          },
-          importance: {
-            $first: "$importance"
-          },
-          monitorPattern: {
-            $first: "$monitorPattern"
-          },
-          publicNameSwedish: {
-            $first: "$publicNameSwedish"
-          },
-          publicNameEnglish: {
-            $first: "$publicNameEnglish"
-          },
-          descriptionSwedish: {
-            $first: "$descriptionSwedish"
-          },
-          descriptionEnglish: {
-            $first: "$descriptionEnglish"
-          },
-          team: {
-            $first: "$team"
-          },
-          applicationUrl: {
-            $first: "$applicationUrl"
-          },
-          friendlyName: {
-            $first: "$friendlyName"
-          },
-          publicUserDocumentationUrl: {
-            $first: "$publicUserDocumentationUrl"
-          }
-        }
-      },
+      getGroup(),
       {
         $limit: 1
       }
     ]);
 
-    log.info(
-      `Found deployment for '${applicationName}:${
-        deployment.version
-      }' in '${clusterName}'`
-    );
     result = "";
 
-    if (deployment) {
+    if (deployment.length > 0) {
+      log.info(
+        `Found deployment for '${applicationName}:${
+          deployment.version
+        }' in '${clusterName}'`
+      );
+
       result = deployment[0];
+
     }
+
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'`, err);
   }
@@ -361,9 +332,17 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
  * @param {*} next
  */
 function* getLatestForApplicationByMonitorUrl(request, response, next) {
-  log.info(`Getting latest deployments for cluster '${request.params.clusterName}' and monitorUrl '${request.params.monitorUrl}'.`);
+  log.info(
+    `Getting latest deployments for cluster '${
+      request.params.clusterName
+    }' and monitorUrl '${request.params.monitorUrl}'.`
+  );
   log.debug(`Collection name: '${Deployments.collection.collectionName}'`);
-  log.debug(`Searching for '${request.params.monitorUrl}' in cluster '${request.params.clusterName}'.`);
+  log.debug(
+    `Searching for '${request.params.monitorUrl}' in cluster '${
+      request.params.clusterName
+    }'.`
+  );
 
   let deployment = yield getLatestForApplicationByMonitorUrlFromDatabase(
     request.params.clusterName,
@@ -372,7 +351,9 @@ function* getLatestForApplicationByMonitorUrl(request, response, next) {
 
   if (deployment == undefined) {
     response.status(503).json({
-      Message: `503 - Unexpected error when trying to read deployment data for cluster '${request.params.clusterName}' and application '${request.params.monitorUrl}'.`
+      Message: `503 - Unexpected error when trying to read deployment data for cluster '${
+        request.params.clusterName
+      }' and application '${request.params.monitorUrl}'.`
     });
     return;
   }
@@ -483,9 +464,7 @@ function* getLatestForApplicationByMonitorUrlFromDatabase(
       }
     ]);
 
-    log.info(
-      `Found deployment for '${monitorUrl} in '${clusterName}'`
-    );
+    log.info(`Found deployment for '${monitorUrl} in '${clusterName}'`);
     result = "";
 
     if (deployment) {
@@ -506,4 +485,73 @@ function containsApplication(results, deployment) {
     }
   });
   return found;
+}
+
+
+function getGroup() {
+  return {
+    $group: {
+      _id: "$applicationName",
+      created: {
+        $first: "$created"
+      },
+      applicationName: {
+        $first: "$applicationName"
+      },
+      cluster: {
+        $first: "$cluster"
+      },
+      version: {
+        $first: "$version"
+      },
+      imageName: {
+        $first: "$imageName"
+      },
+      applicationUrl: {
+        $first: "$applicationUrl"
+      },
+      applicationPath: {
+        $first: "$applicationPath"
+      },
+      aboutUrl: {
+        $first: "$aboutUrl"
+      },
+      monitorUrl: {
+        $first: "$monitorUrl"
+      },
+      monitorPattern: {
+        $first: "$monitorPattern"
+      },
+      importance: {
+        $first: "$importance"
+      },
+      monitorPattern: {
+        $first: "$monitorPattern"
+      },
+      publicNameSwedish: {
+        $first: "$publicNameSwedish"
+      },
+      publicNameEnglish: {
+        $first: "$publicNameEnglish"
+      },
+      descriptionSwedish: {
+        $first: "$descriptionSwedish"
+      },
+      descriptionEnglish: {
+        $first: "$descriptionEnglish"
+      },
+      team: {
+        $first: "$team"
+      },
+      applicationUrl: {
+        $first: "$applicationUrl"
+      },
+      friendlyName: {
+        $first: "$friendlyName"
+      },
+      publicUserDocumentationUrl: {
+        $first: "$publicUserDocumentationUrl"
+      }
+    }
+  }
 }

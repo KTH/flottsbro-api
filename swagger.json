@@ -11,7 +11,7 @@
   ],
   "paths": {
     "/_checkAPIkey": {
-      "get": {
+      "GET": {
         "operationId": "checkAPIkey",
         "summary": "GET a test endpoint that is protected by api key to validate that consumer has a proper api key",
         "description": "",
@@ -40,11 +40,12 @@
         }
       }
     },
+    
     "/v1/latest/{clusterName}/{applicationName}/": {
-      "get": {
+      "GET": {
         "operationId": "getLatestForApplicationName",
-        "summary": "Gets latest deployments for an application name in a cluster.",
-        "description": "Gets the latest deployment inforamtion about a applications in a specific cluster .",
+        "summary": "Add.",
+        "description": "Add.",
         "parameters": [
           {
             "name": "clusterName",
@@ -85,8 +86,9 @@
         }
       }
     },
+    
     "/v1/latest/{clusterName}": {
-      "get": {
+      "GET": {
         "operationId": "getLatestByClusterName",
         "summary": "Gets latest deployments for a cluster.",
         "description": "Gets the latest deployment inforamtion about a applications in a specific cluster .",
@@ -121,11 +123,54 @@
             "read"
           ]
         }
+      },
+      "POST": {
+        "operationId": "addLatestForApplicationName",
+        "summary": "Add a new application deployment to a cluster.",
+        "parameters": [
+          {
+            "name": "clusterName",
+            "in": "path",
+            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "applicationName",
+            "in": "path",
+            "description": "Application name to get current deployments from (i.e: niskeko-web, search-api)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "v1"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested data",
+            "schema": {
+              "$ref": "#/definitions/Data"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": {
+          "api_key": [
+            "write"
+          ]
+        }
       }
+
     },
     
     "/v1/search/{clusterName}/{path}": {
-      "get": {
+      "GET": {
         "operationId": "getLatestBySearch",
         "summary": "Gets the latest deployment matching a URL encoded monitor url.",
         "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
@@ -170,7 +215,7 @@
       }
     },
     "/v1/monitor/{clusterName}/{monitorUrl}": {
-      "get": {
+      "GET": {
         "operationId": "getLatestForApplicationByMonitorUrl",
         "summary": "Gets the latest deployment matching a URL encoded monitor url.",
         "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
