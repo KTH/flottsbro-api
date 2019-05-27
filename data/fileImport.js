@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path')
 const readline = require('readline');
 const deploymentsCtrl = require('../server/controllers/deploymentsCtrl')
+
 let _importCsv = function importCsv(filename) {
 
     let file = path.resolve(__dirname, filename);

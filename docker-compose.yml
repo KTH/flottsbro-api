@@ -7,7 +7,7 @@ services:
       - .env
 
     environment: 
-      MONGODB_COLLECTOIN: "flottsbro-api"
+      MONGODB_COLLECTION: "flottsbro-api"
       
     build: .
 
