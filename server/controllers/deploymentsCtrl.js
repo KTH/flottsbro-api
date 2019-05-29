@@ -253,6 +253,9 @@ function cleanDeployment(deployment) {
   if (deployment.monitorPattern == null) {
     deployment.monitorPattern = 'APPLICATION_STATUS: OK'
   }
+  if (deployment.friendlyName == null) {
+    deployment.friendlyName = deployment.publicNameEnglish;
+  }
   if (deployment.type == null) {
     if (isProduction(deployment.cluster)) {
       deployment.type = "production"
