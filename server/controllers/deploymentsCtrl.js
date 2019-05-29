@@ -72,9 +72,12 @@ function* getLatestByClusterName(request, response, next) {
     `Searching for applications in cluster '${request.params.clusterName}'.`
   );
 
-  let deployments = yield getLatestByClusterNameFromDatabase(
-    request.params.clusterName
-  );
+  let deployments
+  if (request.params.clusterName == "production") {
+    deployments = yield getLatestByTypeFromDatabase(request.params.clusterName);
+  } else {
+    deployments = yield getLatestByClusterNameFromDatabase(request.params.clusterName);
+  }
 
   if (deployments == undefined) {
     response.status(503).json({
@@ -120,7 +123,7 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
       },
       getGroup(),
       {
-        $limit: 50
+        $limit: 100
       }
     ]);
 
@@ -135,6 +138,49 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
     );
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'.`, err);
+  }
+
+  return result;
+}
+
+
+/**
+ * Gets the latest deployments as an array for a specified by type (production/reference).
+ * @param {*} type
+ * @param {*} response
+ * @param {*} next
+ */
+function* getLatestByTypeFromDatabase(type) {
+  let result = undefined;
+
+  try {
+    let deployments = yield Deployments.aggregate([{
+        $match: {
+          type: type
+        }
+      },
+      {
+        $sort: {
+          created: -1
+        }
+      },
+      getGroup(),
+      {
+        $limit: 100
+      }
+    ]);
+
+    result = [];
+
+    deployments.forEach(deployment => {
+      result.push(deployment);
+    });
+
+    log.info(
+      `Found ${result.length} applications deployed in '${type}'.`
+    );
+  } catch (err) {
+    log.error(`Error while reading deployments for '${type}'.`, err);
   }
 
   return result;
@@ -163,7 +209,7 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
       },
       getGroup(),
       {
-        $limit: 50
+        $limit: 100
       }
     ]);
 
@@ -208,13 +254,7 @@ function cleanDeployment(deployment) {
     deployment.monitorPattern = 'APPLICATION_STATUS: OK'
   }
   if (deployment.type == null) {
-    if (deployment.cluster == "on-prem") {
-      deployment.type = "production"
-    } else if (deployment.cluster == "active") {
-      deployment.type = "production"
-    } else if (deployment.cluster == "integral") {
-      deployment.type = "production"
-    } else if (deployment.cluster == "saas") {
+    if (isProduction(deployment.cluster)) {
       deployment.type = "production"
     } else {
       deployment.type = "reference"
@@ -226,6 +266,20 @@ function cleanDeployment(deployment) {
 
 }
 
+function isProduction(cluster) {
+  if (cluster == null) {
+    return false;
+  } else if (cluster == "on-prem") {
+    return true;
+  } else if (cluster == "active") {
+    return true;
+  } else if (cluster == "integral") {
+    return true;
+  } else if (cluster == "saas") {
+    return true;
+  }
+  return false
+}
 /**
  * Add.
  * @param {*} request
