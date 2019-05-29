@@ -9,11 +9,6 @@ const config = require('./server/configuration').server
 const server = require('./server/server')
 const log = require('kth-node-log')
 
-
-if (process.env.IMPORT_FROM_FILE) {
-  const fileImport = require('./data/fileImport.js').importCsv('manual.csv')
-}
-
 /** ***************************
  * ******* SERVER START *******
  * ****************************

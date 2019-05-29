@@ -6,7 +6,7 @@ const log = require("kth-node-log");
 
 module.exports = {
   addLatestForApplicationName: co.wrap(addLatestForApplicationName),
-  addLatestForApplicationNameToDatabase: co.wrap(addLatestForApplicationNameToDatabase),
+  addLatestForApplicationNameToDatabase: co.wrap(_addLatestForApplicationNameToDatabase),
   getLatestForApplicationName: co.wrap(getLatestForApplicationName),
   getLatestForApplicationByMonitorUrl: co.wrap(getLatestForApplicationByMonitorUrl),
   getLatestByClusterName: co.wrap(getLatestByClusterName),
@@ -183,6 +183,49 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   return result;
 }
 
+function cleanDeployment(deployment) {
+  if (deployment.created == null) {
+    let timestamp = Math.round(new Date().getTime() / 1000)
+    log.error(timestamp)
+    deployment.created = timestamp
+  }
+  if (deployment.importance == null) {
+    deployment.importance = 'medium'
+  }
+  deployment.importance = deployment.importance.toLowerCase()
+  if (deployment.team == null) {
+    deployment.team = 'ita-ops'
+  }
+  deployment.team = deployment.team.toLowerCase()
+  if (deployment.cluster == null) {
+    deployment.cluster = 'on-prem'
+  }
+  deployment.cluster = deployment.cluster.toLowerCase()
+  if (deployment.version == null) {
+    deployment.version = 'unknown'
+  }
+  if (deployment.monitorPattern == null) {
+    deployment.monitorPattern = 'APPLICATION_STATUS: OK'
+  }
+  if (deployment.type == null) {
+    if (deployment.cluster == "on-prem") {
+      deployment.type = "production"
+    } else if (deployment.cluster == "active") {
+      deployment.type = "production"
+    } else if (deployment.cluster == "integral") {
+      deployment.type = "production"
+    } else if (deployment.cluster == "saas") {
+      deployment.type = "production"
+    } else {
+      deployment.type = "reference"
+    }
+  }
+  deployment.type = deployment.type.toLowerCase()
+
+  return deployment
+
+}
+
 /**
  * Add.
  * @param {*} request
@@ -198,14 +241,19 @@ function* addLatestForApplicationName(request, response, next) {
   try {
     let deployment = JSON.parse(JSON.stringify(request.body))
 
-    let document = new Deployments(json);
-    addLatestForApplicationNameToDatabase()
+    deployment = yield _addLatestForApplicationNameToDatabase(deployment)
 
-    response.status(200).json({
-      Message: `Application '${
-        json.applicationName
-      }' stored for cluster '${request.params.clusterName}'.`
-    });
+    if (deployment != null) {
+
+      response.status(200).json({
+        Message: `Application '${deployment.applicationName}' stored for cluster '${deployment.cluster}'.`
+      });
+
+    } else {
+      response.status(503).json({
+        Message: `Faild to store application '${deployment.applicationName}' stored for cluster '${deployment.cluster}'.`
+      });
+    }
   } catch (err) {
     next(err);
   }
@@ -217,18 +265,26 @@ function* addLatestForApplicationName(request, response, next) {
  * @param {*} response
  * @param {*} next
  */
-function* addLatestForApplicationNameToDatabase(deployment) {
+function* _addLatestForApplicationNameToDatabase(deployment) {
 
   try {
+
+    deployment = cleanDeployment(deployment)
+
     let document = new Deployments(deployment);
 
-    let res = yield document.save();
+    let res = document.save();
 
     log.info(`Added '${deployment.applicationName}' to database.`);
 
+    log.info(deployment)
+
   } catch (err) {
+    log.error(`Error when writing deployment to db. ${deployment}`)
     throw err
   }
+
+  return deployment
 
 }
 
@@ -239,6 +295,11 @@ function* addLatestForApplicationNameToDatabase(deployment) {
  * @param {*} next
  */
 function* getLatestForApplicationName(request, response, next) {
+
+  if (process.env.IMPORT_FROM_FILE) {
+    const fileImport = require('../../data/fileImport.js').importCsv('manual.csv')
+  }
+
   log.debug(
     `Getting latest deployments for cluster '${
       request.params.clusterName

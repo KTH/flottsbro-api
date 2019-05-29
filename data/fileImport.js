@@ -1,8 +1,8 @@
-"use strict";
 const fs = require('fs');
 const path = require('path')
 const readline = require('readline');
 const deploymentsCtrl = require('../server/controllers/deploymentsCtrl')
+const log = require("kth-node-log");
 
 let _importCsv = function importCsv(filename) {
 
@@ -22,7 +22,7 @@ let _importCsv = function importCsv(filename) {
             keys = _toArray(line)
         } else {
             let deployment = _toKeyValueJson(keys, _toArray(line))
-            deploymentsCtrl.addLatestForApplicationNameToDatabase(deployment)
+            deployment = deploymentsCtrl.addLatestForApplicationNameToDatabase(deployment)
         }
         i++;
     });

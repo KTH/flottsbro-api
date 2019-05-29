@@ -21,7 +21,8 @@ const schema = mongoose.Schema({
     "applicationUrl": String,
     "friendlyName": String,
     "publicUserDocumentationUrl": String,
-    "applicationPath": String
+    "applicationPath": String,
+    "type": String
   }
 
 )

@@ -1,3 +1,11 @@
-applicationName;cluster;version;created;importance;publicNameSwedish;publicNameEnglish;descriptionSwedish;descriptionEnglish;applicationUrl;monitorUrl;monitorPattern;team
-cortina;on-prem;10.0.14; 1554386577.8160307; high;KTH:s webbplatser (CMS);KTH Websites (CMS);De flesta av KTH:s webbplatser;Most of the KTH websites; https://www.kth.se;https://www.kth.se/_monitor; APPLICATION_STATUS: OK;team-kth-webb
-social;on-prem;master-4.28.0-338; 1558022400.8160307;medium;Social;Social;Course and programme webs and more;Course and programme webs and more;https://www.kth.se/social;https://www.kth.se/social/_monitor; APPLICATION_STATUS: OK;team-e-larande
+﻿applicationName;cluster;version;importance;publicNameSwedish;publicNameEnglish;descriptionSwedish;descriptionEnglish;applicationUrl;monitorUrl;monitorPattern;team
+cortina;on-prem;10.0.14-fbea0b6;high;KTH:s webbplatser (CMS);KTH Websites (CMS);De flesta av KTH:s webbplatser;Most of the KTH websites;https://www.kth.se;https://www.kth.se/_monitor;APPLICATION_STATUS: OK;team-kth-webb
+cortina-edit;on-prem;10.0.14-fbea0b6;medium;CMS Redaktörsverktyg;CMS Editing tool;Redaktörsverktyget för KTH:s webbplatser;The editing tool/backend for updating KTH websites;https://www-edit.sys.kth.se/polopoly;https://www-edit.sys.kth.se/_monitor;APPLICATION_STATUS: OK;team-kth-webb
+social;on-prem;master-4.28.0-338;medium;Social;Social;Course and programme webs and more;Course and programme webs and more;https://www.kth.se/social;https://www.kth.se/social/_monitor;APPLICATION_STATUS: OK;team-e-larande
+timeedit;saas;;medium;KTH Schema;KTH Schema;;;https://cloud.timeedit.net/kth/web/public01/;https://cloud.timeedit.net/kth/web/public01/;search time tables;team-studadm
+canvas;saas;;medium;Canvas;Canvas;;;https://kth.instructure.com/;https://kth.instructure.com/;användargodkännande krävs;team-e-larande
+webmail;on-prem;;high;KTH Webmail;KTH Webmail;Webbklient för kth.se-konton;Webmail client for kth.se-accounts;https://webmail.kth.se;;;ita-ops
+login;on-prem;201502.2-0-gc01a6aa;high;KTH Login Service;KTH Login Service;Inloggning för KTH:s tjänser (SAML, CAS, ADFS...);Single sign on service för kth.se;https://login.kth.se;https://login.kth.se/_monitor;APPLICATION_STATUS: OK;ita-ops
+files-web;on-prem;2.5.4;medium;KTH Files;KTH Files;Hanterar uppladdade filer i KTH Profiles;Handles uploaded files in KTH Profiles;https://www.kth.se/files;https://www.kth.se/files/_monitor;APPLICATION_STATUS: OK;team-kth-webb
+files-api;on-prem;2.2.1;medium;Files API;Files API;Hanterar uppladdade filer i KTH Profiles;Handles uploaded files in KTH Profiles;https://www.kth.se/api/files;https://www.kth.se/api/files/_monitor;APPLICATION_STATUS: OK;team-kth-webb
+kth-book-cover;on-prem;8;low;KTH Book Cover;KTH Book Cover;Skapar exjobbs-omslag;Creates covers for master thesis reports;https://intra.kth.se/kth-cover;https://intra.kth.se/kth-cover/_monitor;APPLICATION_STATUS: OK;team-kth-webb
