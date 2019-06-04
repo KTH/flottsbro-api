@@ -160,7 +160,12 @@ function* getLatestByTypeFromDatabase(type) {
   try {
     let deployments = yield Deployments.aggregate([{
         $match: {
-          type: type
+          type: type,
+          cluster: "on-pre",
+          cluster: "saas",
+          cluster: "integral",
+          cluster: "active"
+
         }
       },
       {
