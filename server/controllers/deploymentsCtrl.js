@@ -6,11 +6,15 @@ const log = require("kth-node-log");
 
 module.exports = {
   addLatestForApplicationName: co.wrap(addLatestForApplicationName),
-  addLatestForApplicationNameToDatabase: co.wrap(_addLatestForApplicationNameToDatabase),
+  addLatestForApplicationNameToDatabase: co.wrap(
+    _addLatestForApplicationNameToDatabase
+  ),
   getLatestForApplicationName: co.wrap(getLatestForApplicationName),
-  getLatestForApplicationByMonitorUrl: co.wrap(getLatestForApplicationByMonitorUrl),
+  getLatestForApplicationByMonitorUrl: co.wrap(
+    getLatestForApplicationByMonitorUrl
+  ),
   getLatestByClusterName: co.wrap(getLatestByClusterName),
-  getLatestBySearch: co.wrap(getLatestBySearch),
+  getLatestBySearch: co.wrap(getLatestBySearch)
 };
 
 /**
@@ -72,11 +76,13 @@ function* getLatestByClusterName(request, response, next) {
     `Searching for applications in cluster '${request.params.clusterName}'.`
   );
 
-  let deployments
+  let deployments;
   if (request.params.clusterName == "production") {
     deployments = yield getLatestByTypeFromDatabase(request.params.clusterName);
   } else {
-    deployments = yield getLatestByClusterNameFromDatabase(request.params.clusterName);
+    deployments = yield getLatestByClusterNameFromDatabase(
+      request.params.clusterName
+    );
   }
 
   if (deployments == undefined) {
@@ -100,7 +106,6 @@ function* getLatestByClusterName(request, response, next) {
   });
 }
 
-
 /**
  * Gets the latest deployments as an array for a specified cluster name.
  * @param {*} clusterName
@@ -111,7 +116,8 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([{
+    let deployments = yield Deployments.aggregate([
+      {
         $match: {
           cluster: clusterName
         }
@@ -143,7 +149,6 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   return result;
 }
 
-
 /**
  * Gets the latest deployments as an array for a specified by type (production/reference).
  * @param {*} type
@@ -154,9 +159,11 @@ function* getLatestByTypeFromDatabase(type) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([{
+    let deployments = yield Deployments.aggregate([
+      {
         $match: {
-          type: type
+          type: type,
+          type: null
         }
       },
       {
@@ -176,16 +183,13 @@ function* getLatestByTypeFromDatabase(type) {
       result.push(deployment);
     });
 
-    log.info(
-      `Found ${result.length} applications deployed in '${type}'.`
-    );
+    log.info(`Found ${result.length} applications deployed in '${type}'.`);
   } catch (err) {
     log.error(`Error while reading deployments for '${type}'.`, err);
   }
 
   return result;
 }
-
 
 /**
  * Gets the latest deployments as an array for a specified cluster name.
@@ -197,7 +201,8 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([{
+    let deployments = yield Deployments.aggregate([
+      {
         $match: {
           cluster: clusterName
         }
@@ -231,41 +236,40 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
 
 function cleanDeployment(deployment) {
   if (deployment.created == null) {
-    let timestamp = Math.round(new Date().getTime() / 1000)
-    deployment.created = timestamp
+    let timestamp = Math.round(new Date().getTime() / 1000);
+    deployment.created = timestamp;
   }
   if (deployment.importance == null) {
-    deployment.importance = 'medium'
+    deployment.importance = "medium";
   }
-  deployment.importance = deployment.importance.toLowerCase()
+  deployment.importance = deployment.importance.toLowerCase();
   if (deployment.team == null) {
-    deployment.team = 'ita-ops'
+    deployment.team = "ita-ops";
   }
-  deployment.team = deployment.team.toLowerCase()
+  deployment.team = deployment.team.toLowerCase();
   if (deployment.cluster == null) {
-    deployment.cluster = 'on-prem'
+    deployment.cluster = "on-prem";
   }
-  deployment.cluster = deployment.cluster.toLowerCase()
+  deployment.cluster = deployment.cluster.toLowerCase();
   if (deployment.version == null) {
-    deployment.version = 'unknown'
+    deployment.version = "unknown";
   }
   if (deployment.monitorPattern == null) {
-    deployment.monitorPattern = 'APPLICATION_STATUS: OK'
+    deployment.monitorPattern = "APPLICATION_STATUS: OK";
   }
   if (deployment.friendlyName == null) {
     deployment.friendlyName = deployment.publicNameEnglish;
   }
   if (deployment.type == null) {
     if (isProduction(deployment.cluster)) {
-      deployment.type = "production"
+      deployment.type = "production";
     } else {
-      deployment.type = "reference"
+      deployment.type = "reference";
     }
   }
-  deployment.type = deployment.type.toLowerCase()
+  deployment.type = deployment.type.toLowerCase();
 
-  return deployment
-
+  return deployment;
 }
 
 function isProduction(cluster) {
@@ -280,7 +284,7 @@ function isProduction(cluster) {
   } else if (cluster == "saas") {
     return true;
   }
-  return false
+  return false;
 }
 /**
  * Add.
@@ -289,31 +293,36 @@ function isProduction(cluster) {
  * @param {*} next
  */
 function* addLatestForApplicationName(request, response, next) {
-
   log.info(
     `Adding latest deployments for cluster '${request.params.clusterName}'.`
   );
 
   try {
-    let deployment = JSON.parse(JSON.stringify(request.body))
+    let deployment = JSON.parse(JSON.stringify(request.body));
 
     if (deployment.cluster != request.params.clusterName) {
       response.status(503).json({
-        Message: `Wrong URI for adding deployment. The deployment json says '${deployment.cluster}' but the uri states that the cluster is '${request.params.clusterName}'.`
+        Message: `Wrong URI for adding deployment. The deployment json says '${
+          deployment.cluster
+        }' but the uri states that the cluster is '${
+          request.params.clusterName
+        }'.`
       });
     }
 
-    deployment = yield _addLatestForApplicationNameToDatabase(deployment)
+    deployment = yield _addLatestForApplicationNameToDatabase(deployment);
 
     if (deployment != null) {
-
       response.status(200).json({
-        Message: `Application '${deployment.applicationName}' stored for cluster '${deployment.cluster}'.`
+        Message: `Application '${
+          deployment.applicationName
+        }' stored for cluster '${deployment.cluster}'.`
       });
-
     } else {
       response.status(503).json({
-        Message: `Faild to store application '${deployment.applicationName}' stored for cluster '${deployment.cluster}'.`
+        Message: `Faild to store application '${
+          deployment.applicationName
+        }' stored for cluster '${deployment.cluster}'.`
       });
     }
   } catch (err) {
@@ -328,10 +337,8 @@ function* addLatestForApplicationName(request, response, next) {
  * @param {*} next
  */
 function* _addLatestForApplicationNameToDatabase(deployment) {
-
   try {
-
-    deployment = cleanDeployment(deployment)
+    deployment = cleanDeployment(deployment);
 
     let document = new Deployments(deployment);
 
@@ -339,15 +346,13 @@ function* _addLatestForApplicationNameToDatabase(deployment) {
 
     log.info(`Added '${deployment.applicationName}' to database.`);
 
-    log.info(deployment)
-
+    log.info(deployment);
   } catch (err) {
-    log.error(`Error when writing deployment to db. ${deployment}`)
-    throw err
+    log.error(`Error when writing deployment to db. ${deployment}`);
+    throw err;
   }
 
-  return deployment
-
+  return deployment;
 }
 
 /**
@@ -357,9 +362,10 @@ function* _addLatestForApplicationNameToDatabase(deployment) {
  * @param {*} next
  */
 function* getLatestForApplicationName(request, response, next) {
-
   if (process.env.IMPORT_FROM_FILE) {
-    const fileImport = require('../../data/fileImport.js').importCsv('manual.csv')
+    const fileImport = require("../../data/fileImport.js").importCsv(
+      "manual.csv"
+    );
   }
 
   log.debug(
@@ -397,7 +403,6 @@ function* getLatestForApplicationName(request, response, next) {
     return;
   }
 
-
   response.json(deployment);
 }
 
@@ -411,7 +416,8 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
   let result = undefined;
 
   try {
-    let deployment = yield Deployments.aggregate([{
+    let deployment = yield Deployments.aggregate([
+      {
         $match: {
           applicationName: applicationName,
           cluster: clusterName
@@ -438,9 +444,7 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
       );
 
       result = deployment[0];
-
     }
-
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'`, err);
   }
@@ -506,7 +510,8 @@ function* getLatestForApplicationByMonitorUrlFromDatabase(
   let result = "";
 
   try {
-    let deployment = yield Deployments.aggregate([{
+    let deployment = yield Deployments.aggregate([
+      {
         $match: {
           monitorUrl: monitorUrl,
           cluster: clusterName
@@ -610,7 +615,6 @@ function containsApplication(results, deployment) {
   return found;
 }
 
-
 function getGroup() {
   return {
     $group: {
@@ -676,5 +680,5 @@ function getGroup() {
         $first: "$publicUserDocumentationUrl"
       }
     }
-  }
+  };
 }
