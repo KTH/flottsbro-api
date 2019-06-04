@@ -232,7 +232,6 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
 function cleanDeployment(deployment) {
   if (deployment.created == null) {
     let timestamp = Math.round(new Date().getTime() / 1000)
-    log.error(timestamp)
     deployment.created = timestamp
   }
   if (deployment.importance == null) {
@@ -297,6 +296,12 @@ function* addLatestForApplicationName(request, response, next) {
 
   try {
     let deployment = JSON.parse(JSON.stringify(request.body))
+
+    if (deployment.cluster != request.params.clusterName) {
+      response.status(503).json({
+        Message: `Wrong URI for adding deployment. The deployment json says '${deployment.cluster}' but the uri states that the cluster is '${request.params.clusterName}'.`
+      });
+    }
 
     deployment = yield _addLatestForApplicationNameToDatabase(deployment)
 
