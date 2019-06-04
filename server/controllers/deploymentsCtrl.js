@@ -116,8 +116,7 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([
-      {
+    let deployments = yield Deployments.aggregate([{
         $match: {
           cluster: clusterName
         }
@@ -159,11 +158,9 @@ function* getLatestByTypeFromDatabase(type) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([
-      {
+    let deployments = yield Deployments.aggregate([{
         $match: {
-          type: type,
-          type: null
+          type: type
         }
       },
       {
@@ -201,8 +198,7 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([
-      {
+    let deployments = yield Deployments.aggregate([{
         $match: {
           cluster: clusterName
         }
@@ -416,8 +412,7 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
   let result = undefined;
 
   try {
-    let deployment = yield Deployments.aggregate([
-      {
+    let deployment = yield Deployments.aggregate([{
         $match: {
           applicationName: applicationName,
           cluster: clusterName
@@ -510,8 +505,7 @@ function* getLatestForApplicationByMonitorUrlFromDatabase(
   let result = "";
 
   try {
-    let deployment = yield Deployments.aggregate([
-      {
+    let deployment = yield Deployments.aggregate([{
         $match: {
           monitorUrl: monitorUrl,
           cluster: clusterName
