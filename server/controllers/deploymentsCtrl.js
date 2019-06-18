@@ -116,15 +116,14 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([
-      {
+    let deployments = yield Deployments.aggregate([{
         $match: {
           cluster: clusterName
         }
       },
       {
         $sort: {
-          friendlyName: 1
+          created: -1
         }
       },
       getGroup(),
@@ -159,15 +158,14 @@ function* getLatestByTypeFromDatabase(type) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([
-      {
+    let deployments = yield Deployments.aggregate([{
         $match: {
           type: type
         }
       },
       {
         $sort: {
-          friendlyName: 1
+          created: -1
         }
       },
       getGroup(),
@@ -200,15 +198,14 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([
-      {
+    let deployments = yield Deployments.aggregate([{
         $match: {
           cluster: clusterName
         }
       },
       {
         $sort: {
-          friendlyName: 1
+          created: -1
         }
       },
       getGroup(),
@@ -415,8 +412,7 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
   let result = undefined;
 
   try {
-    let deployment = yield Deployments.aggregate([
-      {
+    let deployment = yield Deployments.aggregate([{
         $match: {
           applicationName: applicationName,
           cluster: clusterName
@@ -509,8 +505,7 @@ function* getLatestForApplicationByMonitorUrlFromDatabase(
   let result = "";
 
   try {
-    let deployment = yield Deployments.aggregate([
-      {
+    let deployment = yield Deployments.aggregate([{
         $match: {
           monitorUrl: monitorUrl,
           cluster: clusterName
@@ -522,69 +517,7 @@ function* getLatestForApplicationByMonitorUrlFromDatabase(
         }
       },
       {
-        $group: {
-          _id: "$applicationName",
-          created: {
-            $first: "$created"
-          },
-          applicationName: {
-            $first: "$applicationName"
-          },
-          cluster: {
-            $first: "$cluster"
-          },
-          version: {
-            $first: "$version"
-          },
-          imageName: {
-            $first: "$imageName"
-          },
-          applicationUrl: {
-            $first: "$applicationUrl"
-          },
-          applicationPath: {
-            $first: "$applicationPath"
-          },
-          aboutUrl: {
-            $first: "$aboutUrl"
-          },
-          monitorUrl: {
-            $first: "$monitorUrl"
-          },
-          monitorPattern: {
-            $first: "$monitorPattern"
-          },
-          importance: {
-            $first: "$importance"
-          },
-          monitorPattern: {
-            $first: "$monitorPattern"
-          },
-          publicNameSwedish: {
-            $first: "$publicNameSwedish"
-          },
-          publicNameEnglish: {
-            $first: "$publicNameEnglish"
-          },
-          descriptionSwedish: {
-            $first: "$descriptionSwedish"
-          },
-          descriptionEnglish: {
-            $first: "$descriptionEnglish"
-          },
-          team: {
-            $first: "$team"
-          },
-          applicationUrl: {
-            $first: "$applicationUrl"
-          },
-          friendlyName: {
-            $first: "$friendlyName"
-          },
-          publicUserDocumentationUrl: {
-            $first: "$publicUserDocumentationUrl"
-          }
-        }
+        $group: getGroup()
       },
       {
         $limit: 1
