@@ -1,4 +1,5 @@
 const IncomingWebhook = require("@slack/webhook").IncomingWebhook;
+const log = require("kth-node-log");
 
 let webhook = null;
 
@@ -27,10 +28,12 @@ function getWebhookUrl() {
 }
 
 async function sendMessage(message) {
+  log.debug(`Is Slack disabled: ${disabled()}`);
   if (disabled()) {
     return;
   }
 
+  log.info(`Sending '${message()}' to Slack.`);
   await getWebhook().send({
     text: message
   });

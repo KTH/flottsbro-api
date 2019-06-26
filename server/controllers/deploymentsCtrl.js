@@ -314,11 +314,18 @@ function* addLatestForApplicationName(request, response, next) {
 
     if (deployment != null) {
       if (isProduction(deployment.cluster)) {
+        log.info(
+          `Slack for all deployments in  (if configured) - ${
+            deployment.applicationName
+          }.`
+        );
         slack.sendMessage(
           `*${deployment.applicationName}* deployed or reconfigured in '${
             deployment.cluster
           }'.`
         );
+      } else {
+        log.info(`Skip Slack.`);
       }
 
       response.status(200).json({
