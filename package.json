@@ -12,6 +12,7 @@
     "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js"
   },
   "dependencies": {
+    "@slack/webhook": "^5.0.0",
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "co": "^4.6.0",

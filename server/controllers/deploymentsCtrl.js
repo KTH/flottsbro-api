@@ -3,6 +3,7 @@
 const Deployments = require("../models").deployments.Deployments;
 const co = require("co");
 const log = require("kth-node-log");
+const slack = require("../utils/slack.js");
 
 module.exports = {
   addLatestForApplicationName: co.wrap(addLatestForApplicationName),
@@ -116,7 +117,8 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([{
+    let deployments = yield Deployments.aggregate([
+      {
         $match: {
           cluster: clusterName
         }
@@ -158,7 +160,8 @@ function* getLatestByTypeFromDatabase(type) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([{
+    let deployments = yield Deployments.aggregate([
+      {
         $match: {
           type: type
         }
@@ -198,7 +201,8 @@ function* getLatestByClusterNameFromDatabase(clusterName) {
   let result = undefined;
 
   try {
-    let deployments = yield Deployments.aggregate([{
+    let deployments = yield Deployments.aggregate([
+      {
         $match: {
           cluster: clusterName
         }
@@ -309,6 +313,12 @@ function* addLatestForApplicationName(request, response, next) {
     deployment = yield _addLatestForApplicationNameToDatabase(deployment);
 
     if (deployment != null) {
+      slack.sendMessage(
+        `*${deployment.applicationName}* deployed or reconfigured in '${
+          deployment.cluster
+        }'.`
+      );
+
       response.status(200).json({
         Message: `Application '${
           deployment.applicationName
@@ -412,7 +422,8 @@ function* getLatestForApplicationFromDatabase(clusterName, applicationName) {
   let result = undefined;
 
   try {
-    let deployment = yield Deployments.aggregate([{
+    let deployment = yield Deployments.aggregate([
+      {
         $match: {
           applicationName: applicationName,
           cluster: clusterName
@@ -505,7 +516,8 @@ function* getLatestForApplicationByMonitorUrlFromDatabase(
   let result = "";
 
   try {
-    let deployment = yield Deployments.aggregate([{
+    let deployment = yield Deployments.aggregate([
+      {
         $match: {
           monitorUrl: monitorUrl,
           cluster: clusterName
