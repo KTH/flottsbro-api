@@ -320,9 +320,9 @@ function* addLatestForApplicationName(request, response, next) {
           }.`
         );
         slack.sendMessage(
-          `*${deployment.applicationName}* deployed or reconfigured in '${
-            deployment.cluster
-          }'.`
+          `*${deployment.friendlyName}* updated in production - ${
+            deployment.applicationUrl
+          }.`
         );
       } else {
         log.info(`Skip Slack.`);
