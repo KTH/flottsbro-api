@@ -313,11 +313,13 @@ function* addLatestForApplicationName(request, response, next) {
     deployment = yield _addLatestForApplicationNameToDatabase(deployment);
 
     if (deployment != null) {
-      slack.sendMessage(
-        `*${deployment.applicationName}* deployed or reconfigured in '${
-          deployment.cluster
-        }'.`
-      );
+      if (isProduction(deployment.cluster)) {
+        slack.sendMessage(
+          `*${deployment.applicationName}* deployed or reconfigured in '${
+            deployment.cluster
+          }'.`
+        );
+      }
 
       response.status(200).json({
         Message: `Application '${
