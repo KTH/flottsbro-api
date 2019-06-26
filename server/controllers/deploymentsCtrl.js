@@ -320,9 +320,9 @@ function* addLatestForApplicationName(request, response, next) {
           }.`
         );
         slack.sendMessage(
-          `*${deployment.friendlyName}* updated in production - ${
-            deployment.applicationUrl
-          }.`
+          `*${deployment.team}s* service *${
+            deployment.friendlyName
+          }* is updated in production. - ${deployment.applicationUrl}.`
         );
       } else {
         log.info(`Skip Slack.`);
