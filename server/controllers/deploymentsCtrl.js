@@ -260,6 +260,12 @@ function cleanDeployment(deployment) {
   if (deployment.friendlyName == null) {
     deployment.friendlyName = deployment.publicNameEnglish;
   }
+  if (
+    deployment.applicationUrl != null &&
+    deployment.applicationUrl.includes("api.kth.se")
+  ) {
+    deployment.swagger = deployment.applicationUrl + "swagger";
+  }
   if (deployment.type == null) {
     if (isProduction(deployment.cluster)) {
       deployment.type = "production";
