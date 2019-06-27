@@ -264,7 +264,7 @@ function cleanDeployment(deployment) {
     deployment.applicationUrl != null &&
     deployment.applicationUrl.includes("api.kth.se")
   ) {
-    deployment.swagger = deployment.applicationUrl + "swagger";
+    deployment.swaggerUrl = deployment.applicationUrl + "swagger";
   }
   if (deployment.type == null) {
     if (isProduction(deployment.cluster)) {
