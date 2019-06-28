@@ -360,7 +360,7 @@ function sendToDeploymentSlackChannel(deployment) {
     }* is updated in production.`;
 
     if (deployment.applicationUrl != null && deployment.applicationUrl != "") {
-      message = `${message}. - ${deployment.applicationUrl}`;
+      message = `${message} - ${deployment.applicationUrl}`;
     }
 
     slack.sendMessage(message);
