@@ -299,7 +299,10 @@ function isProduction(cluster) {
     return true;
   } else if (cluster == "saas") {
     return true;
+  } else if (cluster == "management") {
+    return true;
   }
+
   return false;
 }
 /**

@@ -4,8 +4,7 @@ curl --request POST --data \
 '{
     "applicationName" : "social",
     "cluster" : "on-prem",
-    "version" : "master-4.29.0-343",
-    "created": "1561651200",
+    "version" : "4.29.1-344",
     "importance" : "medium",
     "publicNameSwedish" : "Social",
     "publicNameEnglish" : "Social",
