@@ -54,6 +54,9 @@ function disabled() {
   return webhook ? false : true;
 }
 
+/**
+ * Init the webhook.
+ */
 initWebhook();
 
 module.exports = {

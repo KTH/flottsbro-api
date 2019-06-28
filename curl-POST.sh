@@ -2,14 +2,19 @@
 
 curl --request POST --data \
 '{
-    "applicationName" : "cortina",
+    "applicationName" : "social",
     "cluster" : "on-prem",
-    "version" : "10.0.14-fbea0b6",
-    "importance" : "high",
-    "publicNameEnglish" : "KTH Websites (CMS)",
-    "applicationUrl" : "https://www.kth.se/",
-    "monitorUrl" : "https://www.kth.se/_monitor",
-    "team" : "team-kth-webb"
+    "version" : "master-4.29.0-343",
+    "created": "1561651200",
+    "importance" : "medium",
+    "publicNameSwedish" : "Social",
+    "publicNameEnglish" : "Social",
+    "descriptionSwedish": "Course and programme webs and more",
+    "descriptionEnglish": "Kurs och programwebbar",
+    "applicationUrl" : "https://www.kth.se/social",
+    "monitorPattern": "APPLICATION_STATUS: OK",
+    "monitorUrl" : "https://www.kth.se/social/_monitor",
+    "team" : "team-e-larande"
 }' \
 --silent \
 --header "api_key: $API_KEY_WRITE"  \

@@ -329,21 +329,7 @@ function* addLatestForApplicationName(request, response, next) {
     deployment = yield _addLatestForApplicationNameToDatabase(deployment);
 
     if (deployment != null) {
-      if (isProduction(deployment.cluster)) {
-        log.info(
-          `Slack for all deployments in  (if configured) - ${
-            deployment.applicationName
-          }.`
-        );
-        slack.sendMessage(
-          `*#${deployment.team}'s* service *${
-            deployment.friendlyName
-          }* is updated in production. - ${deployment.applicationUrl}.`
-        );
-      } else {
-        log.info(`Skip Slack.`);
-      }
-
+      sendToDeploymentSlackChannel(deployment);
       response.status(200).json({
         Message: `Application '${
           deployment.applicationName
@@ -358,6 +344,26 @@ function* addLatestForApplicationName(request, response, next) {
     }
   } catch (err) {
     next(err);
+  }
+}
+
+function sendToDeploymentSlackChannel(deployment) {
+  if (isProduction(deployment.cluster)) {
+    log.info(
+      `Slack for all deployments in  (if configured) - ${
+        deployment.applicationName
+      }.`
+    );
+
+    let message = `*#${deployment.team}'s* service *${
+      deployment.friendlyName
+    }* is updated in production.`;
+
+    if (deployment.applicationUrl != null) {
+      message = `${message}. - ${deployment.applicationUrl}`;
+    }
+
+    slack.sendMessage(message);
   }
 }
 
