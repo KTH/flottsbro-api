@@ -359,7 +359,7 @@ function sendToDeploymentSlackChannel(deployment) {
       deployment.friendlyName
     }* is updated in production.`;
 
-    if (deployment.applicationUrl != null) {
+    if (deployment.applicationUrl != null && deployment.applicationUrl != "") {
       message = `${message}. - ${deployment.applicationUrl}`;
     }
 
