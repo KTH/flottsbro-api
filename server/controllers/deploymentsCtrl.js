@@ -96,6 +96,21 @@ function* getLatestByClusterName(request, response, next) {
   }
 
   if (deployments.length > 0) {
+    deployments = deployments.map(deployment => {
+      console.log();
+      if (
+        deployment.applicationUrl != null &&
+        deployment.applicationUrl.includes("api.kth.se")
+      ) {
+        if (deployment.applicationUrl.endsWith("/")) {
+          deployment.swaggerUrl = deployment.applicationUrl + "swagger";
+        } else {
+          deployment.swaggerUrl = deployment.applicationUrl + "/swagger";
+        }
+      }
+      return deployment;
+    });
+
     response.json(deployments);
     return;
   }
@@ -260,12 +275,7 @@ function cleanDeployment(deployment) {
   if (deployment.friendlyName == null) {
     deployment.friendlyName = deployment.publicNameEnglish;
   }
-  if (
-    deployment.applicationUrl != null &&
-    deployment.applicationUrl.includes("api.kth.se")
-  ) {
-    deployment.swaggerUrl = deployment.applicationUrl + "swagger";
-  }
+
   if (deployment.type == null) {
     if (isProduction(deployment.cluster)) {
       deployment.type = "production";
