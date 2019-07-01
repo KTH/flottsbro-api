@@ -183,11 +183,3 @@ function* getLatestForApplicationByMonitorUrl(request, response, next) {
 
   responses.ok(response, application);
 }
-
-function validateParameterName(parameterName, response) {
-  if (parameterName == null) {
-    responses.missingParamater(response, parameterName);
-    return false;
-  }
-  return true;
-}
