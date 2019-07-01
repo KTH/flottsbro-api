@@ -31,23 +31,23 @@ const schema = mongoose.Schema({
 const Deployments = mongoose.model(config.collection, schema);
 
 /**
- * Add.
+ * Add a deployemnt to database.
  * @param {*} request
  * @param {*} response
  * @param {*} next
  */
 function* add(deployment) {
   let result;
-  try {
-    log.error(deployment);
-    let dep = deploymentUtils.cleanDeployment(deployment);
 
-    let document = new Deployments(dep);
-    let result = document.save();
-    log.info(`Added '${deployment.applicationName}' to database.`);
-    result = deployment;
+  try {
+    let deploy = deploymentUtils.cleanDeployment(deployment);
+    let document = new Deployments(deploy);
+    result = yield document.save();
+    log.info(
+      `Added '${result.applicationName}' to database with _id '${result._id}'.`
+    );
   } catch (err) {
-    log.error(`Error when writing deployment to db. ${deployment}`);
+    log.error(`Error when writing deployment to db. ${deploy} `, err);
   }
 
   return result;

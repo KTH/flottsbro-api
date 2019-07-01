@@ -2,7 +2,6 @@
 
 const deploys = require("../models/deployments.js");
 const co = require("co");
-const log = require("kth-node-log");
 const slackUtils = require("./utils/slackUtils.js");
 const deploymentUtils = require("./utils/deploymentUtils.js");
 const responses = require("./utils/responses.js");
@@ -96,6 +95,7 @@ function* addLatestForApplicationName(request, response, next) {
         payload.cluster
       }' but the uri says '/v1/latest/${clusterName}'.`
     );
+    return;
   }
 
   let application = yield deploys.add(payload);

@@ -9,17 +9,21 @@ function toMessage(message) {
 }
 
 function okMessage(response, message) {
+  log.debug(application);
   ok(toMessage(message));
 }
 function ok(response, application) {
+  log.debug(application);
   response.status(200).json(application);
 }
 
 function notFound(response, message) {
+  log.info(message);
   response.status(404).json(toMessage(message));
 }
 
 function error(response, message) {
+  log.error(message);
   response.status(503).json(toMessage(message));
 }
 

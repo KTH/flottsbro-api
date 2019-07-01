@@ -46,6 +46,7 @@ function cleanDeployment(deployment) {
 }
 
 function findFirstMatch(deployments, searchPath) {
+  log.info("In find");
   deployments.forEach(deployment => {
     if (deployment.applicationPath && deployment.applicationPath != "/") {
       if (searchPath.startsWith(deployment.applicationPath)) {
