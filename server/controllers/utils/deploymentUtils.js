@@ -45,20 +45,34 @@ function cleanDeployment(deployment) {
   return deployment;
 }
 
+function hasPath(application) {
+  if (application.applicationPath && application.applicationPath != "/") {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Find first the application where the searchPath starts with applicationPath.
+ * @param {} deployments
+ * @param {*} searchPath
+ */
 function findFirstMatch(deployments, searchPath) {
-  log.info("In find");
-  deployments.forEach(deployment => {
-    if (deployment.applicationPath && deployment.applicationPath != "/") {
-      if (searchPath.startsWith(deployment.applicationPath)) {
+  let i;
+  for (i = 0; i < deployments.length; i++) {
+    let application = deployments[i];
+
+    if (hasPath(application)) {
+      if (searchPath.startsWith(application.applicationPath)) {
         log.info(
-          `'${searchPath}' starts with '${
-            deployment.applicationPath
-          }', used by '${deployment.applicationName}'.`
+          `'${application.applicationName}':s ${
+            application.applicationPath
+          } matches '${searchPath}'.`
         );
-        return deployment;
+        return application;
       }
     }
-  });
+  }
 }
 
 /**

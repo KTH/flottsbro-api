@@ -27,16 +27,17 @@ function* getLatestBySearch(request, response, next) {
   let searchPath = decodeURIComponent(request.params.path);
   let clusterName = request.params.clusterName;
 
-  log.debug(`Search '${clusterName}' '${searchPath}'.`);
-
-  let applications = yield deploys.getLatestByClusterName(clusterName);
+  let applications = yield deploys.getLatestByCluster(clusterName);
 
   let application = deploymentUtils.findFirstMatch(applications, searchPath);
+
+  console.log(application);
 
   if (application) {
     responses.ok(response, application);
   } else {
     responses.notFound(
+      response,
       `No deployed applications found in cluster '${clusterName}' starting with path '${searchPath}'.`
     );
   }
