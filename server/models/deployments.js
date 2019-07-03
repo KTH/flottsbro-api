@@ -203,7 +203,7 @@ function getQuery(match, limit) {
  */
 function getGroup() {
   return {
-    _id: "$friendlyName",
+    _id: "$applicationName",
     created: {
       $first: "$created"
     },
