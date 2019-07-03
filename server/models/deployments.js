@@ -255,9 +255,6 @@ function getGroup() {
     team: {
       $first: "$team"
     },
-    applicationUrl: {
-      $first: "$applicationUrl"
-    },
     friendlyName: {
       $first: "$friendlyName"
     },
