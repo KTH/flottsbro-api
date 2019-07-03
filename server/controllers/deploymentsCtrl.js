@@ -31,8 +31,6 @@ function* getLatestBySearch(request, response, next) {
 
   let application = deploymentUtils.findFirstMatch(applications, searchPath);
 
-  console.log(application);
-
   if (application) {
     responses.ok(response, application);
   } else {
