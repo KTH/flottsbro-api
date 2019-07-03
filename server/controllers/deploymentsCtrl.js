@@ -133,7 +133,8 @@ function* getLatestForApplicationName(request, response, next) {
 
   if (application == null) {
     responses.notFound(
-      response`No application '${applicationName}' found in cluster '${clusterName}'.`
+      response,
+      `No application '${applicationName}' found in cluster '${clusterName}'.`
     );
     return;
   }
