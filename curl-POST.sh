@@ -42,4 +42,4 @@ curl --request POST --data \
 --silent \
 --header "api_key: $API_KEY_WRITE"  \
 --header "Content-Type: application/json" \
-localhost:3001/api/pipeline/v1/latest/stage | jq
+localhost:3001/api/pipeline/v1/latest/stage
