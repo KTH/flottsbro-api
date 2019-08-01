@@ -1,6 +1,6 @@
 {
   "//": "The production flag is added in the jenkins build script.",
-  "name": "Flottsbro-API",
+  "name": "flottsbro-api",
   "version": "0.1.0",
   "description": "Restful API for getting information about applications deployed in Docker clusters. .",
   "main": "app.js",
