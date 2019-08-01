@@ -44,8 +44,8 @@
     "/v1/latest/{clusterName}/{applicationName}/": {
       "get": {
         "operationId": "getLatestForApplicationName",
-        "summary": "Add.",
-        "description": "Add.",
+        "summary": "Gets the latest deployment for an application in a given cluster name (active, stage, integral) or 'production'.",
+        "description": "When an applicatioon is deployed, we store information about that event according to https://app.kth.se/jsonschema/dizin/deployment. You can retrive this information for an application name.",
         "parameters": [
           {
             "name": "clusterName",
@@ -90,8 +90,8 @@
     "/v1/latest/{clusterName}": {
       "get": {
         "operationId": "getLatestByClusterName",
-        "summary": "Gets latest deployments for a cluster.",
-        "description": "Gets the latest deployment inforamtion about a applications in a specific cluster .",
+        "summary": "Gets the last deployment information for applications deployed in a cluster.",
+        "description": "Gets the last deployment information for applications deployed in a cluster (ex 'active', 'stage', 'integral') or in production (ex 'production').",
         "parameters": [
           {
             "name": "clusterName",
@@ -126,7 +126,8 @@
       },
       "post": {
         "operationId": "addLatestForApplicationName",
-        "summary": "Add a new application deployment to a cluster.",
+        "summary": "Add a new application deployment for a cluster.",
+        "description": "Add a new application deployment according to https://app.kth.se/jsonschema/dizin/deployment. Also see ex https://github.com/KTH/flottsbro-api/blob/master/curl-POST.sh",
         "parameters": [
           {
             "name": "clusterName",
@@ -172,20 +173,20 @@
     "/v1/search/{clusterName}/{path}": {
       "get": {
         "operationId": "getLatestBySearch",
-        "summary": "Gets the latest deployment matching a URL encoded monitor url.",
-        "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
+        "summary": "Search for starting with a path.",
+        "description": "Searches for deployments matching a URL encoded path. Ex:  curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/%2Fkth-azure-app%2F' and returnes the first match.",
         "parameters": [
           {
             "name": "clusterName",
             "in": "path",
-            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "description": "Cluster name to search in  (ex: active, stage)",
             "required": true,
             "type": "string"
           },
           {
             "name": "path",
             "in": "path",
-            "description": "Prefix string in query. Like '/news', or '/search'.",
+            "description": "URL encoded path. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/%2Fkth-azure-app%2F' and returnes the first match.",
             "required": true,
             "type": "string"
           }
@@ -218,7 +219,7 @@
       "get": {
         "operationId": "getLatestForApplicationByMonitorUrl",
         "summary": "Gets the latest deployment matching a URL encoded monitor url.",
-        "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
+        "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/monitor/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
         "parameters": [
           {
             "name": "clusterName",
@@ -230,7 +231,7 @@
           {
             "name": "monitorUrl",
             "in": "path",
-            "description": "Prefix string in query. Like '/news', or '/search'.",
+            "description": "An absolute url that is URL encoded. Ex: 'https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
             "required": true,
             "type": "string"
           }
