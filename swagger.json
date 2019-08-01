@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": " KTH Updates and Deployments API",
+    "title": " KTH Updates and Applications API",
     "description": "RestAPI with information about all uppdates and deployments that happen in KTH:s production environments.",
     "version": "1.0.0"
   },
@@ -69,7 +69,7 @@
           "200": {
             "description": "The requested data",
             "schema": {
-              "$ref": "#/definitions/Data"
+              "$ref": "#/definitions/Application"
             }
           },
           "default": {
@@ -108,7 +108,7 @@
           "200": {
             "description": "The requested data",
             "schema": {
-              "$ref": "#/definitions/Data"
+              "$ref": "#/definitions/Application"
             }
           },
           "default": {
@@ -151,7 +151,7 @@
           "200": {
             "description": "The requested data",
             "schema": {
-              "$ref": "#/definitions/Data"
+              "$ref": "#/definitions/ApplicationPost"
             }
           },
           "default": {
@@ -198,7 +198,7 @@
           "200": {
             "description": "The requested data",
             "schema": {
-              "$ref": "#/definitions/Data"
+              "$ref": "#/definitions/Application"
             }
           },
           "default": {
@@ -243,7 +243,7 @@
           "200": {
             "description": "The requested data",
             "schema": {
-              "$ref": "#/definitions/Data"
+              "$ref": "#/definitions/Application"
             }
           },
           "default": {
@@ -273,15 +273,147 @@
     }
   },
   "definitions": {
-    "Data": {
+    "Application": {
       "properties": {
-        "id": {
+        "_id": {
           "type": "string",
-          "description": "Unique identifier representing some specific data"
+          "description": "kth-azure-app"
         },
-        "name": {
+        "created": {
           "type": "string",
-          "description": "Description of the data"
+          "description": "1559724859.3520555"
+        },
+        "applicationName": {
+          "type": "string",
+          "description": "kth-azure-app"
+        },
+        "cluster": {
+          "type": "string",
+          "description": "active"
+        },
+        "version": {
+          "type": "string",
+          "description": "2.10.366_ca020e0"
+        },
+        "imageName": {
+          "type": "string",
+          "description": "kth-azure-app"
+        },
+        "applicationUrl": {
+          "type": "string",
+          "description": "https://app.kth.se/kth-azure-app/"
+        },
+        "applicationPath": {
+          "type": "string",
+          "description": "/kth-azure-app/"
+        },
+        "aboutUrl": {
+          "type": "string",
+          "description": "https://app.kth.se/kth-azure-app/_about"
+        },
+        "monitorUrl": {
+          "type": "string",
+          "description": "https://app.kth.se/kth-azure-app/_monitor"
+        },
+        "monitorPattern": {
+          "type": "string",
+          "description": "ENV_TEST"
+        },
+        "importance": {
+          "type": "string",
+          "description": "medium"
+        },
+        "publicNameSwedish": {
+          "type": "string",
+          "description": "Continuous delivery referens applikation"
+        },
+        "publicNameEnglish": {
+          "type": "string",
+          "description": "Continuous Delivery Reference Application"
+        },
+        "descriptionSwedish": {
+          "type": "string",
+          "description": "Referens applikation för KTH:s Docker kluster i Azure. Om denna tjänst har diftsörning har hela klustret problem."
+        },
+        "descriptionEnglish": {
+          "type": "string",
+          "description": "Reference application for KTHs Docker clusters."
+        },
+        "team": {
+          "type": "string",
+          "description": "team-pipeline"
+        },
+        "friendlyName": {
+          "type": "string",
+          "description": "Continuous Delivery Reference Application"
+        },
+        "publicUserDocumentationUrl": {
+          "type": "string",
+          "description": "https://confluence.sys.kth.se/confluence/display/EV/Continuous+Delivery+Pipeline+med+Docker"
+        }
+      }
+    },
+    "ApplicationPost": {
+      "properties": {
+        "applicationName": {
+          "type": "string",
+          "description": "kth-azure-app"
+        },
+        "cluster": {
+          "type": "string",
+          "description": "active"
+        },
+        "version": {
+          "type": "string",
+          "description": "2.10.366_ca020e0"
+        },
+        "imageName": {
+          "type": "string",
+          "description": "kth-azure-app"
+        },
+        "applicationUrl": {
+          "type": "string",
+          "description": "https://app.kth.se/kth-azure-app/"
+        },
+        "monitorUrl": {
+          "type": "string",
+          "description": "https://app.kth.se/kth-azure-app/_monitor"
+        },
+        "monitorPattern": {
+          "type": "string",
+          "description": "APPLICATION_STATUS: OK"
+        },
+        "importance": {
+          "type": "string",
+          "description": "medium"
+        },
+        "publicNameSwedish": {
+          "type": "string",
+          "description": "Continuous delivery referens applikation"
+        },
+        "publicNameEnglish": {
+          "type": "string",
+          "description": "Continuous Delivery Reference Application"
+        },
+        "descriptionSwedish": {
+          "type": "string",
+          "description": "Referens applikation för KTH:s Docker kluster i Azure. Om denna tjänst har diftsörning har hela klustret problem."
+        },
+        "descriptionEnglish": {
+          "type": "string",
+          "description": "Reference application for KTHs Docker clusters."
+        },
+        "team": {
+          "type": "string",
+          "description": "team-pipeline"
+        },
+        "friendlyName": {
+          "type": "string",
+          "description": "Continuous Delivery Reference Application"
+        },
+        "publicUserDocumentationUrl": {
+          "type": "string",
+          "description": "https://confluence.sys.kth.se/confluence/display/EV/Continuous+Delivery+Pipeline+med+Docker"
         }
       }
     },
