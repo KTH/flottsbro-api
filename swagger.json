@@ -21,16 +21,10 @@
         ],
         "responses": {
           "200": {
-            "description": "An empty response",
-            "schema": {
-              "$ref": "#/definitions/UserList"
-            }
+            "description": "Empty message"
           },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": {
@@ -72,11 +66,8 @@
               "$ref": "#/definitions/Application"
             }
           },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+          "503": {
+            "description": "A descriptive message (hopefully)."
           }
         },
         "security": {
@@ -111,11 +102,8 @@
               "$ref": "#/definitions/Application"
             }
           },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+          "503": {
+            "description": "A descriptive message (hopefully)."
           }
         },
         "security": {
@@ -154,11 +142,8 @@
               "$ref": "#/definitions/ApplicationPost"
             }
           },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+          "503": {
+            "description": "A descriptive message (hopefully)."
           }
         },
         "security": {
@@ -201,11 +186,8 @@
               "$ref": "#/definitions/Application"
             }
           },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+          "503": {
+            "description": "A descriptive message (hopefully)."
           }
         },
         "security": {
@@ -246,11 +228,8 @@
               "$ref": "#/definitions/Application"
             }
           },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+          "503": {
+            "description": "A descriptive message (hopefully)."
           }
         },
         "security": {
