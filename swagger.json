@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Flottsbro-API",
-    "description": "Deployment information for apps running under app.kth.se and api.kth.se.",
+    "title": " KTH Updates and Deployments API",
+    "description": "RestAPI with information about all uppdates and deployments that happen in KTH:s production environments.",
     "version": "1.0.0"
   },
   "basePath": "/api/pipeline",
@@ -11,7 +11,7 @@
   ],
   "paths": {
     "/_checkAPIkey": {
-      "GET": {
+      "get": {
         "operationId": "checkAPIkey",
         "summary": "GET a test endpoint that is protected by api key to validate that consumer has a proper api key",
         "description": "",
@@ -42,7 +42,7 @@
     },
     
     "/v1/latest/{clusterName}/{applicationName}/": {
-      "GET": {
+      "get": {
         "operationId": "getLatestForApplicationName",
         "summary": "Add.",
         "description": "Add.",
@@ -88,7 +88,7 @@
     },
     
     "/v1/latest/{clusterName}": {
-      "GET": {
+      "get": {
         "operationId": "getLatestByClusterName",
         "summary": "Gets latest deployments for a cluster.",
         "description": "Gets the latest deployment inforamtion about a applications in a specific cluster .",
@@ -124,7 +124,7 @@
           ]
         }
       },
-      "POST": {
+      "post": {
         "operationId": "addLatestForApplicationName",
         "summary": "Add a new application deployment to a cluster.",
         "parameters": [
@@ -170,7 +170,7 @@
     },
     
     "/v1/search/{clusterName}/{path}": {
-      "GET": {
+      "get": {
         "operationId": "getLatestBySearch",
         "summary": "Gets the latest deployment matching a URL encoded monitor url.",
         "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
@@ -215,7 +215,7 @@
       }
     },
     "/v1/monitor/{clusterName}/{monitorUrl}": {
-      "GET": {
+      "get": {
         "operationId": "getLatestForApplicationByMonitorUrl",
         "summary": "Gets the latest deployment matching a URL encoded monitor url.",
         "description": "Gets the latest deployment matching a URL encoded monitor url. curl -s -S --header 'Accept: application/json' --header 'api_key: abcd' 'https://api.kth.se/api/pipeline/v1/search/active/https%3A%2F%2Fapp.kth.se%2Fkopps%2F_monitor_core'",
