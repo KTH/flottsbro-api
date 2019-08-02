@@ -18,7 +18,7 @@ function ok(response, application) {
 }
 
 function notFound(response, message) {
-  log.info(message);
+  log.debug(message);
   response.status(404).json(toMessage(message));
 }
 

@@ -74,7 +74,32 @@ function* getLatestByClusterName(request, response, next) {
     return;
   }
 
-  responses.ok(response, applications);
+  responses.ok(response, addCalculatedProperties(applications));
+}
+
+function addCalculatedProperties(applications) {
+  return applications.map(addSwaggerLink);
+}
+
+function addSwaggerLink(application) {
+  if (isSwaggerLink(application.publicUserDocumentationUrl)) {
+    application.publicApiDocumentationUrl =
+      application.publicUserDocumentationUrl;
+    console.log(`${application.publicApiDocumentationUrl} is here`);
+  }
+
+  return application;
+}
+
+function isSwaggerLink(publicUserDocumentationUrl) {
+  if (publicUserDocumentationUrl == null) {
+    return false;
+  }
+
+  if (publicUserDocumentationUrl.includes("swagger")) {
+    return true;
+  }
+  return false;
 }
 
 /**
