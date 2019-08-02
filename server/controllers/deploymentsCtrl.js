@@ -85,7 +85,6 @@ function addSwaggerLink(application) {
   if (isSwaggerLink(application.publicUserDocumentationUrl)) {
     application.publicApiDocumentationUrl =
       application.publicUserDocumentationUrl;
-    console.log(`${application.publicApiDocumentationUrl} is here`);
   }
 
   return application;
