@@ -29,7 +29,7 @@
     "kth-node-express-routing": "^0.4.0",
     "kth-node-log": "^3.0.2",
     "kth-node-mongo": "3.1.0",
-    "kth-node-monitor": "^0.1.11",
+    "kth-node-monitor": "^1.0.2",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
     "kth-node-server": "^3.1.1",
     "mongoose": "^5.3.15",
