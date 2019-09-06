@@ -8,7 +8,7 @@ const os = require("os");
 
 const Promise = require("bluebird");
 const registry = require("component-registry").globalRegistry;
-const { IHealthCheck } = require("kth-node-monitor").interfaces;
+const monitor = require("kth-node-monitor");
 const started = new Date();
 
 /**
@@ -56,26 +56,19 @@ function getAbout(req, res) {
 function getMonitor(req, res) {
   // Check MongoDB
   const mongodbHealthUtil = registry.getUtility(
-    IHealthCheck,
-    "kth-node-mongodb"
+    monitor.interfaces.IHealthCheck,
+    monitor.interfaces.names.KTH_NODE_MONGODB
   );
   const subSystems = [mongodbHealthUtil.status(db, { required: true })];
-
-  // If we need local system checks, such as memory or disk, we would add it here.
-  // Make sure it returns a promise which resolves with an object containing:
-  // {statusCode: ###, message: '...'}
-  // The property statusCode should be standard HTTP status codes.
-  const localSystems = Promise.resolve({ statusCode: 200, message: "OK" });
-
   /* -- You will normally not change anything below this line -- */
 
   // Determine system health based on the results of the checks above. Expects
   // arrays of promises as input. This returns a promise
   const systemHealthUtil = registry.getUtility(
-    IHealthCheck,
-    "kth-node-system-check"
+    monitor.interfaces.IHealthCheck,
+    monitor.interfaces.names.KTH_NODE_SYSTEM_CHECK
   );
-  const systemStatus = systemHealthUtil.status(localSystems, subSystems);
+  const systemStatus = systemHealthUtil.status(null, subSystems);
 
   systemStatus
     .then(status => {
