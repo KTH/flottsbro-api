@@ -7,13 +7,14 @@
   "private": true,
   "scripts": {
     "codecheck": "prettier",
-    "test": "mocha test/**/*.js",
     "start": "NODE_ENV=production node app.js",
-    "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js"
+    "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js",
+    "test": "mocha test/**/*.js",
+    "test-unit-in-docker": "ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-unit-tests.yml up --abort-on-container-exit --always-recreate-deps"
   },
   "dependencies": {
-    "@slack/webhook": "^5.0.0",
-    "bluebird": "^3.5.3",
+    "@slack/webhook": "^5.0.2",
+    "bluebird": "^3.7.1",
     "body-parser": "^1.18.3",
     "co": "^4.6.0",
     "component-registry": "^1.0.0",
@@ -24,15 +25,15 @@
     "gulp": "^4.0.0",
     "kth-node-access-log": "^0.2.0",
     "kth-node-api-common": "^0.1.5",
-    "kth-node-api-key-strategy": "^1.0.6",
+    "kth-node-api-key-strategy": "^1.0.8",
     "kth-node-configuration": "^1.6.4",
     "kth-node-express-routing": "^0.4.0",
     "kth-node-log": "^3.0.2",
     "kth-node-mongo": "3.1.0",
-    "kth-node-monitor": "^1.0.22",
+    "kth-node-monitor": "^1.0.26",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
-    "kth-node-server": "^3.1.1",
-    "mongoose": "^5.6.13",
+    "kth-node-server": "^3.1.2",
+    "mongoose": "^5.7.5",
     "passport": "^0.4.0",
     "safe-utils": "^0.2.1",
     "swagger-ui": "^2.2.4"
@@ -44,11 +45,11 @@
     "husky": "^1.2.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.19.4",
     "proxyquire": "^2.1.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.1",
-    "webpack": "^4.29.6"
+    "webpack": "^4.41.2"
   },
   "engines": {
     "node": "8.9"
