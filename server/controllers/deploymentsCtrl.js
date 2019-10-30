@@ -10,6 +10,7 @@ const types = { PRODUCTION: "production" };
 module.exports = {
   addLatestForApplicationName: co.wrap(addLatestForApplicationName),
   getLatestForApplicationName: co.wrap(getLatestForApplicationName),
+  deleteApplicationName: co.wrap(deleteApplicationName),
   getLatestForApplicationByMonitorUrl: co.wrap(
     getLatestForApplicationByMonitorUrl
   ),
@@ -67,9 +68,7 @@ function* getLatestByClusterName(request, response, next) {
   if (applications == undefined) {
     responses.error(
       response,
-      `Unexpected error when trying to read deployment data for cluster '${
-        request.params.clusterName
-      }'.`
+      `Unexpected error when trying to read deployment data for cluster '${request.params.clusterName}'.`
     );
     return;
   }
@@ -114,9 +113,7 @@ function* addLatestForApplicationName(request, response, next) {
   if (payload.cluster != clusterName) {
     responses.error(
       response,
-      `The json payload says deployment was done in '${
-        payload.cluster
-      }' but the uri says '/v1/latest/${clusterName}'.`
+      `The json payload says deployment was done in '${payload.cluster}' but the uri says '/v1/latest/${clusterName}'.`
     );
     return;
   }
@@ -134,6 +131,25 @@ function* addLatestForApplicationName(request, response, next) {
   slackUtils.sendToDeploymentSlackChannel(application);
 
   responses.ok(response, application);
+}
+
+function* deleteApplicationName(request, response, next) {
+  let clusterName = request.params.clusterName;
+  let applicationName = request.params.applicationName;
+
+  let done = yield deploys.deleteApplication(clusterName, applicationName);
+
+  if (done) {
+    responses.ok(
+      response,
+      `'${applicationName}' removed from '${clusterName}'.`
+    );
+  } else {
+    responses.ok(
+      response,
+      `Found no match for '${applicationName}' in '${clusterName}'.`
+    );
+  }
 }
 
 /**

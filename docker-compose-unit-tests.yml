@@ -1,7 +1,7 @@
-version: '3'
+version: '3.6'
 services:
 
-  web:
+  api:
     image: $LOCAL_IMAGE_ID
     environment:
       MONGODB_CONNECTION_STRING: "mongodb://mongodb-teste:abc123@example.com:10255/mongodb?ssl=true"

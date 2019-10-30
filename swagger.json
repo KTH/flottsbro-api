@@ -35,7 +35,7 @@
       }
     },
     
-    "/v1/latest/{clusterName}/{applicationName}/": {
+    "/v1/{clusterName}/{applicationName}/": {
       "get": {
         "operationId": "getLatestForApplicationName",
         "summary": "Gets the latest deployment for an application in a given cluster name (active, stage, integral) or 'production'.",
@@ -44,14 +44,14 @@
           {
             "name": "clusterName",
             "in": "path",
-            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "description": "Cluster name to get current deployments from (e.g: active, stage)",
             "required": true,
             "type": "string"
           },
           {
             "name": "applicationName",
             "in": "path",
-            "description": "Application name to get current deployments from (i.e: niskeko-web, search-api)",
+            "description": "Application name to get current deployments from (e.g: niskeko-web, search-api)",
             "required": true,
             "type": "string"
           }
@@ -75,6 +75,46 @@
             "read"
           ]
         }
+      },
+      "delete": {
+        "operationId": "deleteApplicationName",
+        "summary": "Delte an application in a given cluster name (active, stage, integral).",
+        "description": "",
+        "parameters": [
+          {
+            "name": "clusterName",
+            "in": "path",
+            "description": "Cluster nam (e.g: active, stage)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "applicationName",
+            "in": "path",
+            "description": "Application name to get current deployments from (e.g: niskeko-web, search-api)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "v1"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested data",
+            "schema": {
+              "$ref": "#/definitions/Application"
+            }
+          },
+          "503": {
+            "description": "A descriptive message (hopefully)."
+          }
+        },
+        "security": {
+          "api_key": [
+            "write"
+          ]
+        }
       }
     },
     
@@ -87,7 +127,7 @@
           {
             "name": "clusterName",
             "in": "path",
-            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "description": "Cluster name to get current deployments from (e.g: active, stage)",
             "required": "true",
             "type": "string"
           }
@@ -120,14 +160,14 @@
           {
             "name": "clusterName",
             "in": "path",
-            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "description": "Cluster name to get current deployments from (e.g: active, stage)",
             "required": true,
             "type": "string"
           },
           {
             "name": "applicationName",
             "in": "path",
-            "description": "Application name to get current deployments from (i.e: niskeko-web, search-api)",
+            "description": "Application name to get current deployments from (e.g: niskeko-web, search-api)",
             "required": true,
             "type": "string"
           }
@@ -206,7 +246,7 @@
           {
             "name": "clusterName",
             "in": "path",
-            "description": "Cluster name to get current deployments from (i.e: active, stage)",
+            "description": "Cluster name to get current deployments from (e.g: active, stage)",
             "required": true,
             "type": "string"
           },

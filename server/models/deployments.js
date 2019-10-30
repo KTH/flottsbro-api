@@ -139,6 +139,33 @@ function* getApplication(clusterName, applicationName) {
 }
 
 /**
+ * Gets the latest deployment for an application in a specified cluster
+ *
+ * @param {*} clusterName
+ * @param {*} applicationName
+ */
+function* deleteApplication(clusterName, applicationName) {
+  let result = false;
+
+  try {
+    results = yield Deployments.find(
+      {
+        applicationName: applicationName,
+        cluster: clusterName
+      },
+      function(err, deployments) {
+        result = true;
+        Deployments.remove();
+      }
+    );
+  } catch (err) {
+    log.error(`Error while reading deployments for '${clusterName}'`, err);
+  }
+
+  return result;
+}
+
+/**
  * Gets the latest deployment for an application where the monitor url is monitorUrl.
  *
  * @param {*} clusterName
@@ -269,6 +296,7 @@ module.exports = {
   schema: schema,
   add: add,
   getApplication: getApplication,
+  deleteApplication: deleteApplication,
   getApplicationByMonitorUrl: getApplicationByMonitorUrl,
   getLatestByType: getLatestByType,
   getLatestByCluster: getLatestByCluster
