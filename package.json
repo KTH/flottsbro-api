@@ -10,7 +10,7 @@
     "start": "NODE_ENV=production node app.js",
     "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js",
     "test": "mocha test/**/*.js",
-    "test-unit-in-docker": "ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-unit-tests.yml up --abort-on-container-exit --always-recreate-deps"
+    "test-unit-in-docker": "ID=$(docker build --pull -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-unit-tests.yml up --abort-on-container-exit --always-recreate-deps"
   },
   "dependencies": {
     "@slack/webhook": "^5.0.2",
