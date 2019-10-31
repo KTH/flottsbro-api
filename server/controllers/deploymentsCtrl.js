@@ -140,14 +140,11 @@ function* deleteApplicationName(request, response, next) {
   let done = yield deploys.deleteApplication(clusterName, applicationName);
 
   if (done) {
-    responses.ok(
-      response,
-      `'${applicationName}' removed from '${clusterName}'.`
-    );
+    responses.ok(response, `${applicationName} removed from ${clusterName}.`);
   } else {
     responses.ok(
       response,
-      `Found no match for '${applicationName}' in '${clusterName}'.`
+      `Found no match for '${applicationName}' in '${clusterName}' to remove.`
     );
   }
 }

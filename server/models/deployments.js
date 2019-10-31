@@ -148,16 +148,19 @@ function* deleteApplication(clusterName, applicationName) {
   let result = false;
 
   try {
-    results = yield Deployments.find(
+    const results = yield Deployments.deleteMany(
       {
         applicationName: applicationName,
         cluster: clusterName
       },
-      function(err, deployments) {
-        result = true;
-        Deployments.remove();
+      function(deleteError, documents) {
+        if (deleteError) {
+          console.log(deleteError);
+        }
       }
     );
+    console.log(results);
+    result = true;
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'`, err);
   }
