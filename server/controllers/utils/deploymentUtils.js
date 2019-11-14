@@ -65,9 +65,7 @@ function findFirstMatch(deployments, searchPath) {
     if (hasPath(application)) {
       if (searchPath.startsWith(application.applicationPath)) {
         log.info(
-          `'${application.applicationName}':s ${
-            application.applicationPath
-          } matches '${searchPath}'.`
+          `Start path '${application.applicationPath}' matches '${searchPath}, returning ${application.applicationName}.'.`
         );
         return application;
       }
