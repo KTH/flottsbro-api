@@ -33,8 +33,6 @@ function* getLatestBySearch(request, response, next) {
   let applications = yield deploys.getLatestByCluster(clusterName);
   let application = deploymentUtils.findFirstMatch(applications, searchPath);
 
-  console.log(`Got answer for search in ${Date.now() - requestStarted}ms.`);
-
   if (application) {
     responses.ok(response, application);
   } else {

@@ -38,6 +38,7 @@ const Deployments = mongoose.model(config.collection, schema);
  */
 function* add(deployment) {
   let result;
+  const requestStarted = Date.now();
 
   try {
     let deploy = deploymentUtils.cleanDeployment(deployment);
@@ -62,7 +63,6 @@ function* add(deployment) {
  */
 function* getLatestByCluster(clusterName) {
   let result = [];
-
   const requestStarted = Date.now();
 
   try {
@@ -97,6 +97,7 @@ function* getLatestByCluster(clusterName) {
  */
 function* getLatestByType(type) {
   let result = [];
+  const requestStarted = Date.now();
 
   try {
     result = yield Deployments.aggregate(
@@ -108,7 +109,12 @@ function* getLatestByType(type) {
       )
     );
 
-    log.info(`Found ${result.length} applications deployed in '${type}'.`);
+    log.info(
+      `Found ${
+        result.length
+      } applications deployed in '${type}'. Took ${Date.now() -
+        requestStarted}ms.`
+    );
   } catch (err) {
     log.error(`Error while reading deployments for '${type}'.`, err);
   }
@@ -124,9 +130,10 @@ function* getLatestByType(type) {
  */
 function* getApplication(clusterName, applicationName) {
   let result = undefined;
+  const requestStarted = Date.now();
 
   try {
-    results = yield Deployments.aggregate(
+    const results = yield Deployments.aggregate(
       getQuery(
         {
           applicationName: applicationName,
@@ -136,6 +143,13 @@ function* getApplication(clusterName, applicationName) {
       )
     );
     result = results[0];
+    console.log;
+    log.info(
+      `Found ${
+        results.length
+      } application(s) deployed matching '${clusterName}'/'${applicationName}'. Took ${Date.now() -
+        requestStarted}ms.`
+    );
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'`, err);
   }
@@ -151,6 +165,7 @@ function* getApplication(clusterName, applicationName) {
  */
 function* deleteApplication(clusterName, applicationName) {
   let result = false;
+  const requestStarted = Date.now();
 
   try {
     const results = yield Deployments.deleteMany(
@@ -164,7 +179,8 @@ function* deleteApplication(clusterName, applicationName) {
         }
       }
     );
-    console.log(results);
+    log.debug(`Deleted. Took ${Date.now() - requestStarted}ms.`);
+
     result = true;
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'`, err);
@@ -181,6 +197,7 @@ function* deleteApplication(clusterName, applicationName) {
  */
 function* getApplicationByMonitorUrl(clusterName, monitorUrl) {
   let result;
+  const requestStarted = Date.now();
 
   try {
     let applications = yield Deployments.aggregate(
@@ -196,7 +213,10 @@ function* getApplicationByMonitorUrl(clusterName, monitorUrl) {
     result = "";
 
     if (applications.length > 0) {
-      log.info(`Found application for '${monitorUrl} in '${clusterName}'`);
+      log.info(
+        `Found application for '${monitorUrl} in '${clusterName}'. Took ${Date.now() -
+          requestStarted}ms.`
+      );
       result = applications[0];
     } else {
       result = null;
