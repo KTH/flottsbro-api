@@ -29,15 +29,25 @@ function* getLatestBySearch(request, response, next) {
 
   let searchPath = decodeURIComponent(request.params.path);
   let clusterName = request.params.clusterName;
+  console.log(
+    `--------------> getLatestBySearch 1: ${Date.now() - requestStarted}ms`
+  );
 
   let applications = yield deploys.getLatestByCluster(clusterName);
+  console.log(
+    `--------------> getLatestBySearch 2: ${Date.now() - requestStarted}ms`
+  );
 
   let application = deploymentUtils.findFirstMatch(applications, searchPath);
+
+  console.log(
+    `--------------> getLatestBySearch 3: ${Date.now() - requestStarted}ms`
+  );
 
   if (application) {
     responses.ok(response, application);
     console.log(
-      `--------------> getLatestBySearch: ${Date.now() - requestStarted}`
+      `--------------> getLatestBySearch 4.: ${Date.now() - requestStarted}ms`
     );
   } else {
     responses.notFound(
