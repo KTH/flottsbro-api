@@ -45,7 +45,9 @@ function* add(deployment) {
     let document = new Deployments(deploy);
     result = yield document.save();
     log.info(
-      `Added '${result.applicationName}' to database with _id '${result._id}'.`
+      `Added '${result.applicationName}' to database with _id '${
+        result._id
+      }'. Took ${Date.now() - requestStarted}ms.`
     );
   } catch (err) {
     log.error(`Error when writing deployment to db. ${deploy} `, err);
