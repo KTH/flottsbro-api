@@ -6,7 +6,6 @@ const slackUtils = require("./utils/slackUtils.js");
 const deploymentUtils = require("./utils/deploymentUtils.js");
 const responses = require("./utils/responses.js");
 const types = { PRODUCTION: "production" };
-const date = require("Date");
 
 module.exports = {
   addLatestForApplicationName: co.wrap(addLatestForApplicationName),
