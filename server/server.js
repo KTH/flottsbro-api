@@ -12,6 +12,19 @@ const config = require("./configuration").server;
 const AppRouter = require("kth-node-express-routing").PageRouter;
 const getPaths = require("kth-node-express-routing").getPaths;
 
+if (config.appInsights && config.appInsights.instrumentationKey) {
+  let appInsights = require("applicationinsights");
+  appInsights
+    .setup(config.appInsights.instrumentationKey)
+    .setAutoDependencyCorrelation(false)
+    .setAutoCollectRequests(true)
+    .setAutoCollectPerformance(true)
+    .setAutoCollectExceptions(false)
+    .setAutoCollectDependencies(true)
+    .setAutoCollectConsole(true)
+    .start();
+}
+
 // Expose the server and paths
 server.locals.secret = new Map();
 module.exports = server;
