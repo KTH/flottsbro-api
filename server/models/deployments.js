@@ -63,6 +63,8 @@ function* add(deployment) {
 function* getLatestByCluster(clusterName) {
   let result = [];
 
+  const requestStarted = Date.now();
+
   try {
     result = yield Deployments.aggregate(
       getQuery(
@@ -74,7 +76,10 @@ function* getLatestByCluster(clusterName) {
     );
 
     log.info(
-      `Found ${result.length} applications deployed in '${clusterName}'.`
+      `Found ${
+        result.length
+      } applications deployed in '${clusterName}'. Took ${Date.now() -
+        requestStarted}ms.`
     );
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'.`, err);
