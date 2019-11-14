@@ -23,6 +23,7 @@ if (config.appInsights && config.appInsights.instrumentationKey) {
     .setAutoCollectDependencies(true)
     .setAutoCollectConsole(true)
     .start();
+  console.log("Using app insights.");
 }
 
 // Expose the server and paths
