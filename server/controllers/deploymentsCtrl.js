@@ -6,6 +6,7 @@ const slackUtils = require("./utils/slackUtils.js");
 const deploymentUtils = require("./utils/deploymentUtils.js");
 const responses = require("./utils/responses.js");
 const types = { PRODUCTION: "production" };
+const date = require("Date");
 
 module.exports = {
   addLatestForApplicationName: co.wrap(addLatestForApplicationName),
@@ -25,6 +26,8 @@ module.exports = {
  * @param {*} next
  */
 function* getLatestBySearch(request, response, next) {
+  const requestStarted = Date.now();
+
   let searchPath = decodeURIComponent(request.params.path);
   let clusterName = request.params.clusterName;
 
@@ -34,6 +37,9 @@ function* getLatestBySearch(request, response, next) {
 
   if (application) {
     responses.ok(response, application);
+    console.log(
+      `--------------> getLatestBySearch: ${Date.now() - requestStarted}`
+    );
   } else {
     responses.notFound(
       response,

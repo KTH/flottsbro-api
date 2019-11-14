@@ -17,7 +17,7 @@ const started = new Date();
  */
 module.exports = {
   monitor: getMonitor,
-  about: getAbout,
+  about: _about,
   robotsTxt: getRobotsTxt,
   paths: getPathsHandler,
   checkAPIKey: checkAPIKey,
@@ -32,20 +32,17 @@ function getSwagger(req, res) {
   res.json(require("../../swagger.json"));
 }
 
-/**
- * GET /_about
+/* GET /_about
  * About page
  */
-function getAbout(req, res) {
-  const paths = getPaths();
+function _about(req, res) {
   res.render("system/about", {
+    debug: "debug" in req.query,
+    layout: "systemLayout",
+    dockerName: version.dockerName,
     dockerVersion: version.dockerVersion,
-    hostname: os.hostname(),
-    appName: packageFile.name,
-    appDescription: packageFile.description,
-    monitorUri: paths.system.monitor.uri,
-    robotsUri: paths.system.robots.uri,
-    started: started
+    started: started,
+    env: require("../server").get("env")
   });
 }
 
