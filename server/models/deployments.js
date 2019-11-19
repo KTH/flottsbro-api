@@ -102,7 +102,11 @@ function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
  * @param {*} clusterName
  * @param {*} applicationName
  */
-function* getApplication(clusterName, applicationName) {
+function* getApplication(
+  clusterName,
+  applicationName,
+  type = types.PRODUCTION
+) {
   let result = undefined;
   const requestStarted = Date.now();
 
@@ -111,7 +115,8 @@ function* getApplication(clusterName, applicationName) {
       getQuery(
         {
           applicationName: applicationName,
-          cluster: clusterName
+          cluster: clusterName,
+          type: type
         },
         limits.ONLY_ONE
       )
@@ -168,7 +173,11 @@ function* deleteApplication(clusterName, applicationName) {
  * @param {*} clusterName
  * @param {*} monitorUrl
  */
-function* getApplicationByMonitorUrl(clusterName, monitorUrl) {
+function* getApplicationByMonitorUrl(
+  clusterName,
+  monitorUrl,
+  type = type.PRODUCTION
+) {
   let result;
   const requestStarted = Date.now();
 
@@ -177,7 +186,8 @@ function* getApplicationByMonitorUrl(clusterName, monitorUrl) {
       getQuery(
         {
           monitorUrl: monitorUrl,
-          cluster: clusterName
+          cluster: clusterName,
+          type: type
         },
         limits.ONLY_ONE
       )

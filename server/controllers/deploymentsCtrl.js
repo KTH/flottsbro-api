@@ -29,7 +29,10 @@ function* getLatestBySearch(request, response, next) {
   let searchPath = decodeURIComponent(request.params.path);
   let clusterName = request.params.clusterName;
 
-  let applications = yield deploys.getLatestByCluster(clusterName);
+  let applications = yield deploys.getLatestByCluster(
+    clusterName,
+    getType(clusterName)
+  );
   let application = deploymentUtils.findFirstMatch(applications, searchPath);
 
   if (application) {
@@ -166,7 +169,11 @@ function* getLatestForApplicationName(request, response, next) {
     );
   }
 
-  let application = yield deploys.getApplication(clusterName, applicationName);
+  let application = yield deploys.getApplication(
+    clusterName,
+    applicationName,
+    getType(clusterName)
+  );
 
   if (application == null) {
     responses.notFound(
@@ -199,7 +206,8 @@ function* getLatestForApplicationByMonitorUrl(request, response, next) {
 
   let application = yield deploys.getApplicationByMonitorUrl(
     clusterName,
-    monitorUrl
+    monitorUrl,
+    getType(clusterName)
   );
 
   if (application == null) {
