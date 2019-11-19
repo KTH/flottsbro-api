@@ -1,6 +1,7 @@
 "use strict";
 
 const log = require("kth-node-log");
+const deploys = require("../../models/deployments");
 
 /**
  * Clean up a deployment json and validate that mandatory fields have the correct values.
@@ -35,9 +36,9 @@ function cleanDeployment(deployment) {
 
   if (deployment.type == null) {
     if (isProduction(deployment.cluster)) {
-      deployment.type = "production";
+      deployment.type = deploys.types.PRODUCTION;
     } else {
-      deployment.type = "reference";
+      deployment.type = deploys.types.REFERENS;
     }
   }
   deployment.type = deployment.type.toLowerCase();

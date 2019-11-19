@@ -4,11 +4,14 @@ const mongoose = require("mongoose");
 const config = require("../configuration").server;
 const log = require("kth-node-log");
 const deploymentUtils = require("../controllers/utils/deploymentUtils.js");
+
+const types = { PRODUCTION: "production", REFERENS: "reference" };
 const limits = { NO_LIMIT: 1000, ONLY_ONE: 1 };
 
 const schema = mongoose.Schema({
   applicationName: String,
   cluster: String,
+  type: String,
   version: String,
   imageName: String,
   applicationPath: String,
@@ -24,8 +27,7 @@ const schema = mongoose.Schema({
   applicationUrl: String,
   friendlyName: String,
   publicUserDocumentationUrl: String,
-  applicationPath: String,
-  type: String
+  applicationPath: String
 });
 
 const Deployments = mongoose.model(config.collection, schema);
@@ -49,7 +51,6 @@ function* add(deployment) {
         result._id
       }'. Took ${Date.now() - requestStarted}ms.`
     );
-    log.info(deploy);
   } catch (err) {
     log.error(`Error when writing deployment to db. ${deploy} `, err);
   }
@@ -64,21 +65,24 @@ function* add(deployment) {
  * @param {*} response
  * @param {*} next
  */
-function* getLatestByCluster(clusterName) {
+function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
   let result = [];
   const requestStarted = Date.now();
 
-  try {
-    result = yield Deployments.aggregate(
-      getQuery(
-        {
-          type: "production"
-        },
-        limits.NO_LIMIT
-      )
-    );
+  let select = {
+    cluster: clusterName,
+    type: type
+  };
 
-    log.info(result[0]);
+  if (clusterName === types.PRODUCTION || clusterName === types.REFERENS) {
+    select = {
+      type: type
+    };
+  }
+
+  try {
+    result = yield Deployments.aggregate(getQuery(select, limits.NO_LIMIT));
+
     log.info(
       `Found ${
         result.length
@@ -87,42 +91,6 @@ function* getLatestByCluster(clusterName) {
     );
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'.`, err);
-  }
-
-  return result;
-}
-
-/**
- * Gets the latest deployments as an array for a specified by type (production/reference).
- *
- * @param {*} type
- * @param {*} response
- * @param {*} next
- */
-function* getLatestByType(type) {
-  let result = [];
-  const requestStarted = Date.now();
-
-  try {
-    result = yield Deployments.aggregate(
-      getQuery(
-        {
-          type: type
-        },
-        limits.NO_LIMIT
-      )
-    );
-
-    log.debug(result[0]);
-
-    log.info(
-      `Found ${
-        result.length
-      } applications deployed in '${type}'. Took ${Date.now() -
-        requestStarted}ms.`
-    );
-  } catch (err) {
-    log.error(`Error while reading deployments for '${type}'.`, err);
   }
 
   return result;
@@ -149,7 +117,6 @@ function* getApplication(clusterName, applicationName) {
       )
     );
     result = results[0];
-
     log.info(
       `Found ${
         results.length
@@ -274,6 +241,9 @@ function getGroup() {
     cluster: {
       $first: "$cluster"
     },
+    type: {
+      $first: "$type"
+    },
     version: {
       $first: "$version"
     },
@@ -332,6 +302,6 @@ module.exports = {
   getApplication: getApplication,
   deleteApplication: deleteApplication,
   getApplicationByMonitorUrl: getApplicationByMonitorUrl,
-  getLatestByType: getLatestByType,
-  getLatestByCluster: getLatestByCluster
+  getLatestByCluster: getLatestByCluster,
+  types: types
 };

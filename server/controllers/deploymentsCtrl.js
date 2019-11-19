@@ -5,7 +5,6 @@ const co = require("co");
 const slackUtils = require("./utils/slackUtils.js");
 const deploymentUtils = require("./utils/deploymentUtils.js");
 const responses = require("./utils/responses.js");
-const types = { PRODUCTION: "production" };
 
 module.exports = {
   addLatestForApplicationName: co.wrap(addLatestForApplicationName),
@@ -43,12 +42,13 @@ function* getLatestBySearch(request, response, next) {
   }
 }
 
-function getByType(clusterName) {
-  if (clusterName == types.PRODUCTION) {
-    return true;
+function getType(clusterName) {
+  if (deploymentUtils.isProduction(clusterName)) {
+    return deploys.types.PRODUCTION;
   }
-  return false;
+  return deploys.types.PRODUCTION;
 }
+
 /**
  * Gets the latest deployments as an array for a specified cluster name.
  * @param {*} request
@@ -60,11 +60,10 @@ function* getLatestByClusterName(request, response, next) {
 
   let applications = [];
 
-  if (getByType(clusterName)) {
-    applications = yield deploys.getLatestByType(types.PRODUCTION);
-  } else {
-    applications = yield deploys.getLatestByCluster(clusterName);
-  }
+  applications = yield deploys.getLatestByCluster(
+    clusterName,
+    getType(clusterName)
+  );
 
   if (applications == undefined) {
     responses.error(
