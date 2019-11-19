@@ -178,12 +178,12 @@ function* deleteApplication(clusterName, applicationName) {
       function(deleteError, documents) {
         if (deleteError) {
           console.log(deleteError);
+        } else {
+          result = true;
         }
       }
     );
     log.debug(`Deleted. Took ${Date.now() - requestStarted}ms.`);
-
-    result = true;
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'`, err);
   }
