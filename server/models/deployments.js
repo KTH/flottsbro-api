@@ -49,6 +49,7 @@ function* add(deployment) {
         result._id
       }'. Took ${Date.now() - requestStarted}ms.`
     );
+    log.info(deploy);
   } catch (err) {
     log.error(`Error when writing deployment to db. ${deploy} `, err);
   }
@@ -71,12 +72,13 @@ function* getLatestByCluster(clusterName) {
     result = yield Deployments.aggregate(
       getQuery(
         {
-          cluster: clusterName
+          type: "production"
         },
         limits.NO_LIMIT
       )
     );
 
+    log.info(result[0]);
     log.info(
       `Found ${
         result.length
@@ -110,6 +112,8 @@ function* getLatestByType(type) {
         limits.NO_LIMIT
       )
     );
+
+    log.debug(result[0]);
 
     log.info(
       `Found ${
@@ -145,7 +149,7 @@ function* getApplication(clusterName, applicationName) {
       )
     );
     result = results[0];
-    console.log;
+
     log.info(
       `Found ${
         results.length
