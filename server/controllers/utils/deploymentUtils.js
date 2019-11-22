@@ -1,7 +1,7 @@
 "use strict";
 
 const log = require("kth-node-log");
-const deploys = require("../../models/deployments");
+const deployments = require("../../models/deployments");
 
 /**
  * Clean up a deployment json and validate that mandatory fields have the correct values.
@@ -36,9 +36,9 @@ function cleanDeployment(deployment) {
 
   if (deployment.type == null) {
     if (isProduction(deployment.cluster)) {
-      deployment.type = deploys.types.PRODUCTION;
+      deployment.type = "production";
     } else {
-      deployment.type = deploys.types.REFERENS;
+      deployment.type = "reference";
     }
   }
   deployment.type = deployment.type.toLowerCase();
@@ -55,13 +55,13 @@ function hasPath(application) {
 
 /**
  * Find first the application where the searchPath starts with applicationPath.
- * @param {} deployments
+ * @param {} applictions
  * @param {*} searchPath
  */
-function findFirstMatch(deployments, searchPath) {
+function findFirstMatch(applictions, searchPath) {
   let i;
-  for (i = 0; i < deployments.length; i++) {
-    let application = deployments[i];
+  for (i = 0; i < applictions.length; i++) {
+    let application = applictions[i];
 
     if (hasPath(application)) {
       if (searchPath.startsWith(application.applicationPath)) {

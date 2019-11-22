@@ -42,7 +42,6 @@ function* add(deployment) {
   let result;
   const requestStarted = Date.now();
   let deploy = deploymentUtils.cleanDeployment(deployment);
-
   try {
     let document = new Deployments(deploy);
     result = yield document.save();
