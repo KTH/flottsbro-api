@@ -41,9 +41,9 @@ const Deployments = mongoose.model(config.collection, schema);
 function* add(deployment) {
   let result;
   const requestStarted = Date.now();
+  let deploy = deploymentUtils.cleanDeployment(deployment);
 
   try {
-    let deploy = deploymentUtils.cleanDeployment(deployment);
     let document = new Deployments(deploy);
     result = yield document.save();
     log.info(
