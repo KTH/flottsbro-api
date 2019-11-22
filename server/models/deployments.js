@@ -41,9 +41,9 @@ const Deployments = mongoose.model(config.collection, schema);
 function* add(deployment) {
   let result;
   const requestStarted = Date.now();
-  let deploy = deploymentUtils.cleanDeployment(deployment);
+
   try {
-    let document = new Deployments(deploy);
+    let document = new Deployments(deploymentUtils.cleanDeployment(deployment));
     result = yield document.save();
     log.info(
       `Added '${result.applicationName}' to database with _id '${
@@ -51,7 +51,7 @@ function* add(deployment) {
       }'. Took ${Date.now() - requestStarted}ms.`
     );
   } catch (err) {
-    log.error(`Error when writing deployment to db. ${deploy} `, err);
+    log.error(`Error when writing deployment to db. ${deployment} `, err);
   }
 
   return result;
