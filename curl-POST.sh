@@ -24,7 +24,7 @@
 curl --request POST --data \
 '{
   "created": 1550835623.0807972,
-  "applicationName": "kth-azure-app",
+  "applicationName": "app1",
   "cluster": "stage",
   "version": "2.10.344_99bf09f",
   "imageName": "kth-azure-app",

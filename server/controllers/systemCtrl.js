@@ -52,28 +52,36 @@ function _about(req, res) {
  */
 function getMonitor(req, res) {
   // Check MongoDB
+  console.log("1");
   const mongodbHealthUtil = registry.getUtility(
     monitor.interfaces.IHealthCheck,
     monitor.interfaces.names.KTH_NODE_MONGODB
   );
+  console.log("2");
   const subSystems = [mongodbHealthUtil.status(db, { required: true })];
   /* -- You will normally not change anything below this line -- */
 
   // Determine system health based on the results of the checks above. Expects
   // arrays of promises as input. This returns a promise
+  console.log("3");
   const systemHealthUtil = registry.getUtility(
     monitor.interfaces.IHealthCheck,
     monitor.interfaces.names.KTH_NODE_SYSTEM_CHECK
   );
+  console.log("4");
   const systemStatus = systemHealthUtil.status(null, subSystems);
 
+  console.log("5");
   systemStatus
     .then(status => {
       // Return the result either as JSON or text
+      console.log("6");
       if (req.headers["accept"] === "application/json") {
+        console.log("7");
         let outp = systemHealthUtil.renderJSON(status);
         res.status(status.statusCode).json(outp);
       } else {
+        console.log("8");
         let outp = systemHealthUtil.renderText(status);
         res
           .type("text")
