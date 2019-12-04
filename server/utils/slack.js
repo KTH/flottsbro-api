@@ -41,7 +41,7 @@ async function sendMessage(message) {
     return;
   }
 
-  log.info(`Sending '${message}' to Slack.`);
+  log.debug(`Sending '${message}' to Slack.`);
   await getWebhook().send({
     text: message
   });

@@ -82,7 +82,7 @@ function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
   try {
     result = yield Deployments.aggregate(getQuery(select, limits.NO_LIMIT));
 
-    log.info(
+    log.debug(
       `Found ${
         result.length
       } applications deployed in '${clusterName}'. Took ${Date.now() -
@@ -121,7 +121,7 @@ function* getApplication(
       )
     );
     result = results[0];
-    log.info(
+    log.debug(
       `Found ${
         results.length
       } application(s) deployed matching '${clusterName}'/'${applicationName}'. Took ${Date.now() -
@@ -195,7 +195,7 @@ function* getApplicationByMonitorUrl(
     result = "";
 
     if (applications.length > 0) {
-      log.info(
+      log.debug(
         `Found application for '${monitorUrl} in '${clusterName}'. Took ${Date.now() -
           requestStarted}ms.`
       );

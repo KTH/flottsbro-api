@@ -1,23 +1,23 @@
-'use strict'
+"use strict";
 
-const log = require('kth-node-log')
-const config = require('./configuration').server
-const passport = require('passport')
-const server = require('./server')
-const apiKey = require('kth-node-api-key-strategy')
-const ApiKeyStrategy = apiKey.Strategy
-const options = { log: log }
+const log = require("kth-node-log");
+const config = require("./configuration").server;
+const passport = require("passport");
+const server = require("./server");
+const apiKey = require("kth-node-api-key-strategy");
+const ApiKeyStrategy = apiKey.Strategy;
+const options = { log: log };
 const verify = (req, apikey, done) => {
-  apiKey.verifyApiKey(req, apikey, config.api_keys, done)
-}
-const strategy = new ApiKeyStrategy(options, verify)
+  apiKey.verifyApiKey(req, apikey, config.api_keys, done);
+};
+const strategy = new ApiKeyStrategy(options, verify);
 
 /**
  * In a Express-based application, passport.initialize() middleware is required to initialize Passport.
  * If your application uses persistent login sessions, passport.session() middleware must also be used.
  */
-server.use(passport.initialize())
+server.use(passport.initialize());
 
-passport.use(strategy)
+passport.use(strategy);
 
-log.info('Authentication initialized')
+log.debug("Authentication initialized");
