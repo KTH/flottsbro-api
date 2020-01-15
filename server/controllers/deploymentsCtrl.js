@@ -40,7 +40,7 @@ function* getLatestBySearch(request, response, next) {
   } else {
     responses.notFound(
       response,
-      `No deployed applications found in cluster '${clusterName}' starting with path '${searchPath}'.`
+      `No deployed applications found in cluster ${clusterName} starting with path ${searchPath}.`
     );
   }
 }
@@ -71,7 +71,7 @@ function* getLatestByClusterName(request, response, next) {
   if (applications == undefined) {
     responses.error(
       response,
-      `Unexpected error when trying to read deployment data for cluster '${request.params.clusterName}'.`
+      `Unexpected error when trying to read deployment data for cluster ${request.params.clusterName}.`
     );
     return;
   }
@@ -116,7 +116,7 @@ function* addLatestForApplicationName(request, response, next) {
   if (payload.cluster != clusterName) {
     responses.error(
       response,
-      `The json payload says deployment was done in '${payload.cluster}' but the uri says '/v1/latest/${clusterName}'.`
+      `The json payload says deployment was done in ${payload.cluster} but the uri says /v1/latest/${clusterName}.`
     );
     return;
   }
@@ -126,7 +126,7 @@ function* addLatestForApplicationName(request, response, next) {
   if (application == undefined) {
     responses.error(
       response,
-      `Faild to store application '${payload.applicationName}'`
+      `Faild to store application ${payload.applicationName}`
     );
     return;
   }
@@ -147,7 +147,7 @@ function* deleteApplicationName(request, response, next) {
   } else {
     responses.ok(
       response,
-      `Found no match for '${applicationName}' in '${clusterName}' to remove.`
+      `Found no match for ${applicationName} in ${clusterName} to remove.`
     );
   }
 }
@@ -178,7 +178,7 @@ function* getLatestForApplicationName(request, response, next) {
   if (application == null) {
     responses.notFound(
       response,
-      `No application '${applicationName}' found in cluster '${clusterName}'.`
+      `No application ${applicationName} found in cluster ${clusterName}.`
     );
     return;
   }
@@ -186,7 +186,7 @@ function* getLatestForApplicationName(request, response, next) {
   if (application == undefined) {
     responses.error(
       response,
-      `Unexpected error when trying to read deployment data for cluster '${clusterName}' and application '${applicationName}'.`
+      `Unexpected error when trying to read deployment data for cluster ${clusterName} and application ${applicationName}.`
     );
     return;
   }
@@ -213,7 +213,7 @@ function* getLatestForApplicationByMonitorUrl(request, response, next) {
   if (application == null) {
     responses.notFound(
       response,
-      `No application matched '${monitorUrl}' in '${clusterName}'.`
+      `No application matched ${monitorUrl} in ${clusterName}.`
     );
     return;
   }
@@ -221,7 +221,7 @@ function* getLatestForApplicationByMonitorUrl(request, response, next) {
   if (application == undefined) {
     responses.error(
       response,
-      `Unexpected error when trying to read deployment data for cluster '${clusterName}' and application '${monitorUrl}'.`
+      `Unexpected error when trying to read deployment data for cluster ${clusterName} and application ${monitorUrl}.`
     );
     return;
   }
