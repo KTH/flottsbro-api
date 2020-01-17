@@ -1,6 +1,7 @@
 "use strict";
 const server = require("kth-node-server");
 const path = require("path");
+var cors = require("cors");
 // Load .env file in development mode
 const nodeEnv = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase();
 if (nodeEnv === "development" || nodeEnv === "dev") {
@@ -82,6 +83,7 @@ server.use(
   })
 );
 server.use(cookieParser());
+server.use(cors());
 
 /** *****************************
  * ******* AUTHENTICATION *******
