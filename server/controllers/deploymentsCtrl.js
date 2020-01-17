@@ -24,6 +24,7 @@ module.exports = {
  * @param {*} next
  */
 function* getLatestBySearch(request, response, next) {
+  response.set("Access-Control-Allow-Origin", "*");
   const requestStarted = Date.now();
 
   let searchPath = decodeURIComponent(request.params.path);
@@ -112,6 +113,7 @@ function isSwaggerLink(publicUserDocumentationUrl) {
  * @param {*} next
  */
 function* addLatestForApplicationName(request, response, next) {
+  response.set("Access-Control-Allow-Origin", "*");
   let clusterName = request.params.clusterName;
   let payload = JSON.parse(JSON.stringify(request.body));
 
@@ -139,6 +141,7 @@ function* addLatestForApplicationName(request, response, next) {
 }
 
 function* deleteApplicationName(request, response, next) {
+  response.set("Access-Control-Allow-Origin", "*");
   let clusterName = request.params.clusterName;
   let applicationName = request.params.applicationName;
 
@@ -161,6 +164,7 @@ function* deleteApplicationName(request, response, next) {
  * @param {*} next
  */
 function* getLatestForApplicationName(request, response, next) {
+  response.set("Access-Control-Allow-Origin", "*");
   let clusterName = request.params.clusterName;
   let applicationName = request.params.applicationName;
 
@@ -203,6 +207,7 @@ function* getLatestForApplicationName(request, response, next) {
  * @param {*} next
  */
 function* getLatestForApplicationByMonitorUrl(request, response, next) {
+  response.set("Access-Control-Allow-Origin", "*");
   let clusterName = request.params.clusterName;
   let monitorUrl = request.params.monitorUrl;
 
