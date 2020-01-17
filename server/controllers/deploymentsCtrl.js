@@ -59,6 +59,8 @@ function getType(clusterName) {
  * @param {*} next
  */
 function* getLatestByClusterName(request, response, next) {
+  response.set("Access-Control-Allow-Origin", "*");
+
   let clusterName = request.params.clusterName;
 
   let applications = [];
