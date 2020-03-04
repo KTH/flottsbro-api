@@ -65,7 +65,8 @@ function* getLatestByClusterName(request, response, next) {
 
   applications = yield deploys.getLatestByCluster(
     clusterName,
-    getType(clusterName)
+    getType(clusterName),
+    request.query.importance
   );
 
   if (applications == undefined) {

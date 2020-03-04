@@ -23,23 +23,22 @@
 
 curl --request POST --data \
 '{
-  "created": 1550835623.0807972,
-  "applicationName": "app1",
-  "cluster": "stage",
-  "version": "2.10.344_99bf09f",
-  "imageName": "kth-azure-app",
-  "applicationUrl": "https://app-r.referens.sys.kth.se/kth-azure-app/",
-  "applicationPath": "/kth-azure-app/",
-  "monitorUrl": "https://app-r.referens.sys.kth.se/kth-azure-app/_monitor",
-  "monitorPattern": "APPLICATION_STATUS: OK",
+  "applicationName": "Annual Bibliometric Monitoring",
+  "version": "1.0.0",
+  "cluster": "on-prem",
+  "applicationUrl": "https://www.kth.se/abm",
+  "monitorUrl": "https://www.kth.se/abm",
+  "monitorPattern": "Since your browser does not support JavaScript",
   "importance": "medium",
-  "publicNameSwedish": "Continuous delivery referens applikation",
-  "publicNameEnglish": "Continuous Delivery Reference Application",
-  "descriptionSwedish": "Referens applikation för KTH:s Docker kluster i Azure. Om denna tjänst har diftsörning har hela klustret problem.",
-  "descriptionEnglish": "Reference application for KTHs Docker clusters.",
-  "friendlyName": "Continuous Delivery Reference Application"
+  "publicNameSwedish": "Årlig bibliometrisk uppföljning",
+  "publicNameEnglish": "Annual Bibliometric Monitoring",
+  "descriptionSwedish": "I den årliga bibliometriska uppföljningen (ÅBU) finner du statistik om publicering, citeringar och sampublicering vid KTH.",
+  "descriptionEnglish": "The ABM at KTH contains statistics on publication output, citation impact and co-publishing.",
+  "friendlyName": "Annual Bibliometric Monitoring",
+  "team": "team-abm",
+  "publicUserDocumentationUrl": "https://kth-library.github.io/"
 }' \
 --silent \
 --header "api_key: $API_KEY_WRITE"  \
 --header "Content-Type: application/json" \
-localhost:3001/api/pipeline/v1/latest/stage
+https://api.kth.se/api/pipeline/v1/latest/on-prem

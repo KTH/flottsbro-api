@@ -64,7 +64,11 @@ function* add(deployment) {
  * @param {*} response
  * @param {*} next
  */
-function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
+function* getLatestByCluster(
+  clusterName,
+  type = types.PRODUCTION,
+  importance = undefined
+) {
   let result = [];
   const requestStarted = Date.now();
 
@@ -77,6 +81,9 @@ function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
     select = {
       type: type
     };
+  }
+  if (importance) {
+    select.importance = importance;
   }
 
   try {
