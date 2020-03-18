@@ -81,7 +81,9 @@ function* getLatestByClusterName(request, response, next) {
 }
 
 function addCalculatedProperties(applications) {
-  return applications.map(addSwaggerLink);
+  applications.map(addSwaggerLink);
+  applications.map(cleanWhenApplicationUrlIsMissing);
+  return applications;
 }
 
 function addSwaggerLink(application) {
@@ -104,6 +106,20 @@ function isSwaggerLink(publicUserDocumentationUrl) {
   return false;
 }
 
+function cleanWhenApplicationUrlIsMissing(application) {
+  if (
+    application.applicationUrl === "" ||
+    application.applicationUrl.startsWith("/")
+  ) {
+    cleanApplicationUrl(application);
+  }
+}
+
+function cleanApplicationUrl(application) {
+  delete application.applicationUrl;
+  delete application.monitorUrl;
+  delete application.monitorPattern;
+}
 /**
  * Add a json payload to storage according to https://gita.sys.kth.se/Infosys/furano/blob/master/schemas/dizin/deployment.json
  * @param {*} request

@@ -3,7 +3,7 @@
 #ENDPOINT='https://api.kth.se'
 ENDPOINT='http://localhost:3001'
 
-# curl -S  \
+# curl -S  -S \
 #      --header "api_key: $API_KEY_READ" \
 #      --header "Accept: application/json" \
 #      "$ENDPOINT/api/pipeline/v1/search/active/%2Fkth-azure-app%2F_monitor" | jq
@@ -22,7 +22,7 @@ ENDPOINT='http://localhost:3001'
 # curl -s -S  \
 #      --header "api_key: $API_KEY_READ" \
 #      --header "Accept: application/json" \
-#      "http://localhost:3001/api/pipeline/v1/latest/active/?importance=low" | jq
+#      "$ENDPOINT/api/pipeline/v1/latest/active/?importance=low" | jq
 
 curl -s -S  \
      --header "api_key: $API_KEY_READ" \
