@@ -65,8 +65,7 @@ function* getLatestByClusterName(request, response, next) {
 
   applications = yield deploys.getLatestByCluster(
     clusterName,
-    getType(clusterName),
-    request.query.importance
+    getType(clusterName)
   );
 
   if (applications == undefined) {
@@ -77,7 +76,21 @@ function* getLatestByClusterName(request, response, next) {
     return;
   }
 
+  if (request.query.importance) {
+    applications = filterOutOnlyImportance(
+      request.query.importance,
+      applications
+    );
+  }
+
   responses.ok(response, addCalculatedProperties(applications));
+}
+
+function filterOutOnlyImportance(importance, applications) {
+  result = applications.filter(application => {
+    return application.importance === importance;
+  });
+  return result;
 }
 
 function addCalculatedProperties(applications) {

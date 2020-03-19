@@ -64,11 +64,7 @@ function* add(deployment) {
  * @param {*} response
  * @param {*} next
  */
-function* getLatestByCluster(
-  clusterName,
-  type = types.PRODUCTION,
-  importance = undefined
-) {
+function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
   let result = [];
   const requestStarted = Date.now();
 
@@ -82,10 +78,6 @@ function* getLatestByCluster(
       type: type
     };
   }
-  if (importance) {
-    select.importance = importance;
-  }
-
   try {
     result = yield Deployments.aggregate(getQuery(select, limits.NO_LIMIT));
 
