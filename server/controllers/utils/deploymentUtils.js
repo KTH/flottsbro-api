@@ -90,7 +90,7 @@ function isProduction(cluster) {
     return true;
   } else if (cluster == "saas") {
     return true;
-  } else if (cluster == "management") {
+  } else if (cluster == "everest-management") {
     return true;
   }
 
