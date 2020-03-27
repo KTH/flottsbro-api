@@ -27,6 +27,7 @@ const schema = mongoose.Schema({
   applicationUrl: String,
   friendlyName: String,
   publicUserDocumentationUrl: String,
+  privateOperationsDocumentationUrl: String,
   applicationPath: String
 });
 
