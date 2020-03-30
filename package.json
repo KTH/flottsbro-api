@@ -9,7 +9,8 @@
     "codecheck": "prettier",
     "start": "NODE_ENV=production node app.js",
     "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js",
-    "test": "mocha test/**/*.js"
+    "test": "mocha test/**/*.js",
+    "docker-build-local": "source docker.conf && docker build --tag $IMAGE_NAME:$IMAGE_VERSION ."
   },
   "dependencies": {
     "@slack/webhook": "^5.0.3",
