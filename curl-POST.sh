@@ -9,37 +9,37 @@
 #
 # Where is the service run?
 #
-RUNS_WHERE='on-prem'
+# RUNS_WHERE='on-prem'
 # RUNS_WHERE='active'
+# RUNS_WHERE='integral'
 # RUNS_WHERE='saas'
 
 curl --request POST --data \
 '{
-  "applicationName": "Annual Bibliometric Monitoring",
+  "applicationName": "webmail",
   "version": "1.0.0",
-  "cluster": "$RUNS_WHERE",
-  "applicationUrl": "https://www.kth.se/abm",
-  "monitorUrl": "https://www.kth.se/abm",
-  "monitorPattern": "Since your browser does not support JavaScript",
-  "importance": "medium",
-  "publicNameSwedish": "Årlig bibliometrisk uppföljning",
-  "publicNameEnglish": "Annual Bibliometric Monitoring",
-  "descriptionSwedish": "I den årliga bibliometriska uppföljningen (ÅBU) finner du statistik om publicering, citeringar och sampublicering vid KTH.",
-  "descriptionEnglish": "The ABM at KTH contains statistics on publication output, citation impact and co-publishing.",
-  "friendlyName": "Annual Bibliometric Monitoring",
-  "team": "team-abm",
-  "publicUserDocumentationUrl": "https://kth-library.github.io/"
+  "cluster": "on-prem",
+  "applicationUrl": "https://webmail.kth.se",
+  "monitorUrl": "https://webmail.kth.se/owa/auth/logon.aspx",
+  "monitorPattern": "Outlook",
+  "importance": "high",
+  "publicNameSwedish": "KTH Webmail",
+  "publicNameEnglish": "KTH Webmail",
+  "descriptionSwedish": "Webbklient för att komma åt KTH majl och kalender från webbläsaren.",
+  "descriptionEnglish": "Web client for accessing KTH mail and calender from a web browser.",
+  "team": "ita-ops",
+  "publicUserDocumentationUrl": "https://www.kth.se/student/kth-it-support/work-online/email/kth-webmail-1.603671"
 }' \
 --silent \
 --header "api_key: $API_KEY_WRITE"  \
 --header "Content-Type: application/json" \
-https://api.kth.se/api/pipeline/v1/latest/$RUNS_WHERE
+https://api-r.referens.sys.kth.se/api/pipeline/v1/latest/on-prem
 
 
 # curl --request POST --data \
 # '{
 #     "applicationName" : "social",
-#     "cluster" : "$RUNS_WHERE",
+#     "cluster" : "on-prem",
 #     "version" : "4.29.1-344",
 #     "importance" : "medium",
 #     "publicNameSwedish" : "Social",
@@ -54,4 +54,4 @@ https://api.kth.se/api/pipeline/v1/latest/$RUNS_WHERE
 # --silent \
 # --header "api_key: $API_KEY_WRITE"  \
 # --header "Content-Type: application/json" \
-# https://api.kth.se/api/pipeline/v1/latest/$RUNS_WHERE 
+# https://api.kth.se/api/pipeline/v1/latest/on-prem 
