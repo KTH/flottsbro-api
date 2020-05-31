@@ -46,7 +46,7 @@ let logConfiguration = {
   level: config.logging.log.level,
   console: config.logging.console,
   stdout: config.logging.stdout,
-  src: config.logging.src
+  src: config.logging.src,
 };
 log.init(logConfiguration);
 
@@ -79,7 +79,7 @@ const cookieParser = require("cookie-parser");
 server.use(bodyParser.json());
 server.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 server.use(cookieParser());
@@ -110,7 +110,7 @@ const {
   createApiPaths,
   createSwaggerRedirectHandler,
   notFoundHandler,
-  errorHandler
+  errorHandler,
 } = require("kth-node-api-common");
 const swaggerData = require("../swagger.json");
 const { System } = require("./controllers");
@@ -158,13 +158,13 @@ addPaths(
   "api",
   createApiPaths({
     swagger: swaggerData,
-    proxyPrefixPathUri: config.proxyPrefixPath.uri
+    proxyPrefixPathUri: config.proxyPrefixPath.uri,
   })
 );
 
 // Middleware to protect enpoints with apiKey
 const authByApiKey = passport.authenticate("apikey", {
-  session: false
+  session: false,
 });
 
 // Application specific API enpoints

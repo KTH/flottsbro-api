@@ -10,6 +10,7 @@
     "start": "NODE_ENV=production node app.js",
     "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js",
     "test": "mocha test/**/*.js",
+    "test-integration": "./test/integration/basic.sh",
     "docker-build-local": "source docker.conf && docker build --tag $IMAGE_NAME:$IMAGE_VERSION ."
   },
   "dependencies": {
@@ -38,7 +39,7 @@
     "mongoose": "^5.9.13",
     "passport": "^0.4.1",
     "safe-utils": "^0.2.1",
-    "swagger-ui": "^3.25.2"
+    "swagger-ui": "^3.25.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",

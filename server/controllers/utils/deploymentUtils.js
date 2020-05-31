@@ -1,5 +1,6 @@
 "use strict";
 
+const deploys = require("../../models/deployments.js");
 const log = require("kth-node-log");
 const deployments = require("../../models/deployments");
 
@@ -36,9 +37,9 @@ function cleanDeployment(deployment) {
 
   if (deployment.type == null) {
     if (isProduction(deployment.cluster)) {
-      deployment.type = "production";
+      deployment.type = deploys.types.PRODUCTION;
     } else {
-      deployment.type = "reference";
+      deployment.type = deploys.types.REFERENS;
     }
   }
   deployment.type = deployment.type.toLowerCase();
@@ -100,5 +101,5 @@ function isProduction(cluster) {
 module.exports = {
   isProduction: isProduction,
   cleanDeployment: cleanDeployment,
-  findFirstMatch: findFirstMatch
+  findFirstMatch: findFirstMatch,
 };

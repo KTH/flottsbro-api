@@ -28,7 +28,7 @@ const schema = mongoose.Schema({
   friendlyName: String,
   publicUserDocumentationUrl: String,
   privateOperationsDocumentationUrl: String,
-  applicationPath: String
+  applicationPath: String,
 });
 
 const Deployments = mongoose.model(config.collection, schema);
@@ -71,22 +71,21 @@ function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
 
   let select = {
     cluster: clusterName,
-    type: type
+    type: type,
   };
 
   if (clusterName === types.PRODUCTION || clusterName === types.REFERENS) {
     select = {
-      type: type
+      type: type,
     };
   }
   try {
     result = yield Deployments.aggregate(getQuery(select, limits.NO_LIMIT));
 
     log.debug(
-      `Found ${
-        result.length
-      } applications deployed in '${clusterName}'. Took ${Date.now() -
-        requestStarted}ms.`
+      `Found ${result.length} applications deployed in '${clusterName}'. Took ${
+        Date.now() - requestStarted
+      }ms.`
     );
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'.`, err);
@@ -109,13 +108,17 @@ function* getApplication(
   let result = undefined;
   const requestStarted = Date.now();
 
+  console.log(
+    `Cluster name: ${clusterName}, application ${applicationName} and type ${type}`
+  );
+
   try {
     const results = yield Deployments.aggregate(
       getQuery(
         {
           applicationName: applicationName,
           cluster: clusterName,
-          type: type
+          type: type,
         },
         limits.ONLY_ONE
       )
@@ -124,8 +127,9 @@ function* getApplication(
     log.debug(
       `Found ${
         results.length
-      } application(s) deployed matching '${clusterName}'/'${applicationName}'. Took ${Date.now() -
-        requestStarted}ms.`
+      } application(s) deployed matching '${clusterName}'/'${applicationName}'. Took ${
+        Date.now() - requestStarted
+      }ms.`
     );
   } catch (err) {
     log.error(`Error while reading deployments for '${clusterName}'`, err);
@@ -148,9 +152,9 @@ function* deleteApplication(clusterName, applicationName) {
     const results = yield Deployments.deleteMany(
       {
         applicationName: applicationName,
-        cluster: clusterName
+        cluster: clusterName,
       },
-      function(deleteError, documents) {
+      function (deleteError, documents) {
         if (deleteError) {
           console.log(deleteError);
         } else {
@@ -186,7 +190,7 @@ function* getApplicationByMonitorUrl(
         {
           monitorUrl: monitorUrl,
           cluster: clusterName,
-          type: type
+          type: type,
         },
         limits.ONLY_ONE
       )
@@ -196,8 +200,9 @@ function* getApplicationByMonitorUrl(
 
     if (applications.length > 0) {
       log.debug(
-        `Found application for '${monitorUrl} in '${clusterName}'. Took ${Date.now() -
-          requestStarted}ms.`
+        `Found application for '${monitorUrl} in '${clusterName}'. Took ${
+          Date.now() - requestStarted
+        }ms.`
       );
       result = applications[0];
     } else {
@@ -219,19 +224,19 @@ function* getApplicationByMonitorUrl(
 function getQuery(match, limit) {
   return [
     {
-      $match: match
+      $match: match,
     },
     {
       $sort: {
-        created: -1
-      }
+        created: -1,
+      },
     },
     {
-      $group: getGroup()
+      $group: getGroup(),
     },
     {
-      $limit: limit
-    }
+      $limit: limit,
+    },
   ];
 }
 
@@ -242,65 +247,65 @@ function getGroup() {
   return {
     _id: "$applicationName",
     created: {
-      $first: "$created"
+      $first: "$created",
     },
     applicationName: {
-      $first: "$applicationName"
+      $first: "$applicationName",
     },
     cluster: {
-      $first: "$cluster"
+      $first: "$cluster",
     },
     type: {
-      $first: "$type"
+      $first: "$type",
     },
     version: {
-      $first: "$version"
+      $first: "$version",
     },
     imageName: {
-      $first: "$imageName"
+      $first: "$imageName",
     },
     applicationUrl: {
-      $first: "$applicationUrl"
+      $first: "$applicationUrl",
     },
     applicationPath: {
-      $first: "$applicationPath"
+      $first: "$applicationPath",
     },
     aboutUrl: {
-      $first: "$aboutUrl"
+      $first: "$aboutUrl",
     },
     monitorUrl: {
-      $first: "$monitorUrl"
+      $first: "$monitorUrl",
     },
     monitorPattern: {
-      $first: "$monitorPattern"
+      $first: "$monitorPattern",
     },
     importance: {
-      $first: "$importance"
+      $first: "$importance",
     },
     monitorPattern: {
-      $first: "$monitorPattern"
+      $first: "$monitorPattern",
     },
     publicNameSwedish: {
-      $first: "$publicNameSwedish"
+      $first: "$publicNameSwedish",
     },
     publicNameEnglish: {
-      $first: "$publicNameEnglish"
+      $first: "$publicNameEnglish",
     },
     descriptionSwedish: {
-      $first: "$descriptionSwedish"
+      $first: "$descriptionSwedish",
     },
     descriptionEnglish: {
-      $first: "$descriptionEnglish"
+      $first: "$descriptionEnglish",
     },
     team: {
-      $first: "$team"
+      $first: "$team",
     },
     friendlyName: {
-      $first: "$friendlyName"
+      $first: "$friendlyName",
     },
     publicUserDocumentationUrl: {
-      $first: "$publicUserDocumentationUrl"
-    }
+      $first: "$publicUserDocumentationUrl",
+    },
   };
 }
 
@@ -312,5 +317,5 @@ module.exports = {
   deleteApplication: deleteApplication,
   getApplicationByMonitorUrl: getApplicationByMonitorUrl,
   getLatestByCluster: getLatestByCluster,
-  types: types
+  types: types,
 };

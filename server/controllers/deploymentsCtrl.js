@@ -14,7 +14,7 @@ module.exports = {
     getLatestForApplicationByMonitorUrl
   ),
   getLatestByClusterName: co.wrap(getLatestByClusterName),
-  getLatestBySearch: co.wrap(getLatestBySearch)
+  getLatestBySearch: co.wrap(getLatestBySearch),
 };
 
 /**
@@ -46,10 +46,16 @@ function* getLatestBySearch(request, response, next) {
 }
 
 function getType(clusterName) {
+  if (clusterName === deploys.types.PRODUCTION) {
+    return deploys.types.PRODUCTION;
+  }
+  if (clusterName === deploys.types.REFERENS) {
+    return deploys.types.REFERENS;
+  }
   if (deploymentUtils.isProduction(clusterName)) {
     return deploys.types.PRODUCTION;
   }
-  return deploys.types.PRODUCTION;
+  return deploys.types.REFERENS;
 }
 
 /**
@@ -87,7 +93,7 @@ function* getLatestByClusterName(request, response, next) {
 }
 
 function filterOutOnlyImportance(importance, applications) {
-  result = applications.filter(application => {
+  result = applications.filter((application) => {
     return application.importance === importance;
   });
   return result;
