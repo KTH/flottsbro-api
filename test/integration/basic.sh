@@ -9,7 +9,7 @@ passed() { printf "\033[0;32m • $@\033[0;0m\n"; }
 #
 if [ -z "$URL_PREFIX" ]; then
     URL_PREFIX="http://localhost:3001/api/pipeline"
-    sleep 5s
+    sleep 0s
 fi
 
 FAILED=""
@@ -90,7 +90,6 @@ expectJsonToContain "/v1/active/kth-azure-app" "Continuous Delivery Reference Ap
 expectJsonToContain "/v1/latest/reference/" "kth-azure-app" "Should contain KTH-Azure App in reference"
 expectJsonToContain "/v1/latest/reference/?importance=high" "kopps" "Should contain services with importance high like kopps"
 expectJsonToContain "/v1/stage/kth-azure-app" "Referens applikation" "Should contain get KTH Azure App"
-
 
 # Result
 if [[ "$FAILED" != *"true"* ]]; then
