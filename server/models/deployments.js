@@ -42,6 +42,7 @@ const Deployments = mongoose.model(config.collection, schema);
 function* add(deployment) {
   let result;
   const requestStarted = Date.now();
+  log.info(`Adding '${JSON.stringify(deployment)}'.`);
 
   try {
     let document = new Deployments(deploymentUtils.cleanDeployment(deployment));
@@ -74,15 +75,19 @@ function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
     type: type,
   };
 
+  log.info(clusterName);
+
   if (clusterName === types.PRODUCTION || clusterName === types.REFERENS) {
     select = {
       type: type,
     };
   }
+
+  log.info(select);
   try {
     result = yield Deployments.aggregate(getQuery(select, limits.NO_LIMIT));
 
-    log.debug(
+    log.info(
       `Found ${result.length} applications deployed in '${clusterName}'. Took ${
         Date.now() - requestStarted
       }ms.`

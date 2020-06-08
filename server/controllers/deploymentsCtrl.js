@@ -5,17 +5,7 @@ const co = require("co");
 const slackUtils = require("./utils/slackUtils.js");
 const deploymentUtils = require("./utils/deploymentUtils.js");
 const responses = require("./utils/responses.js");
-
-module.exports = {
-  addLatestForApplicationName: co.wrap(addLatestForApplicationName),
-  getLatestForApplicationName: co.wrap(getLatestForApplicationName),
-  deleteApplicationName: co.wrap(deleteApplicationName),
-  getLatestForApplicationByMonitorUrl: co.wrap(
-    getLatestForApplicationByMonitorUrl
-  ),
-  getLatestByClusterName: co.wrap(getLatestByClusterName),
-  getLatestBySearch: co.wrap(getLatestBySearch),
-};
+const log = require("kth-node-log");
 
 /**
  * Gets the latest deployment for an application in a specified cluster
@@ -93,7 +83,7 @@ function* getLatestByClusterName(request, response, next) {
 }
 
 function filterOutOnlyImportance(importance, applications) {
-  result = applications.filter((application) => {
+  let result = applications.filter((application) => {
     return application.importance === importance;
   });
   return result;
@@ -264,3 +254,14 @@ function* getLatestForApplicationByMonitorUrl(request, response, next) {
 
   responses.ok(response, application);
 }
+
+module.exports = {
+  addLatestForApplicationName: co.wrap(addLatestForApplicationName),
+  getLatestForApplicationName: co.wrap(getLatestForApplicationName),
+  deleteApplicationName: co.wrap(deleteApplicationName),
+  getLatestForApplicationByMonitorUrl: co.wrap(
+    getLatestForApplicationByMonitorUrl
+  ),
+  getLatestByClusterName: co.wrap(getLatestByClusterName),
+  getLatestBySearch: co.wrap(getLatestBySearch),
+};
