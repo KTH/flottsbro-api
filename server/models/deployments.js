@@ -4,10 +4,11 @@ const mongoose = require("mongoose");
 const config = require("../configuration").server;
 const log = require("kth-node-log");
 const deploymentUtils = require("../controllers/utils/deploymentUtils.js");
+const cache = require("@kth/in-memory-cache");
+const CACHE_TTL_MS = 1000 * 60;
 
 const types = { PRODUCTION: "production", REFERENS: "reference" };
 const limits = { NO_LIMIT: 1000, ONLY_ONE: 1 };
-
 const schema = mongoose.Schema({
   applicationName: String,
   cluster: String,
@@ -82,10 +83,17 @@ function* getLatestByCluster(clusterName, type = types.PRODUCTION) {
       type: type,
     };
   }
-
   log.info(select);
+
+  let cacheKey = `getLatestByCluste-${JSON.stringify(select)}`;
+  if (cache.isValid(cacheKey)) {
+    log.info(`Using cache api response for ${JSON.stringify(select)}`);
+    return cache.get(cacheKey);
+  }
+
   try {
     result = yield Deployments.aggregate(getQuery(select, limits.NO_LIMIT));
+    cache.add(cacheKey, result, CACHE_TTL_MS);
 
     log.info(
       `Found ${result.length} applications deployed in '${clusterName}'. Took ${
