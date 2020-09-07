@@ -79,6 +79,7 @@ function* getLatestByClusterName(request, response, next) {
     );
   }
 
+  console.warn("apps:", applications);
   responses.ok(response, addCalculatedProperties(applications));
 }
 
@@ -116,6 +117,9 @@ function isSwaggerLink(publicUserDocumentationUrl) {
 }
 
 function cleanWhenApplicationUrlIsMissing(application) {
+  if (application.applicationUrl == null) {
+    return;
+  }
   if (
     application.applicationUrl === "" ||
     application.applicationUrl.startsWith("/")
