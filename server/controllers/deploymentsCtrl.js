@@ -79,7 +79,6 @@ function* getLatestByClusterName(request, response, next) {
     );
   }
 
-  console.warn("apps:", applications);
   responses.ok(response, addCalculatedProperties(applications));
 }
 
