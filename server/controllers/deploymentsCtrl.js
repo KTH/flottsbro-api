@@ -5,7 +5,6 @@ const co = require("co");
 const slackUtils = require("./utils/slackUtils.js");
 const deploymentUtils = require("./utils/deploymentUtils.js");
 const responses = require("./utils/responses.js");
-const log = require("kth-node-log");
 
 /**
  * Gets the latest deployment for an application in a specified cluster
@@ -14,8 +13,6 @@ const log = require("kth-node-log");
  * @param {*} next
  */
 function* getLatestBySearch(request, response, next) {
-  const requestStarted = Date.now();
-
   let searchPath = decodeURIComponent(request.params.path);
   let clusterName = request.params.clusterName;
 

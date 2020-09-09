@@ -5,6 +5,8 @@ const config = require("../configuration").server;
 const log = require("kth-node-log");
 const deploymentUtils = require("../controllers/utils/deploymentUtils.js");
 const cache = require("@kth/in-memory-cache");
+cache.setMaxSlots(10);
+cache.setLogger(log);
 const CACHE_TTL_MS = 1000 * 60;
 
 const types = { PRODUCTION: "production", REFERENS: "reference" };
