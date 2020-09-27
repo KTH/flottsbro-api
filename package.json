@@ -33,7 +33,7 @@
     "kth-node-api-key-strategy": "^1.0.9",
     "kth-node-configuration": "^2.0.1",
     "kth-node-express-routing": "^2.0.3",
-    "kth-node-log": "^3.1.0",
+    "kth-node-log": "^3.1.1",
     "kth-node-mongo": "3.2.3",
     "kth-node-monitor": "^1.1.6",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
