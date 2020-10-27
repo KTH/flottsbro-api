@@ -15,7 +15,7 @@
     "docker-build-local": "source docker.conf && docker build --tag $IMAGE_NAME:$IMAGE_VERSION ."
   },
   "dependencies": {
-    "@kth/in-memory-cache": "^0.1.14",
+    "@kth/in-memory-cache": "^0.1.15",
     "@slack/webhook": "^5.0.3",
     "applicationinsights": "^1.8.7",
     "bluebird": "^3.7.2",
@@ -26,7 +26,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-handlebars": "^5.1.0",
+    "express-handlebars": "^5.2.0",
     "gulp": "^4.0.2",
     "kth-node-access-log": "^0.2.2",
     "kth-node-api-common": "^1.0.1",
@@ -34,20 +34,20 @@
     "kth-node-configuration": "^2.0.3",
     "kth-node-express-routing": "^2.0.3",
     "kth-node-log": "^3.1.3",
-    "kth-node-mongo": "3.3.1",
+    "kth-node-mongo": "3.3.2",
     "kth-node-monitor": "^1.1.8",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
     "kth-node-server": "^3.1.2",
-    "mongoose": "^5.10.9",
+    "mongoose": "^5.10.11",
     "passport": "^0.4.1",
     "safe-utils": "^0.2.1",
-    "swagger-ui": "^3.35.1"
+    "swagger-ui": "^3.36.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^8.1.3",
-    "nodemon": "^2.0.4",
-    "webpack": "^5.0.0"
+    "mocha": "^8.2.0",
+    "nodemon": "^2.0.6",
+    "webpack": "^5.3.0"
   },
   "engines": {
     "node": "12"
