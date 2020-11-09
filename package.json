@@ -15,9 +15,9 @@
     "docker-build-local": "source docker.conf && docker build --tag $IMAGE_NAME:$IMAGE_VERSION ."
   },
   "dependencies": {
-    "@kth/in-memory-cache": "^0.1.15",
+    "@kth/in-memory-cache": "^0.1.17",
     "@slack/webhook": "^5.0.3",
-    "applicationinsights": "^1.8.7",
+    "applicationinsights": "^1.8.8",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "co": "^4.6.0",
@@ -34,20 +34,20 @@
     "kth-node-configuration": "^2.0.3",
     "kth-node-express-routing": "^2.0.3",
     "kth-node-log": "^3.1.3",
-    "kth-node-mongo": "3.3.2",
+    "kth-node-mongo": "3.3.3",
     "kth-node-monitor": "^1.1.8",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
     "kth-node-server": "^3.1.2",
-    "mongoose": "^5.10.11",
+    "mongoose": "^5.10.13",
     "passport": "^0.4.1",
     "safe-utils": "^0.2.1",
-    "swagger-ui": "^3.36.0"
+    "swagger-ui": "^3.36.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^8.2.0",
+    "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
-    "webpack": "^5.3.0"
+    "webpack": "^5.4.0"
   },
   "engines": {
     "node": "12"
