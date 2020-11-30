@@ -15,7 +15,7 @@
     "docker-build-local": "source docker.conf && docker build --tag $IMAGE_NAME:$IMAGE_VERSION ."
   },
   "dependencies": {
-    "@kth/in-memory-cache": "^0.1.17",
+    "@kth/in-memory-cache": "^0.1.18",
     "@slack/webhook": "^5.0.3",
     "applicationinsights": "^1.8.8",
     "bluebird": "^3.7.2",
