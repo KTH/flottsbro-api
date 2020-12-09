@@ -9,10 +9,11 @@
     "codecheck": "prettier",
     "start": "NODE_ENV=production node app.js",
     "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js",
-    "clean": "rm -r ./node_modules && rm package-lock.json",
+    "clean": "rm -rf ./node_modules && rm package-lock.json",
     "test": "",
     "test-integration": "./test/integration/basic.sh",
-    "docker-build-local": "source docker.conf && docker build --tag $IMAGE_NAME:$IMAGE_VERSION ."
+    "docker-build-local": "source docker.conf && docker build --tag $IMAGE_NAME:$IMAGE_VERSION .",
+    "package-update": "git pull && npm run clean & ncu -u && npm install && npm audit fix && npm test"
   },
   "dependencies": {
     "@kth/in-memory-cache": "^0.1.18",
@@ -38,7 +39,7 @@
     "kth-node-monitor": "^1.1.8",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
     "kth-node-server": "^3.1.2",
-    "mongoose": "^5.11.2",
+    "mongoose": "^5.11.5",
     "passport": "^0.4.1",
     "safe-utils": "^0.2.1",
     "swagger-ui": "^3.37.2"
@@ -47,7 +48,7 @@
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
-    "webpack": "^5.9.0"
+    "webpack": "^5.10.0"
   },
   "engines": {
     "node": "12"
