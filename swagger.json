@@ -27,11 +27,7 @@
             "description": "Unauthorized"
           }
         },
-        "security": {
-          "api_key": [
-            "read"
-          ]
-        }
+        "security": [{ "api_key": ["read"] }]
       }
     },
     
@@ -70,11 +66,7 @@
             "description": "A descriptive message (hopefully)."
           }
         },
-        "security": {
-          "api_key": [
-            "read"
-          ]
-        }
+        "security": [{ "api_key": ["read"] }]
       },
       "delete": {
         "operationId": "deleteApplicationName",
@@ -110,11 +102,7 @@
             "description": "A descriptive message (hopefully)."
           }
         },
-        "security": {
-          "api_key": [
-            "write"
-          ]
-        }
+        "security": [{ "api_key": ["write"] }]
       }
     },
     
@@ -146,11 +134,7 @@
             "description": "A descriptive message (hopefully)."
           }
         },
-        "security": {
-          "api_key": [
-            "read"
-          ]
-        }
+        "security": [{ "api_key": ["read"] }]
       },
       "post": {
         "operationId": "addLatestForApplicationName",
@@ -186,11 +170,7 @@
             "description": "A descriptive message (hopefully)."
           }
         },
-        "security": {
-          "api_key": [
-            "write"
-          ]
-        }
+        "security": [{ "api_key": ["write"] }]
       }
 
     },
@@ -230,11 +210,7 @@
             "description": "A descriptive message (hopefully)."
           }
         },
-        "security": {
-          "api_key": [
-            "read"
-          ]
-        }
+        "security": [{ "api_key": ["read"] }]
       }
     },
     "/v1/monitor/{clusterName}/{monitorUrl}": {
@@ -272,11 +248,7 @@
             "description": "A descriptive message (hopefully)."
           }
         },
-        "security": {
-          "api_key": [
-            "read"
-          ]
-        }
+        "security": [{ "api_key": ["read"] }]
       }
     }
   },
