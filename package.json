@@ -16,7 +16,7 @@
     "package-update": "git pull && npm run clean & ncu -u && npm install && npm audit fix && npm test"
   },
   "dependencies": {
-    "@kth/in-memory-cache": "^0.1.22",
+    "@kth/in-memory-cache": "^0.1.29",
     "@slack/webhook": "^6.0.0",
     "applicationinsights": "^1.8.10",
     "bluebird": "^3.7.2",
