@@ -1,4 +1,4 @@
-FROM kthse/kth-os:3.12.0
+FROM kthse/kth-os:3.13.0
 RUN apk update && apk add curl bash
 COPY basic.sh basic.sh
 
