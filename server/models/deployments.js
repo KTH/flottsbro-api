@@ -123,7 +123,7 @@ function* getApplication(
   let result = undefined;
   const requestStarted = Date.now();
 
-  console.log(
+  log.info(
     `Cluster name: ${clusterName}, application ${applicationName} and type ${type}`
   );
 
