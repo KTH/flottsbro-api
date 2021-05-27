@@ -11,9 +11,8 @@
     "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js",
     "clean": "rm -rf ./node_modules && rm -f package-lock.json",
     "test": "",
-    "test-integration": "./test/integration/basic.sh",
-    "test-integration-in-docker": "ID=$(docker build -q .) && export $(grep -v '^#' .env | xargs) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-integration-tests.yml up --force-recreate --abort-on-container-exit --always-recreate-deps --no-log-prefix --quiet-pull --build",    
-    "docker-build-local": "source docker.conf && docker build --tag $IMAGE_NAME:$IMAGE_VERSION .",
+    "test-integration-in-docker": "ID=$(docker build -q .) && export $(grep -v '^#' .env | xargs) && WORKSPACE=$(pwd) LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-integration-tests.yml up --force-recreate --abort-on-container-exit --always-recreate-deps --no-log-prefix --quiet-pull --build",
+    "test-unit-in-docker": "ID=$(docker build -q .) && export $(grep -v '^#' .env | xargs) && WORKSPACE=$(pwd) LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-unit-tests.yml up --force-recreate --abort-on-container-exit --always-recreate-deps --no-log-prefix --quiet-pull --build",
     "package-update": "git pull && npm run clean & ncu -u && npm install && npm audit fix && npm test"
   },
   "dependencies": {

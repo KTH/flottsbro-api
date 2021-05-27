@@ -57,7 +57,7 @@ expectJsonToContain() {
     
     TEST_URL="$URL_PREFIX$ENDPOINT"
     
-    curl --header "api_key: 1234" --header "Accept: application/json" "$TEST_URL" > .curl.log 2>&1
+    curl -s -S --header "api_key: $FLOTTSBRO_API_KEY" --header "Accept: application/json" "$TEST_URL" > .curl.log 2>&1
     RESULT=$(cat .curl.log)
     
     if [[ "$RESULT" == *"$PATTERN"* ]]; then
@@ -80,16 +80,18 @@ expectJsonToContain() {
 
 # ---------------- Tests ----------------
 
+echo ""
 expectPathToContain "/_monitor" "APPLICATION_STATUS: OK" "Default check APPLICATION_STATUS: OK"
 expectJsonToContain "/v1/latest/active/" "kth-azure-app" "Should contain KTH-Azure App in cluster active"
 expectJsonToContain "/v1/latest/stage/" "kth-azure-app" "Should contain KTH-Azure App in cluster stage"
 expectJsonToContain "/v1/latest/production/" "kth-azure-app" "Should contain KTH-Azure App in production"
 expectJsonToContain "/v1/latest/production/?importance=high" "canvas" "Should contain services with importance high like Canvas"
 expectJsonToContain "/v1/active/kth-azure-app" "Continuous Delivery Reference Application" "Should contain KTH Azure App"
-
 expectJsonToContain "/v1/latest/reference/" "kth-azure-app" "Should contain KTH-Azure App in reference"
 expectJsonToContain "/v1/latest/reference/?importance=high" "kopps" "Should contain services with importance high like kopps"
 expectJsonToContain "/v1/stage/kth-azure-app" "Referens applikation" "Should contain get KTH Azure App"
+
+echo ""
 
 # Result
 if [[ "$FAILED" != *"true"* ]]; then
