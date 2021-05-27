@@ -1,0 +1,39 @@
+version: "3"
+
+#
+# Run this integration test by running:
+# ID=$(docker build -q .) && LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-integration-tests.yml up --abort-on-container-exit --always-recreate-deps
+#
+# docker images | grep kth-azure-app_app | awk '{ print $3 }' | xargs docker inspect | grep se.kth.imageVersion
+services:
+  #############################################
+  # Start http://api:3000/
+  #############################################
+  api:
+    # if not --build and kth-azure-app already exists in
+    # your local computers registry 'image' is used.
+    image: $LOCAL_IMAGE_ID
+
+    # Possible configuration for the app.
+    environment:
+      - API_KEYS_0
+      - API_KEYS_1
+      - MONGODB_CONNECTION_STRING
+      - MONGODB_COLLECTION
+      
+    ports:
+      - 3001
+
+  #############################################
+  # Start the client running tests
+  # agains http://api:3000/
+  #############################################
+  integration-tests:
+    # Build client image and run tests
+    # from inside that.
+    build: ./tests/integration-tests
+    environment:
+      - FLOTTSBRO_API_KEY
+
+    depends_on:
+      - api
