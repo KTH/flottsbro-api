@@ -18,3 +18,4 @@ module.exports = server.start({
   port: config.port,
   logger: log
 })
+
