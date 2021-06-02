@@ -33,7 +33,7 @@ services:
   integration-tests:
     # Build client image and run tests
     # from inside that.
-    build: ./tests/integration-tests
+    build: ${WORKSPACE}/tests/integration-tests
     environment:
       - FLOTTSBRO_API_KEY
 
