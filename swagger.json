@@ -210,7 +210,7 @@
             "description": "A descriptive message (hopefully)."
           }
         },
-        "security": [{ "api_key": ["read"] }]
+        "security": []
       }
     },
     "/v1/monitor/{clusterName}/{monitorUrl}": {
