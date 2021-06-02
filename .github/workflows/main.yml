@@ -59,4 +59,4 @@ jobs:
           BUILD_INFORMATION_OUTPUT_FILE='/config/version.js' \
           EVOLENE_TEST_SECRETS=${{secrets.EVOLENE_TEST_SECRETS}} \
           
-          ${{ secrets.EVOLENE_RUN_COMMAND }}
+          ${{ secrets.EVOLENE_LATEST_RUN_COMMAND }}
