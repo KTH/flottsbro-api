@@ -35,11 +35,11 @@
     "kth-node-configuration": "^2.0.5",
     "kth-node-express-routing": "^2.0.9",
     "kth-node-log": "^3.1.6",
-    "kth-node-mongo": "3.3.15",
+    "kth-node-mongo": "3.3.16",
     "kth-node-monitor": "^1.1.12",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
     "kth-node-server": "^3.1.4",
-    "mongoose": "^5.12.11",
+    "mongoose": "^5.12.12",
     "passport": "^0.4.1",
     "safe-utils": "^1.0.1",
     "swagger-ui": "^3.49.0"
@@ -48,7 +48,7 @@
     "chai": "^4.3.4",
     "mocha": "^8.4.0",
     "nodemon": "^2.0.7",
-    "webpack": "^5.37.1"
+    "webpack": "^5.38.1"
   },
   "engines": {
     "node": "14"
