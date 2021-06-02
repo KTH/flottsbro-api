@@ -35,7 +35,7 @@
     "kth-node-configuration": "^2.0.5",
     "kth-node-express-routing": "^2.0.9",
     "kth-node-log": "^3.1.6",
-    "kth-node-mongo": "3.3.15",
+    "kth-node-mongo": "3.3.16",
     "kth-node-monitor": "^1.1.12",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
     "kth-node-server": "^3.1.4",
