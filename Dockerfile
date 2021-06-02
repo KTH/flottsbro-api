@@ -1,4 +1,4 @@
-FROM kthse/kth-nodejs:14.0.0
+FROM kthse/kth-nodejs:16.0.0
 
 COPY ["package-lock.json", "package-lock.json"]
 COPY ["package.json", "package.json"]
@@ -18,4 +18,3 @@ COPY ["data", "data"]
 EXPOSE 3001
 
 CMD ["node", "app.js"]
-
