@@ -36,9 +36,12 @@
 ####################################################################################################################################
 name: Evolene CI
 
-on:
+on:  
   push:
-    branches: [master]
+  pull_request:
+    branches:
+      - master
+      - main
     paths-ignore:
           - '*.md'
           - '*.png'
