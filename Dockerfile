@@ -18,3 +18,4 @@ COPY ["data", "data"]
 EXPOSE 3001
 
 CMD ["node", "app.js"]
+
