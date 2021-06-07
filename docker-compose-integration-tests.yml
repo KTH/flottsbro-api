@@ -22,7 +22,6 @@ services:
       - MONGODB_CONNECTION_STRING
       - MONGODB_COLLECTION
       
-      
     ports:
       - 3001
 
