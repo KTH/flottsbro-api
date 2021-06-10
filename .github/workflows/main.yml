@@ -18,7 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
       - name: Run Evolene CI pipeline steps
-        shell: bash
         env:
           SLACK_CHANNELS: '#team-pipeline-build'
           BUILD_INFORMATION_OUTPUT_FILE: '/config/version.js'
