@@ -21,6 +21,7 @@ jobs:
         env:
           SLACK_CHANNELS: '#team-pipeline-build'
           BUILD_INFORMATION_OUTPUT_FILE: '/config/version.js'
+          SKIP_DRY_RUN: 'True'
           EVOLENE_TEST_SECRETS: ${{secrets.EVOLENE_TEST_SECRETS}}
         run: |
           ${{ secrets.RUN }}
