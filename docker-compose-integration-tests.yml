@@ -19,7 +19,7 @@ services:
       - LOGGING_LEVEL=warn
      
       env_file:
-        - ${WORKSPACE}/.env
+        - .env
       
     ports:
       - 3001
@@ -33,7 +33,7 @@ services:
     # from inside that.
     build: ${WORKSPACE}/tests/integration-tests
     env_file:
-      - ${WORKSPACE}/.env
+      - .env
 
     depends_on:
       - api
