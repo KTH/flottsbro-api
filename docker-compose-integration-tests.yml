@@ -17,9 +17,10 @@ services:
     # Possible configuration for the app.
     environment:
       - LOGGING_LEVEL=warn
-     
-      env_file:
-        - .env
+      - API_KEYS_0
+      - API_KEYS_1
+      - MONGODB_CONNECTION_STRING
+      - MONGODB_COLLECTION
       
     ports:
       - 3001
@@ -32,8 +33,8 @@ services:
     # Build client image and run tests
     # from inside that.
     build: ${WORKSPACE}/tests/integration-tests
-    env_file:
-      - .env
+    environment:
+      - FLOTTSBRO_API_KEY
 
     depends_on:
       - api
