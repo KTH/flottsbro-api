@@ -25,3 +25,4 @@ jobs:
           EVOLENE_TEST_SECRETS: "${{secrets.EVOLENE_TEST_SECRETS}}"
         run: |
           ${{ secrets.RUN }}
+
