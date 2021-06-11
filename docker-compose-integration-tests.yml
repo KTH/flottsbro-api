@@ -14,11 +14,12 @@ services:
     # your local computers registry 'image' is used.
     image: $LOCAL_IMAGE_ID
 
-    env_file: 
-      - .env
-
     environment:
       - LOGGING_LEVEL=warn
+      - API_KEYS_0
+      - API_KEYS_1
+      - MONGODB_CONNECTION_STRING
+      - MONGODB_COLLECTION
       
     ports:
       - 3001
@@ -31,8 +32,8 @@ services:
     # Build client image and run tests
     # from inside that.
     build: ${WORKSPACE}/tests/integration-tests
-    env_file: 
-      - .env
+    environment:
+      - FLOTTSBRO_API_KEY
 
     depends_on:
       - api
