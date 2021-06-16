@@ -38,7 +38,7 @@
     "kth-node-monitor": "^1.1.12",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
     "kth-node-server": "^3.1.5",
-    "mongoose": "^5.12.13",
+    "mongoose": "^5.12.14",
     "passport": "^0.4.1",
     "safe-utils": "^1.0.1",
     "swagger-ui": "^3.50.0"
