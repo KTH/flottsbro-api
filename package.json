@@ -9,15 +9,15 @@
     "codecheck": "prettier",
     "start": "NODE_ENV=production node app.js",
     "start-dev": "LOGGING_LEVEL=info NODE_ENV=development nodemon app.js",
-    "clean": "rm -rf ./node_modules && rm -f package-lock.json",
+    "clean": "rm -r ./node_modules && rm -f package-lock.json",
     "test": "",
     "test-integration-in-docker": "ID=$(docker build -q .) && export $(grep -v '^#' .env | xargs) && WORKSPACE=$(pwd) LOCAL_IMAGE_ID=$ID docker-compose -f docker-compose-integration-tests.yml up --force-recreate --abort-on-container-exit --always-recreate-deps --no-log-prefix --quiet-pull --build",
-    "package-update": "git pull && npm run clean & ncu -u && npm install && npm audit fix && npm test"
+    "package-update": "npm run clean & ncu -u && npm install && npm run test-integration-in-docker"
   },
   "dependencies": {
-    "@kth/in-memory-cache": "^0.1.29",
+    "@kth/in-memory-cache": "^0.1.31",
     "@slack/webhook": "^6.0.0",
-    "applicationinsights": "^2.1.1",
+    "applicationinsights": "^2.1.2",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "co": "^4.6.0",
@@ -33,21 +33,21 @@
     "kth-node-api-key-strategy": "^1.0.10",
     "kth-node-configuration": "^2.0.5",
     "kth-node-express-routing": "^2.0.9",
-    "kth-node-log": "^3.1.6",
-    "kth-node-mongo": "3.3.17",
+    "kth-node-log": "^3.1.7",
+    "kth-node-mongo": "3.3.18",
     "kth-node-monitor": "^1.1.12",
     "kth-node-response": "KTH/kth-node-response.git#v1.0.0",
     "kth-node-server": "^3.1.5",
-    "mongoose": "^5.12.13",
+    "mongoose": "^5.12.14",
     "passport": "^0.4.1",
     "safe-utils": "^1.0.1",
     "swagger-ui": "^3.50.0"
   },
   "devDependencies": {
     "chai": "^4.3.4",
-    "mocha": "^9.0.0",
+    "mocha": "^9.0.1",
     "nodemon": "^2.0.7",
-    "webpack": "^5.38.1"
+    "webpack": "^5.40.0"
   },
   "engines": {
     "node": "14"
